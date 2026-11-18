@@ -46,7 +46,7 @@ export default function CreatePracticeClient({ initialTopic }: CreatePracticeCli
     }
   }
 
-  return <VStack gap={6} className="mx-auto w-full max-w-5xl px-5 py-8">
+  return <VStack gap={6} className="page-container page-container--regular">
     <HStack as="header" hAlign="between" vAlign="center" wrap="wrap" gap={3}><Heading level={2}>EnglishFlow</Heading><HStack gap={2} wrap="wrap"><Button label="首页" href="/" variant="ghost" /><Button label="语法知识库" href="/grammar" variant="ghost" /><Button label="设置" href="/settings" variant="ghost" /></HStack></HStack>
     <VStack gap={1}><Text type="label">PERSONALIZED PRACTICE</Text><Heading level={1}>Create AI Practice</Heading><Text>设置练习目标，生成适合你的英语题目。</Text></VStack>
     {error && <Banner status="error" title="无法生成练习" description={error} endContent={<Button label="检查 AI 设置" href="/settings" variant="secondary" />} />}

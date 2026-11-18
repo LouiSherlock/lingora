@@ -1,7 +1,78 @@
-@layer reset, theme, base, astryx-base, astryx-theme, components, utilities;
-
-@import "tailwindcss";
 @import "@astryxdesign/core/reset.css";
 @import "@astryxdesign/core/astryx.css";
 @import "@astryxdesign/theme-butter/theme.css";
-@import "@astryxdesign/core/tailwind-theme.css";
+
+html {
+  background-color: #261a13;
+  height: 100%;
+}
+
+body {
+  background-color: #261a13;
+  color: var(--color-text-primary);
+  display: flex;
+  min-height: 100%;
+  flex-direction: column;
+}
+
+main {
+  min-height: 100vh;
+  width: 100%;
+}
+
+.page-container {
+  box-sizing: border-box;
+  margin-inline: auto;
+  max-width: 64rem;
+  padding-inline: 1.25rem;
+  width: 100%;
+}
+
+.page-container--compact {
+  padding-block: 1.5rem;
+}
+
+.page-container--regular {
+  padding-block: 2rem;
+}
+
+.page-container--spacious {
+  padding-block: 2.5rem;
+}
+
+.site-header {
+  border-bottom: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  padding-bottom: 1rem;
+}
+
+.recommendation-grid,
+.grammar-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.centered-content {
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.result-summary {
+  align-items: center;
+  padding-block: 1.25rem;
+}
+
+.feedback-error-text {
+  color: var(--color-on-dark) !important;
+}
+
+@media (min-width: 48rem) {
+  .grammar-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .recommendation-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

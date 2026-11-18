@@ -52,31 +52,53 @@ function decode(value: string) {
   return Uint8Array.from(atob(value), (character) => character.charCodeAt(0));
 }
 
-export function hasSessionAPIKey() {
-  return typeof window !== "undefined" && Boolean(window.sessionStorage.getItem(apiKeyStorageKey));
+export function hasClientAPIKey() {
+  return typeof window !== "undefined" && Boolean(
+    window.localStorage.getItem(apiKeyStorageKey) ||
+    window.sessionStorage.getItem(apiKeyStorageKey),
+  );
 }
 
-export async function saveClientAPIKey(apiKey: string) {
+export function setClientAPIKeyRemembered(remember: boolean) {
+  const source = remember ? window.sessionStorage : window.localStorage;
+  const target = remember ? window.localStorage : window.sessionStorage;
+  const stored = source.getItem(apiKeyStorageKey);
+  if (!stored) return;
+  target.setItem(apiKeyStorageKey, stored);
+  source.removeItem(apiKeyStorageKey);
+}
+
+export async function saveClientAPIKey(apiKey: string, remember: boolean) {
   const iv = window.crypto.getRandomValues(new Uint8Array(12));
   const encrypted = await window.crypto.subtle.encrypt({ name: "AES-GCM", iv }, await getSessionEncryptionKey(), new TextEncoder().encode(apiKey));
-  window.sessionStorage.setItem(apiKeyStorageKey, JSON.stringify({ iv: encode(iv), data: encode(new Uint8Array(encrypted)) }));
+  const storage = remember ? window.localStorage : window.sessionStorage;
+  const otherStorage = remember ? window.sessionStorage : window.localStorage;
+  storage.setItem(apiKeyStorageKey, JSON.stringify({ iv: encode(iv), data: encode(new Uint8Array(encrypted)) }));
+  otherStorage.removeItem(apiKeyStorageKey);
 }
 
 export async function getClientAPIKey() {
-  const stored = window.sessionStorage.getItem(apiKeyStorageKey);
+  const storage = window.localStorage.getItem(apiKeyStorageKey)
+    ? window.localStorage
+    : window.sessionStorage;
+  const stored = storage.getItem(apiKeyStorageKey);
   if (!stored) return "";
   try {
     const { iv, data } = JSON.parse(stored) as { iv: string; data: string };
     const decrypted = await window.crypto.subtle.decrypt({ name: "AES-GCM", iv: decode(iv) }, await getSessionEncryptionKey(), decode(data));
     return new TextDecoder().decode(decrypted);
   } catch {
-    window.sessionStorage.removeItem(apiKeyStorageKey);
+    storage.removeItem(apiKeyStorageKey);
     return "";
   }
 }
 
 export async function getClientAISettings(settings: ClientAISettings) {
-  return { ...settings, credential: await encryptAPIKey(await getClientAPIKey()) };
+  return {
+    baseUrl: settings.baseUrl,
+    model: settings.model,
+    credential: await encryptAPIKey(await getClientAPIKey()),
+  };
 }
 
 export async function encryptAPIKey(apiKey: string) {
