@@ -15,8 +15,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className="h-full antialiased"
       data-theme="dark"
     >
-      <body className="min-h-full flex flex-col text-primary">
-        <Theme theme={themes[defaultThemeSlug]} mode="dark"><main className="mx-auto min-h-screen w-full max-w-5xl bg-surface">{children}</main></Theme>
+      <body className="min-h-full flex flex-col bg-surface text-primary">
+        <Theme theme={themes[defaultThemeSlug]} mode="dark"><main className="min-h-screen w-full">{children}</main></Theme>
       </body>
     </html>
   );

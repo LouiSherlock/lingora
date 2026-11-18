@@ -1,4 +1,3 @@
-"use client";
 import { Card } from "@astryxdesign/core/Card";
 import { Button } from "@astryxdesign/core/Button";
 import { Heading } from "@astryxdesign/core/Heading";
@@ -6,8 +5,6 @@ import { Text } from "@astryxdesign/core/Text";
 import { VStack } from "@astryxdesign/core/VStack";
 import { HStack } from "@astryxdesign/core/HStack";
 import { Badge } from "@astryxdesign/core/Badge";
-import { Banner } from "@astryxdesign/core/Banner";
-import { useLearningStore } from "../stores/learning-store";
 
 const recommendations = [
   { title: "Present Simple", detail: "一般现在时 · A1", count: "5 题", icon: "☀️", topic: "一般现在时" },
@@ -16,7 +13,6 @@ const recommendations = [
 ];
 
 export default function Home() {
-  const model = useLearningStore((state) => state.settings.model);
   return (
     <VStack gap={8} className="mx-auto w-full max-w-5xl px-5 py-8">
         <HStack as="header" wrap="wrap" hAlign="between" vAlign="center" gap={4} className="border-b border-border pb-4">
@@ -37,8 +33,6 @@ export default function Home() {
           </VStack>
           <Button label="开始 AI 练习" href="/practice/create" variant="primary" />
         </HStack>
-
-        {!model && <Banner status="info" title="先连接 AI 模型" description="配置兼容接口并选择模型后，即可生成第一组练习。" endContent={<Button label="前往设置" href="/settings" variant="secondary" />} />}
 
         <Card>
           <HStack wrap="wrap" hAlign="between" vAlign="center" gap={6}>
