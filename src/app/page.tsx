@@ -1,9 +1,11 @@
+"use client";
 import { Card } from "@astryxdesign/core/Card";
 import { Button } from "@astryxdesign/core/Button";
 import { Heading } from "@astryxdesign/core/Heading";
 import { Text } from "@astryxdesign/core/Text";
 import { VStack } from "@astryxdesign/core/VStack";
 import { HStack } from "@astryxdesign/core/HStack";
+import { useLearningStore } from "../stores/learning-store";
 
 const recommendations = [
   { title: "Present Simple", detail: "一般现在时 · A1", count: "10 题", icon: "☀️" },
@@ -12,6 +14,7 @@ const recommendations = [
 ];
 
 export default function Home() {
+  const history = useLearningStore((s) => s.history);
   return (
     <VStack gap={8} className="mx-auto w-full max-w-6xl px-5 py-6">
         <HStack as="header" wrap="wrap" hAlign="between" vAlign="center" gap={4} className="border-b border-border pb-4">
@@ -23,6 +26,7 @@ export default function Home() {
             <Button label="设置" href="/settings" variant="ghost" />
           </HStack>
         </HStack>
+
         <HStack wrap="wrap" hAlign="between" vAlign="center" gap={4}>
           <VStack gap={1}>
             <Text type="supporting">WEDNESDAY, NOVEMBER 18</Text>
