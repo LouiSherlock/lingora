@@ -1,0 +1,39 @@
+{
+  "name": "lingora",
+  "like": "butter",
+  "mode": "dark-only",
+  "settings": [
+    {
+      "thing": "accent",
+      "value": "#F6D75D",
+      "source": "dial"
+    },
+    {
+      "thing": "neutral",
+      "value": "#3B2B20",
+      "source": "dial"
+    },
+    {
+      "thing": "--color-background-body",
+      "value": "#211f21",
+      "source": "token"
+    },
+    {
+      "thing": "--color-background-surface",
+      "value": "#261a13",
+      "source": "token"
+    },
+    {
+      "thing": "--color-background-card",
+      "value": "#3c2a1f",
+      "source": "token"
+    },
+    {
+      "thing": "--color-border-emphasized",
+      "value": "#5a4638",
+      "source": "token"
+    }
+  ],
+  "lifted": [],
+  "palette": "81876bfbecbdd3be95b44a546b0c22c6a6de5d4842f2ffac0b82d95bf5fd76a3"
+}
