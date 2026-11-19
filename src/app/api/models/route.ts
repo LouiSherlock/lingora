@@ -1,21 +1,23 @@
 import { NextResponse } from "next/server";
-import { validateProviderUrl } from "../../../lib/ai-url";
-import { decryptCredential } from "../../../lib/server-crypto";
+import { listModels } from "../../../lib/ai/client";
+import { toErrorBody } from "../../../lib/ai/errors";
+import { readProvider } from "../../../lib/ai/settings";
 
 export async function POST(request: Request) {
   try {
-    const { baseUrl, credential } = await request.json();
-    const apiKey = decryptCredential(credential);
-    const base = validateProviderUrl(baseUrl);
-    if (!base || typeof apiKey !== "string" || apiKey.length < 1 || apiKey.length > 2048) return NextResponse.json({ error: "请填写有效的兼容接口地址和 API Key。" }, { status: 400 });
-    const modelsUrl = new URL(`${base.pathname.replace(/\/$/, "")}/models`, base.origin);
-    let response = await fetch(modelsUrl, { headers: { Authorization: `Bearer ${apiKey}` }, signal: AbortSignal.timeout(15000) });
-    if (!response.ok && base.hostname === "opencode.ai") {
-      response = await fetch(new URL("/inference/v1/models", base.origin), { headers: { Authorization: `Bearer ${apiKey}` }, signal: AbortSignal.timeout(15000) });
+    const body = await request.json() as { baseUrl?: unknown; credential?: unknown };
+    const provider = readProvider({ baseUrl: body.baseUrl, credential: body.credential }, { requireModel: false });
+    let models: string[];
+    try {
+      models = await listModels(provider);
+    } catch (error) {
+      // opencode.ai exposes the same catalogue under a shorter prefix.
+      if (provider.origin.hostname !== "opencode.ai") throw error;
+      models = await listModels({ ...provider, prefix: "/inference/v1" });
     }
-    if (!response.ok) return NextResponse.json({ error: `获取模型失败（HTTP ${response.status}），请检查地址和 API Key。` }, { status: 502 });
-    const payload = await response.json();
-    const models = Array.isArray(payload.data) ? payload.data.map((model: { id?: unknown }) => model.id).filter((id: unknown): id is string => typeof id === "string").slice(0, 100) : [];
     return NextResponse.json({ models });
-  } catch { return NextResponse.json({ error: "连接模型服务失败，请确认接口地址可访问并兼容 OpenAI Models API。" }, { status: 502 }); }
+  } catch (error) {
+    const { status, body } = toErrorBody(error);
+    return NextResponse.json(body, { status });
+  }
 }
