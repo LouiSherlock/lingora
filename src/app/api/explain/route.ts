@@ -1,8 +1,8 @@
 import { NextResponse } from "next/server";
-import { toErrorBody } from "../../../lib/ai/errors";
-import { askTutor, parseTutorRequest } from "../../../lib/ai/explain";
-import { readSessionId } from "../../../lib/ai/session";
-import { readProvider } from "../../../lib/ai/settings";
+import { toErrorBody } from "@/lib/ai/errors";
+import { askTutor, parseTutorRequest } from "@/lib/ai/explain";
+import { readSessionId } from "@/lib/ai/session";
+import { readProvider } from "@/lib/ai/settings";
 
 export async function POST(request: Request) {
   try {

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Theme } from "@astryxdesign/core/theme";
-import { defaultThemeSlug, themes } from "../astryx-themes";
+import { lingoraTheme } from "@/themes/lingora/lingora";
 
 export const metadata: Metadata = {
   title: "Lingora",
@@ -10,9 +10,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" data-theme="dark">
+    <html lang="en" data-theme="dark" data-astryx-theme="lingora">
       <body>
-        <Theme theme={themes[defaultThemeSlug]} mode="dark"><main>{children}</main></Theme>
+        <Theme theme={lingoraTheme} mode="dark"><main>{children}</main></Theme>
       </body>
     </html>
   );

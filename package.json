@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "vitest run"
+    "test": "vitest run",
+    "theme:build": "astryx theme build src/lingora-themes.ts --out src/themes/lingora/lingora.css"
   },
   "dependencies": {
     "@astryxdesign/cli": "^0.7.16",

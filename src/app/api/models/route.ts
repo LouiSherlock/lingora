@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
-import { listModels } from "../../../lib/ai/client";
-import { toErrorBody } from "../../../lib/ai/errors";
-import { readProvider } from "../../../lib/ai/settings";
+import { listModels } from "@/lib/ai/client";
+import { toErrorBody } from "@/lib/ai/errors";
+import { readProvider } from "@/lib/ai/settings";
 
 export async function POST(request: Request) {
   try {
