@@ -99,12 +99,15 @@ export async function POST(request: Request) {
     if (!base || !apiKey || apiKey.length > 2048 || typeof ai?.model !== "string" || ai.model.length < 1 || ai.model.length > 200) return NextResponse.json({ error: "请先完成 AI 兼容接口配置，并选择模型。", needsConfiguration: true }, { status: 400 });
     const completionUrl = new URL(`${base.pathname.replace(/\/$/, "")}/chat/completions`, base.origin);
 
+    let aiSessionId = typeof body.conversationId === "string" ? body.conversationId : "";
+
     async function requestQuestions(extraInstruction = "") {
       const response = await fetch(completionUrl, {
         method: "POST",
         headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
         body: JSON.stringify({
           model: ai.model,
+          ...(aiSessionId ? { conversation_id: aiSessionId } : {}),
           response_format: { type: "json_object" },
           messages: [
             { role: "system", content: `${systemPrompt}${extraInstruction ? `\n${extraInstruction}` : ""}` },
@@ -113,8 +116,12 @@ export async function POST(request: Request) {
         }),
         signal: AbortSignal.timeout(60000),
       });
+
+   
       if (!response.ok) throw new Error("AI 服务请求失败，请检查服务端配置。");
       const result = await response.json();
+      console.log(result)
+      if (typeof result.id === "string" && result.id) aiSessionId = result.id;
       const parsed = JSON.parse(result.choices?.[0]?.message?.content ?? "{}");
       if (!Array.isArray(parsed.questions) || parsed.questions.length < 1) throw new Error("模型返回格式无效");
       return parsed.questions.slice(0, count)

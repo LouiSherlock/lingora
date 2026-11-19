@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lingora · 专属英语练习空间</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700&family=Noto+Sans+SC:wght@500;700;900&display=swap" rel="stylesheet">
+<script>document.documentElement.classList.add('pre');</script>
+<style>
+:root{
+  --bg:#261a12; --bg-2:#31221a; --ink:#fff7e6; --ink-dim:#cbb99f;
+  --line:#4a3c31; --gold:#f7d654; --gold-deep:#e9b92f; --on-gold:#2a1d10;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);height:100%}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);
+  font-family:"Noto Sans SC","Outfit",system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased}
+body{position:relative}
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none}
+#bg canvas{display:block}
+.glow{position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:radial-gradient(60% 55% at 85% 90%,rgba(247,214,84,.14),transparent 70%),
+             radial-gradient(50% 50% at 8% 8%,rgba(233,185,47,.07),transparent 70%)}
+.page{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;padding:0 clamp(20px,5vw,56px)}
+header{display:flex;align-items:center;justify-content:space-between;height:76px;flex:none;position:relative}
+.logo{font-family:"Outfit",sans-serif;font-weight:700;font-size:26px;letter-spacing:-.01em;color:var(--gold);text-decoration:none}
+.settings{font-weight:700;font-size:15px;color:var(--gold);text-decoration:none;padding:8px 4px;background:none;border:0;cursor:pointer;font-family:inherit}
+.rule{position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--line);transform-origin:left}
+main{flex:1;min-height:0;display:flex;align-items:center}
+.hero{width:100%;display:flex;align-items:flex-end;justify-content:space-between;gap:32px;flex-wrap:wrap}
+.copy{max-width:760px}
+.label{margin:0 0 14px;font-weight:700;font-size:clamp(14px,1.5vw,17px)}
+h1{margin:0;font-weight:900;font-size:clamp(46px,9vw,124px);line-height:1.05;letter-spacing:-.02em;display:flex;flex-wrap:wrap}
+.ch{display:inline-block;will-change:transform}
+.sub{margin:22px 0 0;font-weight:500;font-size:clamp(15px,1.7vw,19px);color:var(--ink);line-height:1.6}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 0;padding:0;list-style:none}
+.chip{font:inherit;font-weight:500;font-size:14px;color:var(--ink-dim);background:rgba(255,247,230,.04);
+  border:1px solid var(--line);border-radius:999px;padding:8px 16px;cursor:pointer;transition:color .2s,border-color .2s,background .2s}
+.chip:hover{color:var(--ink);border-color:var(--ink-dim)}
+.chip[aria-pressed="true"]{background:rgba(247,214,84,.14);border-color:var(--gold);color:var(--gold)}
+.cta-wrap{position:relative;flex:none}
+.ring{position:absolute;inset:0;border-radius:14px;border:2px solid var(--gold);opacity:0;pointer-events:none}
+.cta{position:relative;font:inherit;font-weight:700;font-size:17px;color:var(--on-gold);background:var(--gold);
+  border:0;border-radius:14px;padding:20px 34px;min-width:176px;cursor:pointer;
+  box-shadow:0 10px 40px -10px rgba(247,214,84,.5)}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.pre [data-r],.pre .ch{opacity:0}
+.pre .rule{transform:scaleX(0)}
+@media (max-width:720px){
+  .hero{flex-direction:column;align-items:stretch}
+  .cta-wrap{width:100%}.cta{width:100%}
+  header{height:64px}
+}
+@media (max-height:560px){.chips{display:none}}
+</style>
+</head>
+<body>
+<div class="glow"></div>
+<div id="bg" aria-hidden="true"></div>
+
+<div class="page">
+  <header>
+    <a class="logo" href="#" data-r>Lingora</a>
+    <button class="settings" type="button" data-r>设置</button>
+    <span class="rule"></span>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="copy">
+        <p class="label" data-r>专属英语练习空间</p>
+        <h1 id="title" aria-label="今天想练什么？">今天想练什么？</h1>
+        <p class="sub" data-r>设定目标，AI 会为你生成一组专属英语练习。</p>
+        <ul class="chips" id="chips" aria-label="练习目标">
+          <li data-r><button class="chip" type="button" aria-pressed="false">日常口语</button></li>
+          <li data-r><button class="chip" type="button" aria-pressed="false">旅行场景</button></li>
+          <li data-r><button class="chip" type="button" aria-pressed="false">面试表达</button></li>
+          <li data-r><button class="chip" type="button" aria-pressed="false">听力理解</button></li>
+          <li data-r><button class="chip" type="button" aria-pressed="false">词汇积累</button></li>
+        </ul>
+      </div>
+      <div class="cta-wrap" data-r>
+        <span class="ring" id="ring"></span>
+        <button class="cta" id="cta" type="button">开始 AI 练习</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.4/p5.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.js"></script>
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var ptr = {x:-9999,y:-9999};
+  window.addEventListener('pointermove',function(e){ptr.x=e.clientX;ptr.y=e.clientY});
+  window.addEventListener('pointerleave',function(){ptr.x=ptr.y=-9999});
+
+  /* ---------- p5: drifting English phrases + click bursts ---------- */
+  var WORDS = ['hello','how are you?','nice to meet you','pronunciation','grammar','fluency','Let\u2019s practice',
+    'speak up','listening','vocabulary','could you repeat that?','I\u2019d like to','by the way','sounds good',
+    'idioms','small talk','tell me more','good morning','what do you think?','accent','rhythm','keep going'];
+  var bursts = [];
+  window.lingoraBurst = function(x,y){
+    for(var i=0;i<26;i++){
+      var a = Math.random()*Math.PI*2, s = 1.5+Math.random()*4.5;
+      bursts.push({x:x,y:y,vx:Math.cos(a)*s,vy:Math.sin(a)*s,life:1,w:WORDS[(Math.random()*WORDS.length)|0],t:Math.random()<.35});
+    }
+  };
+  new p5(function(p){
+    var items = [];
+    function count(){return Math.max(14,Math.min(34,Math.floor(p.width*p.height/42000)))}
+    function make(i){
+      var size = p.random(13,34);
+      return {w:WORDS[i%WORDS.length],x:p.random(p.width),y:p.random(p.height),size:size,
+        vx:p.random(.12,.5)*(size/22)*(p.random()<.5?-1:1),vy:p.random(-.12,.12),
+        a:p.map(size,13,34,.10,.22),rot:p.random(-.12,.12),ph:p.random(1000)};
+    }
+    function seed(){items=[];for(var i=0;i<count();i++)items.push(make(i))}
+    p.setup=function(){
+      var c=p.createCanvas(window.innerWidth,window.innerHeight);c.parent('bg');
+      p.pixelDensity(Math.min(2,window.devicePixelRatio||1));
+      p.textFont('Outfit, Noto Sans SC, sans-serif');p.textStyle(p.BOLD);p.textAlign(p.LEFT,p.CENTER);
+      seed();if(reduce){p.noLoop()}
+    };
+    p.windowResized=function(){p.resizeCanvas(window.innerWidth,window.innerHeight);seed()};
+    p.draw=function(){
+      p.clear();
+      var t=p.frameCount*.01;
+      for(var i=0;i<items.length;i++){
+        var it=items[i];
+        if(!reduce){
+          it.x+=it.vx;it.y+=it.vy+Math.sin(t+it.ph)*.08;
+          var dx=it.x-ptr.x,dy=it.y-ptr.y,d=Math.sqrt(dx*dx+dy*dy);
+          if(d<170&&d>1){var f=(170-d)/170;it.x+=dx/d*f*2.2;it.y+=dy/d*f*2.2}
+        }
+        p.textSize(it.size);
+        var wd=p.textWidth(it.w);
+        if(it.vx>0&&it.x>p.width+10){it.x=-wd-10;it.y=p.random(p.height)}
+        if(it.vx<0&&it.x<-wd-10){it.x=p.width+10;it.y=p.random(p.height)}
+        var near=Math.max(0,1-Math.hypot(it.x+wd/2-ptr.x,it.y-ptr.y)/230);
+        p.push();p.translate(it.x,it.y);p.rotate(it.rot);
+        p.noStroke();p.fill(247,214,84,(it.a+near*.55)*255);
+        p.text(it.w,0,0);p.pop();
+      }
+      for(var j=bursts.length-1;j>=0;j--){
+        var b=bursts[j];b.x+=b.vx;b.y+=b.vy;b.vx*=.94;b.vy*=.94;b.vy+=.03;b.life-=.016;
+        if(b.life<=0){bursts.splice(j,1);continue}
+        p.fill(247,214,84,b.life*255);
+        if(b.t){p.textSize(16);p.text(b.w,b.x,b.y)}else{p.circle(b.x,b.y,3+b.life*5)}
+      }
+    };
+  });
+
+  /* ---------- Motion: orchestrated entrance + interactions ---------- */
+  var root=document.documentElement;
+  if(!window.Motion||reduce){root.classList.remove('pre');if(!window.Motion)return}
+  var animate=Motion.animate, stagger=Motion.stagger;
+
+  var title=document.getElementById('title'), text=title.textContent;
+  title.innerHTML=''; 
+  Array.from(text).forEach(function(c){var s=document.createElement('span');s.className='ch';s.setAttribute('aria-hidden','true');s.textContent=c;title.appendChild(s)});
+  var chars=title.querySelectorAll('.ch');
+
+  if(!reduce){
+    var ease=[.22,1,.36,1];
+    animate('.rule',{transform:['scaleX(0)','scaleX(1)']},{duration:.9,ease:ease});
+    animate('header [data-r]',{opacity:[0,1]},{duration:.6,delay:.2});
+    animate('.label',{opacity:[0,1],transform:['translateX(-14px)','translateX(0px)']},{duration:.6,delay:.35,ease:ease});
+    animate(chars,{opacity:[0,1],transform:['translateY(70px) rotate(8deg)','translateY(0px) rotate(0deg)']},
+      {duration:.9,delay:stagger(.07,{startDelay:.45}),ease:[.16,1,.3,1]});
+    animate('.sub',{opacity:[0,1]},{duration:.7,delay:1.1});
+    animate('.chips li',{opacity:[0,1],transform:['scale(.85)','scale(1)']},
+      {delay:stagger(.07,{startDelay:1.2}),type:'spring',stiffness:300,damping:18});
+    animate('.cta-wrap',{opacity:[0,1],transform:['translateY(30px) scale(.9)','translateY(0px) scale(1)']},
+      {delay:1.3,type:'spring',stiffness:220,damping:16});
+    animate('#ring',{opacity:[.55,0],transform:['scale(1)','scale(1.35, 1.7)']},
+      {duration:2.2,delay:2,repeat:Infinity,repeatDelay:.6,ease:'easeOut'});
+  }else{
+    root.classList.remove('pre');
+  }
+
+  /* headline: characters lean away from the pointer */
+  title.addEventListener('pointermove',function(e){
+    chars.forEach(function(c){
+      var r=c.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+      var d=Math.hypot(e.clientX-cx,e.clientY-cy);
+      if(d<120){animate(c,{transform:'translateY('+(-(120-d)/5)+'px)'},{type:'spring',stiffness:300,damping:14})}
+    });
+  });
+  title.addEventListener('pointerleave',function(){
+    animate(chars,{transform:'translateY(0px)'},{type:'spring',stiffness:200,damping:12});
+  });
+
+  /* chips: toggle with a springy pop */
+  document.getElementById('chips').addEventListener('click',function(e){
+    var b=e.target.closest('.chip');if(!b)return;
+    b.setAttribute('aria-pressed',b.getAttribute('aria-pressed')==='true'?'false':'true');
+    animate(b,{transform:['scale(.88)','scale(1)']},{type:'spring',stiffness:500,damping:12});
+  });
+
+  /* CTA: magnetic hover, press, burst */
+  var cta=document.getElementById('cta'),busy=false;
+  cta.addEventListener('pointermove',function(e){
+    var r=cta.getBoundingClientRect();
+    var mx=(e.clientX-(r.left+r.width/2))*.18,my=(e.clientY-(r.top+r.height/2))*.28;
+    animate(cta,{transform:'translate('+mx+'px,'+my+'px) scale(1.05)'},{type:'spring',stiffness:350,damping:20});
+  });
+  cta.addEventListener('pointerleave',function(){
+    animate(cta,{transform:'translate(0px,0px) scale(1)'},{type:'spring',stiffness:300,damping:16});
+  });
+  cta.addEventListener('pointerdown',function(){animate(cta,{transform:'scale(.95)'},{duration:.1})});
+  cta.addEventListener('click',function(){
+    if(busy)return;busy=true;
+    var r=cta.getBoundingClientRect();window.lingoraBurst(r.left+r.width/2,r.top+r.height/2);
+    var picked=[].map.call(document.querySelectorAll('.chip[aria-pressed="true"]'),function(c){return c.textContent});
+    cta.textContent='正在生成练习…';
+    animate(cta,{transform:['scale(.95)','scale(1.04)','scale(1)']},{duration:.45});
+    setTimeout(function(){cta.textContent='开始 AI 练习';busy=false},1800);
+  });
+})();
+</script>
+</body>
+</html>

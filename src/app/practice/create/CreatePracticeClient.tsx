@@ -16,17 +16,18 @@ import { VStack } from "@astryxdesign/core/VStack";
 import { getClientAISettings } from "../../../lib/client-ai";
 import { useLearningStore } from "../../../stores/learning-store";
 import presets from "../../../data/preset.json";
+import { PracticeGenerating } from "../../../components/PracticeGenerating";
 
-type CreatePracticeClientProps = { initialTopic: string };
+type CreatePracticeClientProps = { initialTopic: string; initialLevel: string };
 
-export default function CreatePracticeClient({ initialTopic }: CreatePracticeClientProps) {
+export default function CreatePracticeClient({ initialTopic, initialLevel }: CreatePracticeClientProps) {
   const router = useRouter();
   const start = useLearningStore((state) => state.start);
   const ai = useLearningStore((state) => state.settings);
   const [topic, setTopic] = useState("");
   const [isManualTopic, setIsManualTopic] = useState(false);
   const [custom, setCustom] = useState("");
-  const [level, setLevel] = useState("A2");
+  const [level, setLevel] = useState(initialLevel);
   const [difficulty, setDifficulty] = useState("Medium");
   const [count, setCount] = useState("5");
   const [kind, setKind] = useState("Grammar");
@@ -68,17 +69,7 @@ export default function CreatePracticeClient({ initialTopic }: CreatePracticeCli
 
   return <VStack gap={6} className="page-container page-container--regular">
     <HStack as="header" hAlign="start"><Button label="返回" icon={<ArrowLeft size={16} />} href="/" variant="ghost" onClick={() => requestController.current?.abort()} /></HStack>
-    {loading ? <VStack gap={3} hAlign="center" vAlign="center" className="practice-generating" role="status" aria-live="polite">
-      <svg className="practice-generating__art" viewBox="0 0 160 160" role="img" aria-label="正在编织练习题目">
-        <circle className="practice-generating__orbit" cx="80" cy="80" r="57" fill="none" stroke="currentColor" strokeDasharray="3 9" strokeWidth="2" />
-        <path className="practice-generating__loop" d="M80 28 96 58 132 62 106 88 112 124 80 108 48 124 54 88 28 62 64 58Z" fill="none" stroke="currentColor" strokeLinejoin="round" strokeWidth="3" />
-        <circle className="practice-generating__core" cx="80" cy="80" r="13" fill="currentColor" />
-        <circle className="practice-generating__spark" cx="30" cy="80" r="4" fill="currentColor" />
-        <circle className="practice-generating__spark practice-generating__spark--late" cx="130" cy="80" r="4" fill="currentColor" />
-      </svg>
-      <Heading level={2}>正在为你编织练习</Heading>
-      <Text>正在根据你的等级和主题准备题目…</Text>
-    </VStack> : <>
+    {loading ? <PracticeGenerating /> : <>
     <VStack gap={1}><Text type="label">个性化练习</Text><Heading level={1}>创建 AI 练习</Heading><Text>设置练习目标，生成适合你的英语题目。</Text></VStack>
     {error && <Banner status="warning" title="练习生成失败" description={error} isDismissable onDismiss={() => setError("")} endContent={<Button label="检查 AI 设置" href="/settings" variant="secondary" />} />}
     <Card><VStack gap={5}>

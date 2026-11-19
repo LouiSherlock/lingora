@@ -102,7 +102,7 @@ function SessionContent() {
     <VStack gap={2}><HStack hAlign="between"><Text type="label">{active.title}</Text><Text type="supporting">{current+1} / {active.questions.length}</Text></HStack><ProgressBar label="练习进度" isLabelHidden value={completed.length} max={active.questions.length} hasValueLabel formatValueLabel={(_, maximum) => `已完成 ${completed.length} / ${maximum}`} /></VStack>
     <motion.div key={q.id} initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:.2}}>
       <Card><VStack gap={5}>
-        <HStack hAlign="between" wrap="wrap"><HStack gap={2} vAlign="center"><Text type="supporting">{typeLabels[q.type]}</Text></HStack></HStack>
+        <HStack hAlign="between" wrap="wrap" vAlign="center"><Text type="supporting">{typeLabels[q.type]}</Text>{!submitted && <Button label="跳过" variant="ghost" onClick={skipQuestion}/>}</HStack>
         <Heading level={2}>{q.stem}</Heading>
         {q.type==="fill_blank"
           ? <TextInput label="你的答案" value={selectedAnswer} onChange={(value)=>answer(q.id,value)} onEnter={submitAnswer} placeholder="输入答案后提交" isReadOnly={submitted}/>
@@ -114,17 +114,13 @@ function SessionContent() {
         <Text type="supporting">知识点：{q.knowledgePoints.join("、")}</Text>
       </VStack></Card>
     </motion.div>
-    <Assistant key={`assistant-${q.id}`} question={q} ai={ai}/>
     <HStack hAlign="between" vAlign="center" wrap="wrap" gap={3}>
       <Button label="上一题" variant="secondary" isDisabled={current===0} onClick={()=>go(current-1)}/>
       {submitted ? (current<active.questions.length-1
         ? <Button label="下一题" variant="primary" onClick={advance}/>
-        : <Button label="完成练习" variant="primary" onClick={complete}/>) : <HStack gap={2}>
-          <Button label="跳过" variant="secondary" onClick={skipQuestion}/>
-         
-        </HStack>}
+        : <Button label="完成练习" variant="primary" onClick={complete}/>) : null}
     </HStack>
-  
+    <Assistant key={`assistant-${q.id}`} question={q} ai={ai}/>
   </VStack>;
 }
 
