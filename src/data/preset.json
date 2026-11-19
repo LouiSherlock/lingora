@@ -1,0 +1,1418 @@
+
+{
+  "schemaVersion": "1.0.0",
+  "framework": "CEFR",
+  "levels": [
+    {
+      "id": "A1",
+      "name": "入门级",
+      "englishName": "Beginner",
+      "description": "掌握基础词汇、简单句型和日常基础交流。",
+      "grammar": [
+        {
+          "id": "a1-sentence",
+          "name": "基础句型",
+          "topics": [
+            { "id": "a1-basic-word-order", "name": "基本语序（主谓宾）" },
+            { "id": "a1-be-verb", "name": "Be 动词（am/is/are）" },
+            { "id": "a1-subject-pronouns", "name": "主格人称代词" },
+            { "id": "a1-object-pronouns", "name": "宾格人称代词" },
+            { "id": "a1-positive-negative", "name": "肯定句与否定句" },
+            { "id": "a1-yes-no-questions", "name": "一般疑问句" },
+            { "id": "a1-wh-questions", "name": "特殊疑问句（What/Where/Who）" },
+            { "id": "a1-imperatives", "name": "祈使句" },
+            { "id": "a1-there-be", "name": "There be 句型" }
+          ]
+        },
+        {
+          "id": "a1-nouns",
+          "name": "名词",
+          "topics": [
+            { "id": "a1-singular-plural", "name": "名词单数与复数" },
+            { "id": "a1-regular-plurals", "name": "规则名词复数" },
+            { "id": "a1-irregular-plurals", "name": "不规则名词复数" },
+            { "id": "a1-countable-uncountable", "name": "可数名词与不可数名词" },
+            { "id": "a1-possessive-nouns", "name": "名词所有格" }
+          ]
+        },
+        {
+          "id": "a1-articles",
+          "name": "冠词与限定词",
+          "topics": [
+            { "id": "a1-a-an", "name": "不定冠词 a/an" },
+            { "id": "a1-the", "name": "定冠词 the" },
+            { "id": "a1-no-article", "name": "零冠词基础用法" },
+            { "id": "a1-this-that", "name": "指示代词 this/that" },
+            { "id": "a1-these-those", "name": "指示代词 these/those" }
+          ]
+        },
+        {
+          "id": "a1-pronouns",
+          "name": "代词",
+          "topics": [
+            { "id": "a1-possessive-adjectives", "name": "形容词性物主代词" },
+            { "id": "a1-possessive-pronouns", "name": "名词性物主代词" },
+            { "id": "a1-reflexive-intro", "name": "反身代词基础" },
+            { "id": "a1-indefinite-pronouns-intro", "name": "基础不定代词" }
+          ]
+        },
+        {
+          "id": "a1-tenses",
+          "name": "基础时态",
+          "topics": [
+            { "id": "a1-present-simple", "name": "一般现在时" },
+            { "id": "a1-present-continuous", "name": "现在进行时" },
+            { "id": "a1-past-simple-be", "name": "一般过去时（Be 动词）" },
+            { "id": "a1-past-simple-regular", "name": "一般过去时（规则动词）" },
+            { "id": "a1-future-going-to-intro", "name": "Be going to 基础用法" }
+          ]
+        },
+        {
+          "id": "a1-adjectives-adverbs",
+          "name": "形容词与副词",
+          "topics": [
+            { "id": "a1-basic-adjectives", "name": "基础形容词" },
+            { "id": "a1-adjective-position", "name": "形容词的位置" },
+            { "id": "a1-basic-adverbs", "name": "频率副词（always/usually/never）" },
+            { "id": "a1-manner-adverbs-intro", "name": "方式副词基础" }
+          ]
+        },
+        {
+          "id": "a1-prepositions",
+          "name": "介词",
+          "topics": [
+            { "id": "a1-time-prepositions", "name": "时间介词 in/on/at" },
+            { "id": "a1-place-prepositions", "name": "地点介词 in/on/at" },
+            { "id": "a1-movement-prepositions", "name": "方向介词 to/from" },
+            { "id": "a1-position-prepositions", "name": "位置介词 under/behind/next to" }
+          ]
+        },
+        {
+          "id": "a1-quantifiers",
+          "name": "数量表达",
+          "topics": [
+            { "id": "a1-numbers", "name": "基数词与序数词" },
+            { "id": "a1-how-many", "name": "How many" },
+            { "id": "a1-how-much", "name": "How much" },
+            { "id": "a1-some-any-intro", "name": "Some 与 Any 基础用法" },
+            { "id": "a1-plural-quantities", "name": "数量与复数表达" }
+          ]
+        },
+        {
+          "id": "a1-modals",
+          "name": "情态动词",
+          "topics": [
+            { "id": "a1-can-ability", "name": "Can 表示能力" },
+            { "id": "a1-can-permission", "name": "Can 表示请求与许可" },
+            { "id": "a1-cant", "name": "Can't 表示不能" }
+          ]
+        }
+      ],
+      "vocabulary": [
+        {
+          "id": "a1-personal",
+          "name": "个人信息",
+          "topics": [
+            { "id": "a1-name-age", "name": "姓名、年龄与国籍" },
+            { "id": "a1-contact", "name": "联系方式与地址" },
+            { "id": "a1-personal-details", "name": "职业与个人基本信息" }
+          ]
+        },
+        {
+          "id": "a1-family",
+          "name": "家庭与人物",
+          "topics": [
+            { "id": "a1-family-members", "name": "家庭成员" },
+            { "id": "a1-relationships", "name": "亲属关系" },
+            { "id": "a1-appearance", "name": "外貌与外观" },
+            { "id": "a1-personality-basic", "name": "基础性格描述" }
+          ]
+        },
+        {
+          "id": "a1-daily-life",
+          "name": "日常生活",
+          "topics": [
+            { "id": "a1-daily-routines", "name": "日常作息" },
+            { "id": "a1-housework", "name": "家务活动" },
+            { "id": "a1-common-verbs", "name": "常见动作与动词" },
+            { "id": "a1-time-expressions", "name": "时间与日期" }
+          ]
+        },
+        {
+          "id": "a1-home",
+          "name": "家庭与居住",
+          "topics": [
+            { "id": "a1-rooms", "name": "房间与空间" },
+            { "id": "a1-furniture", "name": "家具与家居用品" },
+            { "id": "a1-household-items", "name": "日常生活用品" },
+            { "id": "a1-addresses", "name": "房屋与地址" }
+          ]
+        },
+        {
+          "id": "a1-food",
+          "name": "食物与饮品",
+          "topics": [
+            { "id": "a1-food-types", "name": "常见食物" },
+            { "id": "a1-fruits-vegetables", "name": "水果与蔬菜" },
+            { "id": "a1-drinks", "name": "饮料与饮品" },
+            { "id": "a1-meals", "name": "一日三餐" },
+            { "id": "a1-basic-ordering", "name": "点餐基础表达" }
+          ]
+        },
+        {
+          "id": "a1-shopping",
+          "name": "购物与金钱",
+          "topics": [
+            { "id": "a1-clothes", "name": "衣服与鞋子" },
+            { "id": "a1-colors", "name": "颜色与外观" },
+            { "id": "a1-prices", "name": "价格与货币" },
+            { "id": "a1-shopping-items", "name": "常见商品" }
+          ]
+        },
+        {
+          "id": "a1-school",
+          "name": "学校与学习",
+          "topics": [
+            { "id": "a1-school-subjects", "name": "学科与课程" },
+            { "id": "a1-classroom", "name": "教室与学习用品" },
+            { "id": "a1-basic-learning-verbs", "name": "学习相关动作" }
+          ]
+        },
+        {
+          "id": "a1-work",
+          "name": "职业与工作",
+          "topics": [
+            { "id": "a1-jobs", "name": "常见职业" },
+            { "id": "a1-workplaces", "name": "工作场所" },
+            { "id": "a1-work-activities", "name": "基础工作活动" }
+          ]
+        },
+        {
+          "id": "a1-places",
+          "name": "城市与地点",
+          "topics": [
+            { "id": "a1-city-places", "name": "城市常见地点" },
+            { "id": "a1-public-buildings", "name": "公共建筑" },
+            { "id": "a1-directions", "name": "方向与位置" },
+            { "id": "a1-transport", "name": "基础交通工具" }
+          ]
+        },
+        {
+          "id": "a1-weather",
+          "name": "天气与自然",
+          "topics": [
+            { "id": "a1-weather-conditions", "name": "天气状况" },
+            { "id": "a1-seasons", "name": "季节" },
+            { "id": "a1-basic-animals", "name": "常见动物" },
+            { "id": "a1-basic-nature", "name": "自然与环境基础词汇" }
+          ]
+        },
+        {
+          "id": "a1-hobbies",
+          "name": "兴趣与娱乐",
+          "topics": [
+            { "id": "a1-sports", "name": "运动与体育" },
+            { "id": "a1-music", "name": "音乐与乐器" },
+            { "id": "a1-free-time", "name": "休闲活动" },
+            { "id": "a1-basic-media", "name": "电影与电视" }
+          ]
+        },
+        {
+          "id": "a1-body-health",
+          "name": "身体与健康",
+          "topics": [
+            { "id": "a1-body-parts", "name": "身体部位" },
+            { "id": "a1-basic-feelings", "name": "基础感受与情绪" },
+            { "id": "a1-basic-illness", "name": "常见身体不适" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "A2",
+      "name": "初级",
+      "englishName": "Elementary",
+      "description": "能够处理熟悉场景中的日常交流，表达过去、现在和简单的未来计划。",
+      "grammar": [
+        {
+          "id": "a2-tenses",
+          "name": "时态进阶",
+          "topics": [
+            { "id": "a2-past-simple", "name": "一般过去时（规则与不规则动词）" },
+            { "id": "a2-past-continuous", "name": "过去进行时" },
+            { "id": "a2-present-perfect-intro", "name": "现在完成时基础" },
+            { "id": "a2-present-perfect-ever-never", "name": "现在完成时中的 Ever/Never" },
+            { "id": "a2-future-will", "name": "一般将来时 Will" },
+            { "id": "a2-going-to", "name": "Be going to 表示计划与预测" },
+            { "id": "a2-present-continuous-future", "name": "现在进行时表示将来" }
+          ]
+        },
+        {
+          "id": "a2-nouns-determiners",
+          "name": "名词与限定词",
+          "topics": [
+            { "id": "a2-countable-uncountable", "name": "可数与不可数名词进阶" },
+            { "id": "a2-some-any", "name": "Some 与 Any" },
+            { "id": "a2-much-many", "name": "Much 与 Many" },
+            { "id": "a2-a-lot-of", "name": "A lot of / Lots of" },
+            { "id": "a2-few-little", "name": "Few、A few、Little、A little" },
+            { "id": "a2-enough", "name": "Enough 的用法" },
+            { "id": "a2-too-much-many", "name": "Too much 与 Too many" }
+          ]
+        },
+        {
+          "id": "a2-comparisons",
+          "name": "比较结构",
+          "topics": [
+            { "id": "a2-comparative-adjectives", "name": "形容词比较级" },
+            { "id": "a2-superlative-adjectives", "name": "形容词最高级" },
+            { "id": "a2-as-as", "name": "As ... as 同级比较" },
+            { "id": "a2-not-as-as", "name": "Not as ... as" },
+            { "id": "a2-comparative-adverbs", "name": "副词比较级基础" }
+          ]
+        },
+        {
+          "id": "a2-modals",
+          "name": "情态动词",
+          "topics": [
+            { "id": "a2-must", "name": "Must 表示义务" },
+            { "id": "a2-have-to", "name": "Have to 表示必要性" },
+            { "id": "a2-should", "name": "Should 表示建议" },
+            { "id": "a2-could", "name": "Could 表示请求与能力" },
+            { "id": "a2-may-might-intro", "name": "May 与 Might 表示可能性" },
+            { "id": "a2-mustnt-dont-have-to", "name": "Mustn't 与 Don't have to 的区别" }
+          ]
+        },
+        {
+          "id": "a2-infinitives-gerunds",
+          "name": "动词不定式与动名词",
+          "topics": [
+            { "id": "a2-infinitive-to", "name": "To do 不定式基础" },
+            { "id": "a2-gerund-ing", "name": "动名词基础" },
+            { "id": "a2-verb-infinitive", "name": "常见动词 + 不定式" },
+            { "id": "a2-verb-gerund", "name": "常见动词 + 动名词" },
+            { "id": "a2-purpose-infinitive", "name": "不定式表示目的" }
+          ]
+        },
+        {
+          "id": "a2-adverbs",
+          "name": "副词",
+          "topics": [
+            { "id": "a2-frequency-adverbs", "name": "频率副词进阶" },
+            { "id": "a2-manner-adverbs", "name": "方式副词" },
+            { "id": "a2-degree-adverbs", "name": "程度副词" },
+            { "id": "a2-adverb-position", "name": "副词的位置" }
+          ]
+        },
+        {
+          "id": "a2-prepositions",
+          "name": "介词与短语",
+          "topics": [
+            { "id": "a2-time-prepositions", "name": "时间介词进阶" },
+            { "id": "a2-place-prepositions", "name": "地点介词进阶" },
+            { "id": "a2-movement-prepositions", "name": "运动与方向介词" },
+            { "id": "a2-prepositional-phrases", "name": "常见介词短语" }
+          ]
+        },
+        {
+          "id": "a2-clauses",
+          "name": "基础从句",
+          "topics": [
+            { "id": "a2-and-but-because", "name": "And、But、Because 连接句子" },
+            { "id": "a2-when-clause", "name": "When 时间状语从句基础" },
+            { "id": "a2-if-clause-intro", "name": "If 条件句基础" },
+            { "id": "a2-relative-who-which", "name": "Who 与 Which 引导的定语从句基础" }
+          ]
+        },
+        {
+          "id": "a2-questions",
+          "name": "疑问句进阶",
+          "topics": [
+            { "id": "a2-question-forms", "name": "不同类型疑问句" },
+            { "id": "a2-question-tags-intro", "name": "反意疑问句基础" },
+            { "id": "a2-how-questions", "name": "How much / How often / How long" },
+            { "id": "a2-indirect-questions-intro", "name": "间接疑问句基础" }
+          ]
+        }
+      ],
+      "vocabulary": [
+        {
+          "id": "a2-travel",
+          "name": "旅行与出行",
+          "topics": [
+            { "id": "a2-travel-planning", "name": "旅行计划" },
+            { "id": "a2-airport", "name": "机场与登机" },
+            { "id": "a2-hotel", "name": "酒店住宿" },
+            { "id": "a2-public-transport", "name": "公共交通" },
+            { "id": "a2-directions", "name": "问路与指路" },
+            { "id": "a2-tourist-attractions", "name": "旅游景点" }
+          ]
+        },
+        {
+          "id": "a2-shopping",
+          "name": "购物与服务",
+          "topics": [
+            { "id": "a2-shopping-dialogues", "name": "购物对话" },
+            { "id": "a2-payment", "name": "付款与支付" },
+            { "id": "a2-returns", "name": "退换货" },
+            { "id": "a2-product-features", "name": "商品特征与尺寸" },
+            { "id": "a2-discounts", "name": "折扣与优惠" }
+          ]
+        },
+        {
+          "id": "a2-health",
+          "name": "健康与医疗",
+          "topics": [
+            { "id": "a2-symptoms", "name": "常见症状" },
+            { "id": "a2-doctor", "name": "看医生与就诊" },
+            { "id": "a2-medicine", "name": "药品与用药" },
+            { "id": "a2-lifestyle", "name": "健康生活方式" },
+            { "id": "a2-exercise", "name": "锻炼与健身" }
+          ]
+        },
+        {
+          "id": "a2-work-study",
+          "name": "工作与学习",
+          "topics": [
+            { "id": "a2-work-routines", "name": "工作日常" },
+            { "id": "a2-office", "name": "办公室与工作用品" },
+            { "id": "a2-school-life", "name": "校园生活" },
+            { "id": "a2-learning-methods", "name": "学习方法" },
+            { "id": "a2-career-plans", "name": "职业规划基础" }
+          ]
+        },
+        {
+          "id": "a2-social",
+          "name": "社交与沟通",
+          "topics": [
+            { "id": "a2-invitations", "name": "邀请与回应" },
+            { "id": "a2-suggestions", "name": "建议与意见" },
+            { "id": "a2-agreement", "name": "同意与不同意" },
+            { "id": "a2-apologies", "name": "道歉与回应" },
+            { "id": "a2-thanks", "name": "感谢与礼貌表达" }
+          ]
+        },
+        {
+          "id": "a2-entertainment",
+          "name": "娱乐与文化",
+          "topics": [
+            { "id": "a2-films", "name": "电影与影视" },
+            { "id": "a2-books", "name": "书籍与阅读" },
+            { "id": "a2-music", "name": "音乐与演出" },
+            { "id": "a2-games", "name": "游戏与活动" },
+            { "id": "a2-festivals", "name": "节日与庆祝活动" }
+          ]
+        },
+        {
+          "id": "a2-environment",
+          "name": "环境与自然",
+          "topics": [
+            { "id": "a2-environmental-issues", "name": "常见环境问题" },
+            { "id": "a2-recycling", "name": "垃圾分类与回收" },
+            { "id": "a2-plants-animals", "name": "植物与动物" },
+            { "id": "a2-landscape", "name": "自然景观" }
+          ]
+        },
+        {
+          "id": "a2-emotions",
+          "name": "情绪与个人经历",
+          "topics": [
+            { "id": "a2-feelings", "name": "情绪与感受" },
+            { "id": "a2-experiences", "name": "个人经历" },
+            { "id": "a2-memories", "name": "回忆与记忆" },
+            { "id": "a2-preferences", "name": "偏好与兴趣" }
+          ]
+        },
+        {
+          "id": "a2-technology",
+          "name": "科技与日常设备",
+          "topics": [
+            { "id": "a2-electronic-devices", "name": "电子设备" },
+            { "id": "a2-internet", "name": "互联网基础" },
+            { "id": "a2-mobile-apps", "name": "手机与应用" },
+            { "id": "a2-communication-tools", "name": "通信工具" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B1",
+      "name": "中级",
+      "englishName": "Intermediate",
+      "description": "能够表达观点、讲述经历、解释原因，并处理大多数日常交流。",
+      "grammar": [
+        {
+          "id": "b1-perfect-tenses",
+          "name": "完成时体系",
+          "topics": [
+            { "id": "b1-present-perfect", "name": "现在完成时" },
+            { "id": "b1-present-perfect-for-since", "name": "For 与 Since" },
+            { "id": "b1-present-perfect-just-already-yet", "name": "Just、Already 与 Yet" },
+            { "id": "b1-present-perfect-experiences", "name": "现在完成时表示经历" },
+            { "id": "b1-present-perfect-continuous-intro", "name": "现在完成进行时基础" },
+            { "id": "b1-past-perfect-intro", "name": "过去完成时基础" }
+          ]
+        },
+        {
+          "id": "b1-past-future-tenses",
+          "name": "过去与将来时态",
+          "topics": [
+            { "id": "b1-past-simple-vs-continuous", "name": "一般过去时与过去进行时对比" },
+            { "id": "b1-past-perfect", "name": "过去完成时" },
+            { "id": "b1-future-will-going-to", "name": "Will 与 Be going to 对比" },
+            { "id": "b1-future-continuous-intro", "name": "将来进行时基础" },
+            { "id": "b1-narrative-tenses", "name": "叙事时态综合运用" }
+          ]
+        },
+        {
+          "id": "b1-conditionals",
+          "name": "条件句",
+          "topics": [
+            { "id": "b1-zero-conditional", "name": "零条件句" },
+            { "id": "b1-first-conditional", "name": "第一条件句" },
+            { "id": "b1-second-conditional", "name": "第二条件句" },
+            { "id": "b1-unless", "name": "Unless 的用法" },
+            { "id": "b1-as-long-as", "name": "As long as 的用法" }
+          ]
+        },
+        {
+          "id": "b1-passive",
+          "name": "被动语态",
+          "topics": [
+            { "id": "b1-present-passive", "name": "一般现在时被动语态" },
+            { "id": "b1-past-passive", "name": "一般过去时被动语态" },
+            { "id": "b1-future-passive-intro", "name": "一般将来时被动语态基础" },
+            { "id": "b1-passive-by", "name": "By 引出动作执行者" },
+            { "id": "b1-active-passive", "name": "主动语态与被动语态转换" }
+          ]
+        },
+        {
+          "id": "b1-relative-clauses",
+          "name": "定语从句",
+          "topics": [
+            { "id": "b1-defining-relative", "name": "限制性定语从句" },
+            { "id": "b1-relative-who-which-that", "name": "Who、Which 与 That" },
+            { "id": "b1-relative-whose", "name": "Whose 引导的定语从句" },
+            { "id": "b1-relative-where", "name": "Where 引导的定语从句" },
+            { "id": "b1-relative-pronoun-omission", "name": "关系代词的省略" }
+          ]
+        },
+        {
+          "id": "b1-reported-speech",
+          "name": "间接引语",
+          "topics": [
+            { "id": "b1-reported-statements", "name": "陈述句的间接引语" },
+            { "id": "b1-reported-questions", "name": "疑问句的间接引语" },
+            { "id": "b1-reported-commands", "name": "命令与请求的间接引语" },
+            { "id": "b1-reported-tense-changes", "name": "间接引语中的时态变化" },
+            { "id": "b1-reported-time-changes", "name": "时间与地点状语变化" }
+          ]
+        },
+        {
+          "id": "b1-infinitives-gerunds",
+          "name": "非谓语动词进阶",
+          "topics": [
+            { "id": "b1-infinitive-purpose", "name": "不定式表示目的与结果" },
+            { "id": "b1-gerund-subject", "name": "动名词作主语" },
+            { "id": "b1-gerund-object", "name": "动名词作宾语" },
+            { "id": "b1-verb-patterns", "name": "动词 + 不定式或动名词" },
+            { "id": "b1-infinitive-object-complement", "name": "不定式作宾语补足语" }
+          ]
+        },
+        {
+          "id": "b1-modals",
+          "name": "情态动词进阶",
+          "topics": [
+            { "id": "b1-must-have-to-should", "name": "义务与建议表达" },
+            { "id": "b1-might-may-could", "name": "可能性表达" },
+            { "id": "b1-must-be", "name": "Must 表示肯定推测" },
+            { "id": "b1-cant-be", "name": "Can't 表示否定推测" },
+            { "id": "b1-should-have-intro", "name": "Should have done 基础" }
+          ]
+        },
+        {
+          "id": "b1-complex-sentences",
+          "name": "复合句与连接词",
+          "topics": [
+            { "id": "b1-time-clauses", "name": "时间状语从句" },
+            { "id": "b1-reason-clauses", "name": "原因状语从句" },
+            { "id": "b1-result-clauses", "name": "结果状语从句" },
+            { "id": "b1-contrast-clauses", "name": "让步与转折表达" },
+            { "id": "b1-purpose-clauses", "name": "目的状语从句基础" }
+          ]
+        },
+        {
+          "id": "b1-comparisons",
+          "name": "比较结构进阶",
+          "topics": [
+            { "id": "b1-comparative-modifiers", "name": "比较级修饰语（much/far/a little）" },
+            { "id": "b1-the-more-the-more", "name": "The more ..., the more ..." },
+            { "id": "b1-less-least", "name": "Less 与 Least" },
+            { "id": "b1-comparison-structures", "name": "多种比较结构综合运用" }
+          ]
+        }
+      ],
+      "vocabulary": [
+        {
+          "id": "b1-education",
+          "name": "教育与学习",
+          "topics": [
+            { "id": "b1-education-system", "name": "教育体系与学校制度" },
+            { "id": "b1-exams", "name": "考试与成绩" },
+            { "id": "b1-learning-strategies", "name": "学习策略与方法" },
+            { "id": "b1-university", "name": "大学生活" },
+            { "id": "b1-qualifications", "name": "学历与资格证书" }
+          ]
+        },
+        {
+          "id": "b1-career",
+          "name": "职业与职场",
+          "topics": [
+            { "id": "b1-job-search", "name": "求职与招聘" },
+            { "id": "b1-interviews", "name": "面试与自我介绍" },
+            { "id": "b1-workplace-communication", "name": "职场沟通" },
+            { "id": "b1-career-development", "name": "职业发展" },
+            { "id": "b1-work-life-balance", "name": "工作与生活平衡" }
+          ]
+        },
+        {
+          "id": "b1-relationships",
+          "name": "人际关系",
+          "topics": [
+            { "id": "b1-friendship", "name": "友谊与朋友关系" },
+            { "id": "b1-family-relationships", "name": "家庭关系" },
+            { "id": "b1-social-conflicts", "name": "人际冲突" },
+            { "id": "b1-personality", "name": "性格与个性" },
+            { "id": "b1-emotions", "name": "情绪与情感表达" }
+          ]
+        },
+        {
+          "id": "b1-travel-culture",
+          "name": "旅行与文化",
+          "topics": [
+            { "id": "b1-cultural-differences", "name": "文化差异" },
+            { "id": "b1-travel-experiences", "name": "旅行经历" },
+            { "id": "b1-accommodation", "name": "住宿与旅游服务" },
+            { "id": "b1-local-customs", "name": "风俗习惯" },
+            { "id": "b1-transport-problems", "name": "交通问题与出行安排" }
+          ]
+        },
+        {
+          "id": "b1-health",
+          "name": "健康与生活方式",
+          "topics": [
+            { "id": "b1-nutrition", "name": "营养与饮食" },
+            { "id": "b1-fitness", "name": "健身与运动" },
+            { "id": "b1-mental-wellbeing", "name": "心理健康与情绪" },
+            { "id": "b1-healthcare", "name": "医疗与健康服务" },
+            { "id": "b1-lifestyle-choices", "name": "生活方式选择" }
+          ]
+        },
+        {
+          "id": "b1-media",
+          "name": "媒体与信息",
+          "topics": [
+            { "id": "b1-news", "name": "新闻与时事" },
+            { "id": "b1-social-media", "name": "社交媒体" },
+            { "id": "b1-advertising", "name": "广告与营销基础" },
+            { "id": "b1-online-communication", "name": "网络交流" },
+            { "id": "b1-media-influence", "name": "媒体影响" }
+          ]
+        },
+        {
+          "id": "b1-technology",
+          "name": "科技与创新",
+          "topics": [
+            { "id": "b1-digital-life", "name": "数字生活" },
+            { "id": "b1-technology-products", "name": "科技产品" },
+            { "id": "b1-internet-services", "name": "互联网服务" },
+            { "id": "b1-technology-changes", "name": "科技变化与影响" }
+          ]
+        },
+        {
+          "id": "b1-environment",
+          "name": "环境与社会",
+          "topics": [
+            { "id": "b1-climate-change", "name": "气候变化基础" },
+            { "id": "b1-pollution", "name": "污染与环境问题" },
+            { "id": "b1-sustainability", "name": "可持续生活" },
+            { "id": "b1-wildlife", "name": "野生动物保护" },
+            { "id": "b1-natural-disasters", "name": "自然灾害" }
+          ]
+        },
+        {
+          "id": "b1-economy",
+          "name": "消费与经济生活",
+          "topics": [
+            { "id": "b1-personal-finance", "name": "个人财务" },
+            { "id": "b1-banking", "name": "银行与金融服务" },
+            { "id": "b1-consumer-behavior", "name": "消费行为" },
+            { "id": "b1-online-shopping", "name": "网络购物" },
+            { "id": "b1-advertising-products", "name": "产品推广与品牌" }
+          ]
+        },
+        {
+          "id": "b1-society",
+          "name": "社会与公共生活",
+          "topics": [
+            { "id": "b1-community", "name": "社区生活" },
+            { "id": "b1-public-services", "name": "公共服务" },
+            { "id": "b1-volunteering", "name": "志愿服务" },
+            { "id": "b1-social-issues", "name": "常见社会问题" }
+          ]
+        },
+        {
+          "id": "b1-abstract",
+          "name": "观点与抽象表达",
+          "topics": [
+            { "id": "b1-opinions", "name": "观点与看法" },
+            { "id": "b1-reasons", "name": "原因与结果" },
+            { "id": "b1-advantages-disadvantages", "name": "优缺点表达" },
+            { "id": "b1-problem-solving", "name": "问题与解决方案" },
+            { "id": "b1-predictions", "name": "预测与可能性" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "B2",
+      "name": "中高级",
+      "englishName": "Upper Intermediate",
+      "description": "能够理解复杂内容，清晰表达观点，并进行较深入的讨论和论证。",
+      "grammar": [
+        {
+          "id": "b2-advanced-tenses",
+          "name": "复杂时态",
+          "topics": [
+            { "id": "b2-present-perfect-continuous", "name": "现在完成进行时" },
+            { "id": "b2-past-perfect-continuous", "name": "过去完成进行时" },
+            { "id": "b2-future-perfect", "name": "将来完成时" },
+            { "id": "b2-future-continuous", "name": "将来进行时" },
+            { "id": "b2-tense-aspect-contrast", "name": "完成时与进行时综合对比" },
+            { "id": "b2-narrative-tense-mastery", "name": "叙事时态综合运用" }
+          ]
+        },
+        {
+          "id": "b2-conditionals",
+          "name": "条件句进阶",
+          "topics": [
+            { "id": "b2-third-conditional", "name": "第三条件句" },
+            { "id": "b2-mixed-conditionals", "name": "混合条件句" },
+            { "id": "b2-inverted-conditionals", "name": "条件句倒装基础" },
+            { "id": "b2-implied-conditionals", "name": "隐含条件表达" },
+            { "id": "b2-conditionals-alternatives", "name": "条件句替代表达" }
+          ]
+        },
+        {
+          "id": "b2-passive",
+          "name": "被动语态进阶",
+          "topics": [
+            { "id": "b2-perfect-passive", "name": "完成时的被动语态" },
+            { "id": "b2-modal-passive", "name": "情态动词的被动语态" },
+            { "id": "b2-reporting-passive", "name": "It is said / believed 等结构" },
+            { "id": "b2-have-something-done", "name": "Have/Get something done" },
+            { "id": "b2-passive-infinitive", "name": "被动不定式" },
+            { "id": "b2-passive-gerund", "name": "被动动名词" }
+          ]
+        },
+        {
+          "id": "b2-relative-clauses",
+          "name": "定语从句进阶",
+          "topics": [
+            { "id": "b2-non-defining-relative", "name": "非限制性定语从句" },
+            { "id": "b2-relative-prepositions", "name": "介词 + 关系代词" },
+            { "id": "b2-quantifier-relative", "name": "数量词 + Of Which / Whom" },
+            { "id": "b2-advanced-relative", "name": "复杂关系从句" },
+            { "id": "b2-reduced-relative", "name": "定语从句简化基础" }
+          ]
+        },
+        {
+          "id": "b2-noun-clauses",
+          "name": "名词性从句",
+          "topics": [
+            { "id": "b2-that-clauses", "name": "That 引导的宾语从句与主语从句" },
+            { "id": "b2-whether-if-clauses", "name": "Whether 与 If 引导的从句" },
+            { "id": "b2-wh-noun-clauses", "name": "Wh- 疑问词引导的名词性从句" },
+            { "id": "b2-subject-clauses", "name": "主语从句" },
+            { "id": "b2-predicative-clauses", "name": "表语从句" },
+            { "id": "b2-appositive-clauses", "name": "同位语从句" }
+          ]
+        },
+        {
+          "id": "b2-participles",
+          "name": "分词与非谓语",
+          "topics": [
+            { "id": "b2-present-participles", "name": "现在分词作定语与状语" },
+            { "id": "b2-past-participles", "name": "过去分词作定语与状语" },
+            { "id": "b2-participle-clauses", "name": "分词短语与分词从句" },
+            { "id": "b2-perfect-participles", "name": "完成式分词" },
+            { "id": "b2-absolute-constructions", "name": "独立主格基础" }
+          ]
+        },
+        {
+          "id": "b2-modal-perfect",
+          "name": "情态动词完成式",
+          "topics": [
+            { "id": "b2-must-have-done", "name": "Must have done" },
+            { "id": "b2-might-have-done", "name": "Might / May have done" },
+            { "id": "b2-cant-have-done", "name": "Can't have done" },
+            { "id": "b2-should-have-done", "name": "Should have done" },
+            { "id": "b2-could-have-done", "name": "Could have done" },
+            { "id": "b2-neednt-have-done", "name": "Needn't have done" }
+          ]
+        },
+        {
+          "id": "b2-inversion-emphasis",
+          "name": "倒装与强调",
+          "topics": [
+            { "id": "b2-negative-inversion", "name": "否定词引导的倒装" },
+            { "id": "b2-so-neither-inversion", "name": "So / Neither 倒装" },
+            { "id": "b2-cleft-sentences", "name": "强调句型 It is/was ... that" },
+            { "id": "b2-what-cleft", "name": "What 引导的强调结构" },
+            { "id": "b2-emphatic-do", "name": "强调助动词 Do" }
+          ]
+        },
+        {
+          "id": "b2-complex-adverbial",
+          "name": "复杂状语从句",
+          "topics": [
+            { "id": "b2-concession-clauses", "name": "让步状语从句" },
+            { "id": "b2-purpose-clauses", "name": "目的状语从句" },
+            { "id": "b2-result-clauses", "name": "结果状语从句" },
+            { "id": "b2-comparison-clauses", "name": "比较状语从句" },
+            { "id": "b2-reduced-adverbial", "name": "状语从句简化" }
+          ]
+        },
+        {
+          "id": "b2-discourse-grammar",
+          "name": "语篇与句式",
+          "topics": [
+            { "id": "b2-parallel-structures", "name": "平行结构" },
+            { "id": "b2-substitution", "name": "替代结构" },
+            { "id": "b2-ellipsis", "name": "省略结构" },
+            { "id": "b2-reference", "name": "指代与照应" },
+            { "id": "b2-linking-devices", "name": "篇章连接手段" }
+          ]
+        }
+      ],
+      "vocabulary": [
+        {
+          "id": "b2-business",
+          "name": "商业与管理",
+          "topics": [
+            { "id": "b2-business-operations", "name": "商业运营" },
+            { "id": "b2-management", "name": "管理与领导力" },
+            { "id": "b2-entrepreneurship", "name": "创业与创新" },
+            { "id": "b2-marketing", "name": "市场营销" },
+            { "id": "b2-negotiation", "name": "商务谈判" },
+            { "id": "b2-workplace-culture", "name": "企业文化与组织" }
+          ]
+        },
+        {
+          "id": "b2-economics",
+          "name": "经济与金融",
+          "topics": [
+            { "id": "b2-economic-growth", "name": "经济增长与发展" },
+            { "id": "b2-inflation", "name": "通货膨胀与物价" },
+            { "id": "b2-investment", "name": "投资与风险" },
+            { "id": "b2-global-trade", "name": "国际贸易" },
+            { "id": "b2-financial-markets", "name": "金融市场" }
+          ]
+        },
+        {
+          "id": "b2-science",
+          "name": "科学与研究",
+          "topics": [
+            { "id": "b2-scientific-method", "name": "科学方法与实验" },
+            { "id": "b2-research-process", "name": "研究过程" },
+            { "id": "b2-discoveries", "name": "科学发现" },
+            { "id": "b2-technology-innovation", "name": "技术创新" },
+            { "id": "b2-data-analysis", "name": "数据分析基础" }
+          ]
+        },
+        {
+          "id": "b2-environment",
+          "name": "环境与可持续发展",
+          "topics": [
+            { "id": "b2-climate-policy", "name": "气候政策" },
+            { "id": "b2-renewable-energy", "name": "可再生能源" },
+            { "id": "b2-biodiversity", "name": "生物多样性" },
+            { "id": "b2-conservation", "name": "自然资源保护" },
+            { "id": "b2-sustainable-development", "name": "可持续发展" }
+          ]
+        },
+        {
+          "id": "b2-politics-society",
+          "name": "政治与社会",
+          "topics": [
+            { "id": "b2-government", "name": "政府与公共政策" },
+            { "id": "b2-democracy", "name": "民主与公民权利" },
+            { "id": "b2-inequality", "name": "社会不平等" },
+            { "id": "b2-immigration", "name": "移民与人口流动" },
+            { "id": "b2-globalization", "name": "全球化" }
+          ]
+        },
+        {
+          "id": "b2-psychology",
+          "name": "心理与行为",
+          "topics": [
+            { "id": "b2-human-behavior", "name": "人类行为" },
+            { "id": "b2-personality-traits", "name": "人格与性格特征" },
+            { "id": "b2-motivation", "name": "动机与激励" },
+            { "id": "b2-cognitive-processes", "name": "认知与思维过程" },
+            { "id": "b2-stress", "name": "压力与应对" }
+          ]
+        },
+        {
+          "id": "b2-media-communication",
+          "name": "媒体与传播",
+          "topics": [
+            { "id": "b2-journalism", "name": "新闻报道" },
+            { "id": "b2-media-literacy", "name": "媒介素养" },
+            { "id": "b2-public-relations", "name": "公共关系" },
+            { "id": "b2-digital-communication", "name": "数字传播" },
+            { "id": "b2-misinformation", "name": "虚假信息与信息可信度" }
+          ]
+        },
+        {
+          "id": "b2-arts-culture",
+          "name": "艺术与文化",
+          "topics": [
+            { "id": "b2-literature", "name": "文学与文学评论" },
+            { "id": "b2-visual-arts", "name": "视觉艺术" },
+            { "id": "b2-performing-arts", "name": "表演艺术" },
+            { "id": "b2-cultural-identity", "name": "文化身份" },
+            { "id": "b2-cultural-heritage", "name": "文化遗产" }
+          ]
+        },
+        {
+          "id": "b2-health-society",
+          "name": "公共健康",
+          "topics": [
+            { "id": "b2-public-health", "name": "公共卫生" },
+            { "id": "b2-healthcare-systems", "name": "医疗体系" },
+            { "id": "b2-prevention", "name": "疾病预防" },
+            { "id": "b2-health-ethics", "name": "健康伦理" },
+            { "id": "b2-aging", "name": "人口老龄化" }
+          ]
+        },
+        {
+          "id": "b2-abstract-language",
+          "name": "抽象与论证表达",
+          "topics": [
+            { "id": "b2-argumentation", "name": "论证与反驳" },
+            { "id": "b2-cause-effect", "name": "因果关系" },
+            { "id": "b2-evaluation", "name": "评价与判断" },
+            { "id": "b2-probability", "name": "可能性与确定性" },
+            { "id": "b2-advantages-tradeoffs", "name": "利弊权衡" },
+            { "id": "b2-abstract-concepts", "name": "抽象概念表达" }
+          ]
+        },
+        {
+          "id": "b2-collocations",
+          "name": "固定搭配与短语动词",
+          "topics": [
+            { "id": "b2-phrasal-verbs", "name": "常见短语动词进阶" },
+            { "id": "b2-verb-noun-collocations", "name": "动词 + 名词搭配" },
+            { "id": "b2-adjective-preposition", "name": "形容词 + 介词搭配" },
+            { "id": "b2-idiomatic-expressions", "name": "常见习语表达" },
+            { "id": "b2-word-formation", "name": "构词法与词性转换" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C1",
+      "name": "高级",
+      "englishName": "Advanced",
+      "description": "能够理解复杂、隐含和专业内容，灵活运用语言进行学术、职业和社会交流。",
+      "grammar": [
+        {
+          "id": "c1-advanced-clause",
+          "name": "高级从句结构",
+          "topics": [
+            { "id": "c1-complex-noun-clauses", "name": "复杂名词性从句" },
+            { "id": "c1-advanced-relative", "name": "高级定语从句结构" },
+            { "id": "c1-embedded-clauses", "name": "嵌入式从句" },
+            { "id": "c1-multiple-subordination", "name": "多层从句嵌套" },
+            { "id": "c1-reduced-clauses", "name": "从句简化与压缩" }
+          ]
+        },
+        {
+          "id": "c1-inversion",
+          "name": "高级倒装结构",
+          "topics": [
+            { "id": "c1-negative-inversion", "name": "否定副词引导的完全倒装" },
+            { "id": "c1-conditional-inversion", "name": "条件句省略 If 的倒装" },
+            { "id": "c1-comparative-inversion", "name": "比较结构中的倒装" },
+            { "id": "c1-locative-inversion", "name": "地点状语引导的倒装" },
+            { "id": "c1-inversion-emphasis", "name": "倒装的强调与修辞功能" }
+          ]
+        },
+        {
+          "id": "c1-subjunctive",
+          "name": "虚拟语气",
+          "topics": [
+            { "id": "c1-present-subjunctive", "name": "建议、要求类虚拟语气" },
+            { "id": "c1-past-subjunctive", "name": "与现在事实相反的虚拟语气" },
+            { "id": "c1-past-perfect-subjunctive", "name": "与过去事实相反的虚拟语气" },
+            { "id": "c1-mixed-subjunctive", "name": "混合时间虚拟语气" },
+            { "id": "c1-wish-if-only", "name": "Wish 与 If only" },
+            { "id": "c1-would-rather", "name": "Would rather / It's time" }
+          ]
+        },
+        {
+          "id": "c1-advanced-participles",
+          "name": "高级非谓语结构",
+          "topics": [
+            { "id": "c1-perfect-participles", "name": "完成式分词结构" },
+            { "id": "c1-absolute-constructions", "name": "独立主格结构" },
+            { "id": "c1-participial-clauses", "name": "分词状语从句" },
+            { "id": "c1-infinitive-perfect", "name": "完成式不定式" },
+            { "id": "c1-infinitive-passive", "name": "被动不定式与完成被动不定式" },
+            { "id": "c1-gerund-perfect", "name": "完成式动名词" }
+          ]
+        },
+        {
+          "id": "c1-modality",
+          "name": "情态与语气",
+          "topics": [
+            { "id": "c1-epistemic-modality", "name": "认识情态与推测" },
+            { "id": "c1-deontic-modality", "name": "义务、许可与必要性" },
+            { "id": "c1-modal-distance", "name": "情态动词表达委婉与距离" },
+            { "id": "c1-modal-perfect-contrast", "name": "情态完成式语义辨析" },
+            { "id": "c1-modal-hedging", "name": "情态表达中的保留与限定" }
+          ]
+        },
+        {
+          "id": "c1-information-structure",
+          "name": "信息结构与强调",
+          "topics": [
+            { "id": "c1-cleft-pseudo-cleft", "name": "分裂句与伪分裂句" },
+            { "id": "c1-fronting", "name": "前置结构" },
+            { "id": "c1-dislocation", "name": "左置与右置结构" },
+            { "id": "c1-extraposition", "name": "外置结构" },
+            { "id": "c1-focus-structures", "name": "焦点与信息突出" }
+          ]
+        },
+        {
+          "id": "c1-ellipsis-substitution",
+          "name": "省略与替代",
+          "topics": [
+            { "id": "c1-advanced-ellipsis", "name": "高级省略结构" },
+            { "id": "c1-verb-phrase-ellipsis", "name": "动词短语省略" },
+            { "id": "c1-nominal-substitution", "name": "名词性替代" },
+            { "id": "c1-clausal-substitution", "name": "分句替代" },
+            { "id": "c1-parallelism", "name": "平行结构与句式协调" }
+          ]
+        },
+        {
+          "id": "c1-advanced-passive",
+          "name": "高级被动与使役结构",
+          "topics": [
+            { "id": "c1-get-passive", "name": "Get 被动结构" },
+            { "id": "c1-reporting-passive", "name": "Reporting Passive 高级用法" },
+            { "id": "c1-causative-have-get", "name": "Have / Get 使役结构" },
+            { "id": "c1-perception-passive", "name": "感官动词被动结构" },
+            { "id": "c1-passive-information-focus", "name": "被动语态的信息焦点" }
+          ]
+        },
+        {
+          "id": "c1-discourse-markers",
+          "name": "语篇衔接与逻辑",
+          "topics": [
+            { "id": "c1-advanced-conjunctions", "name": "高级连接词" },
+            { "id": "c1-concessive-markers", "name": "让步与限定表达" },
+            { "id": "c1-cohesion", "name": "语篇衔接手段" },
+            { "id": "c1-coherence", "name": "语篇连贯与逻辑组织" },
+            { "id": "c1-reference-chains", "name": "指代链与信息延续" }
+          ]
+        },
+        {
+          "id": "c1-register",
+          "name": "语体与句法选择",
+          "topics": [
+            { "id": "c1-formal-informal", "name": "正式与非正式句式转换" },
+            { "id": "c1-hedging-grammar", "name": "模糊限制与审慎表达" },
+            { "id": "c1-nominalisation", "name": "名词化结构" },
+            { "id": "c1-impersonal-structures", "name": "非人称表达" },
+            { "id": "c1-complex-sentence-style", "name": "复杂句式的风格选择" }
+          ]
+        }
+      ],
+      "vocabulary": [
+        {
+          "id": "c1-academic",
+          "name": "学术英语",
+          "topics": [
+            { "id": "c1-academic-research", "name": "学术研究与方法论" },
+            { "id": "c1-academic-argument", "name": "学术论证" },
+            { "id": "c1-academic-evidence", "name": "证据与研究结果" },
+            { "id": "c1-academic-evaluation", "name": "批判性评价" },
+            { "id": "c1-academic-writing", "name": "学术写作表达" },
+            { "id": "c1-academic-collocations", "name": "学术词汇搭配" }
+          ]
+        },
+        {
+          "id": "c1-politics",
+          "name": "政治与国际关系",
+          "topics": [
+            { "id": "c1-international-relations", "name": "国际关系" },
+            { "id": "c1-diplomacy", "name": "外交与国际合作" },
+            { "id": "c1-political-systems", "name": "政治制度" },
+            { "id": "c1-public-policy", "name": "公共政策" },
+            { "id": "c1-governance", "name": "治理与制度建设" }
+          ]
+        },
+        {
+          "id": "c1-economics",
+          "name": "高级经济与商业",
+          "topics": [
+            { "id": "c1-macroeconomics", "name": "宏观经济" },
+            { "id": "c1-microeconomics", "name": "微观经济" },
+            { "id": "c1-corporate-strategy", "name": "企业战略" },
+            { "id": "c1-financial-policy", "name": "金融政策" },
+            { "id": "c1-market-dynamics", "name": "市场动态" },
+            { "id": "c1-economic-inequality", "name": "经济不平等" }
+          ]
+        },
+        {
+          "id": "c1-science-technology",
+          "name": "科学与前沿技术",
+          "topics": [
+            { "id": "c1-artificial-intelligence", "name": "人工智能" },
+            { "id": "c1-biotechnology", "name": "生物技术" },
+            { "id": "c1-neuroscience", "name": "神经科学" },
+            { "id": "c1-data-science", "name": "数据科学" },
+            { "id": "c1-technology-ethics", "name": "科技伦理" },
+            { "id": "c1-innovation-policy", "name": "创新政策" }
+          ]
+        },
+        {
+          "id": "c1-environment",
+          "name": "环境科学与生态",
+          "topics": [
+            { "id": "c1-ecosystems", "name": "生态系统" },
+            { "id": "c1-climate-science", "name": "气候科学" },
+            { "id": "c1-environmental-policy", "name": "环境政策" },
+            { "id": "c1-resource-management", "name": "资源管理" },
+            { "id": "c1-environmental-ethics", "name": "环境伦理" }
+          ]
+        },
+        {
+          "id": "c1-psychology",
+          "name": "心理学与认知",
+          "topics": [
+            { "id": "c1-cognitive-psychology", "name": "认知心理学" },
+            { "id": "c1-behavioral-science", "name": "行为科学" },
+            { "id": "c1-decision-making", "name": "决策与判断" },
+            { "id": "c1-human-development", "name": "人类发展" },
+            { "id": "c1-social-psychology", "name": "社会心理学" }
+          ]
+        },
+        {
+          "id": "c1-society",
+          "name": "社会学与人类学",
+          "topics": [
+            { "id": "c1-social-structures", "name": "社会结构" },
+            { "id": "c1-cultural-identity", "name": "文化身份与认同" },
+            { "id": "c1-social-mobility", "name": "社会流动" },
+            { "id": "c1-demographic-change", "name": "人口变化" },
+            { "id": "c1-cultural-anthropology", "name": "文化人类学" }
+          ]
+        },
+        {
+          "id": "c1-law-ethics",
+          "name": "法律与伦理",
+          "topics": [
+            { "id": "c1-legal-systems", "name": "法律体系" },
+            { "id": "c1-legal-rights", "name": "权利与义务" },
+            { "id": "c1-justice", "name": "司法与公正" },
+            { "id": "c1-ethical-dilemmas", "name": "伦理困境" },
+            { "id": "c1-professional-ethics", "name": "职业伦理" }
+          ]
+        },
+        {
+          "id": "c1-literature",
+          "name": "文学与批评",
+          "topics": [
+            { "id": "c1-literary-analysis", "name": "文学分析" },
+            { "id": "c1-rhetorical-devices", "name": "修辞手法" },
+            { "id": "c1-literary-genres", "name": "文学体裁" },
+            { "id": "c1-narrative-techniques", "name": "叙事技巧" },
+            { "id": "c1-critical-interpretation", "name": "批评性解读" }
+          ]
+        },
+        {
+          "id": "c1-communication",
+          "name": "高级沟通与修辞",
+          "topics": [
+            { "id": "c1-persuasion", "name": "说服与影响" },
+            { "id": "c1-diplomatic-language", "name": "外交与委婉表达" },
+            { "id": "c1-public-speaking", "name": "公开演讲" },
+            { "id": "c1-conflict-resolution", "name": "冲突解决" },
+            { "id": "c1-nuanced-opinions", "name": "细微观点与立场表达" }
+          ]
+        },
+        {
+          "id": "c1-lexical-relations",
+          "name": "高级词汇关系",
+          "topics": [
+            { "id": "c1-synonyms-nuance", "name": "近义词与语义差异" },
+            { "id": "c1-register-vocabulary", "name": "词汇语体差异" },
+            { "id": "c1-connotation", "name": "词语内涵与感情色彩" },
+            { "id": "c1-idioms", "name": "习语与惯用表达" },
+            { "id": "c1-metaphorical-language", "name": "隐喻性表达" },
+            { "id": "c1-advanced-collocations", "name": "高级词汇搭配" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "name": "精通级",
+      "englishName": "Proficiency",
+      "description": "能够精准、灵活、自然地使用英语，理解复杂语义、语用含义和高度抽象内容。",
+      "grammar": [
+        {
+          "id": "c2-advanced-syntax",
+          "name": "高级句法与结构",
+          "topics": [
+            { "id": "c2-multiple-embedding", "name": "多层嵌套句法结构" },
+            { "id": "c2-complex-nominal-structures", "name": "复杂名词短语结构" },
+            { "id": "c2-compressed-syntax", "name": "句法压缩与信息密集表达" },
+            { "id": "c2-advanced-subordination", "name": "复杂从属结构" },
+            { "id": "c2-syntactic-ambiguity", "name": "句法歧义与结构辨析" }
+          ]
+        },
+        {
+          "id": "c2-inversion-emphasis",
+          "name": "高级倒装与修辞句式",
+          "topics": [
+            { "id": "c2-literary-inversion", "name": "文学与修辞倒装" },
+            { "id": "c2-advanced-fronting", "name": "复杂前置与焦点结构" },
+            { "id": "c2-rhetorical-cleft", "name": "修辞性强调结构" },
+            { "id": "c2-parallel-rhetoric", "name": "高级平行与对称结构" },
+            { "id": "c2-periodic-sentences", "name": "圆周句与延迟重心结构" }
+          ]
+        },
+        {
+          "id": "c2-advanced-modality",
+          "name": "情态、语气与立场",
+          "topics": [
+            { "id": "c2-modal-stance", "name": "情态与说话者立场" },
+            { "id": "c2-modal-ambiguity", "name": "情态表达的语义歧义" },
+            { "id": "c2-subtle-certainty", "name": "确定性与可能性的精细区分" },
+            { "id": "c2-epistemic-distance", "name": "认识距离与立场弱化" },
+            { "id": "c2-pragmatic-modality", "name": "情态表达的语用效果" }
+          ]
+        },
+        {
+          "id": "c2-advanced-subjunctive",
+          "name": "虚拟语气与反事实表达",
+          "topics": [
+            { "id": "c2-remote-conditionals", "name": "远距离与隐含条件句" },
+            { "id": "c2-counterfactual-past", "name": "复杂过去反事实表达" },
+            { "id": "c2-counterfactual-mixed", "name": "多时间关系反事实表达" },
+            { "id": "c2-subjunctive-formal", "name": "正式语体中的虚拟语气" },
+            { "id": "c2-counterfactual-pragmatics", "name": "反事实表达的语用含义" }
+          ]
+        },
+        {
+          "id": "c2-advanced-discourse",
+          "name": "语篇结构与信息组织",
+          "topics": [
+            { "id": "c2-theme-rheme", "name": "主位与述位结构" },
+            { "id": "c2-information-flow", "name": "信息流与已知信息衔接" },
+            { "id": "c2-discourse-cohesion", "name": "复杂语篇衔接" },
+            { "id": "c2-discourse-coherence", "name": "复杂语篇连贯" },
+            { "id": "c2-pragmatic-markers", "name": "语用标记语" }
+          ]
+        },
+        {
+          "id": "c2-register-style",
+          "name": "语体、风格与语法选择",
+          "topics": [
+            { "id": "c2-register-shifting", "name": "语体切换" },
+            { "id": "c2-syntactic-style", "name": "句法风格选择" },
+            { "id": "c2-formality-gradation", "name": "正式程度的精细控制" },
+            { "id": "c2-spoken-written-grammar", "name": "口语与书面语语法差异" },
+            { "id": "c2-genre-conventions", "name": "不同文体的句法规范" }
+          ]
+        },
+        {
+          "id": "c2-ellipsis-reference",
+          "name": "高级省略、替代与指代",
+          "topics": [
+            { "id": "c2-complex-ellipsis", "name": "复杂省略结构" },
+            { "id": "c2-ambiguous-reference", "name": "指代歧义处理" },
+            { "id": "c2-discourse-substitution", "name": "语篇层面的替代" },
+            { "id": "c2-pragmatic-ellipsis", "name": "语用省略" },
+            { "id": "c2-reference-resolution", "name": "复杂指代关系解析" }
+          ]
+        },
+        {
+          "id": "c2-grammar-variation",
+          "name": "语法变体与语言使用",
+          "topics": [
+            { "id": "c2-grammatical-variation", "name": "语法变体" },
+            { "id": "c2-dialect-variation", "name": "英语地域变体" },
+            { "id": "c2-spoken-grammar", "name": "自然口语语法" },
+            { "id": "c2-usage-conventions", "name": "实际语言使用惯例" },
+            { "id": "c2-grammar-and-context", "name": "语法形式与语境选择" }
+          ]
+        },
+        {
+          "id": "c2-rhetorical-grammar",
+          "name": "修辞语法",
+          "topics": [
+            { "id": "c2-rhetorical-questions", "name": "修辞疑问句" },
+            { "id": "c2-ellipsis-rhetoric", "name": "修辞性省略" },
+            { "id": "c2-parataxis-hypotaxis", "name": "意合与形合结构" },
+            { "id": "c2-grammatical-metaphor", "name": "语法隐喻" },
+            { "id": "c2-rhetorical-parallelism", "name": "修辞性平行结构" }
+          ]
+        }
+      ],
+      "vocabulary": [
+        {
+          "id": "c2-literary-language",
+          "name": "文学与高级阅读",
+          "topics": [
+            { "id": "c2-literary-criticism", "name": "文学批评与理论" },
+            { "id": "c2-literary-allusion", "name": "文学典故与互文" },
+            { "id": "c2-symbolism", "name": "象征与意象" },
+            { "id": "c2-irony-satire", "name": "反讽与讽刺" },
+            { "id": "c2-archaic-language", "name": "古旧词汇与历史表达" },
+            { "id": "c2-literary-register", "name": "文学语体与修辞词汇" }
+          ]
+        },
+        {
+          "id": "c2-philosophy",
+          "name": "哲学与思想",
+          "topics": [
+            { "id": "c2-epistemology", "name": "认识论" },
+            { "id": "c2-ethics-philosophy", "name": "伦理哲学" },
+            { "id": "c2-metaphysics", "name": "形而上学" },
+            { "id": "c2-political-philosophy", "name": "政治哲学" },
+            { "id": "c2-abstract-reasoning", "name": "抽象推理与概念分析" }
+          ]
+        },
+        {
+          "id": "c2-academic-discourse",
+          "name": "高阶学术表达",
+          "topics": [
+            { "id": "c2-academic-synthesis", "name": "多来源信息综合" },
+            { "id": "c2-critical-discourse", "name": "批判性学术论述" },
+            { "id": "c2-theoretical-frameworks", "name": "理论框架与概念体系" },
+            { "id": "c2-methodological-critique", "name": "研究方法论批评" },
+            { "id": "c2-academic-hedging", "name": "学术审慎表达" },
+            { "id": "c2-academic-precision", "name": "精确学术措辞" }
+          ]
+        },
+        {
+          "id": "c2-law-governance",
+          "name": "法律与制度",
+          "topics": [
+            { "id": "c2-constitutional-law", "name": "宪法与制度" },
+            { "id": "c2-international-law", "name": "国际法" },
+            { "id": "c2-legal-interpretation", "name": "法律解释" },
+            { "id": "c2-regulatory-frameworks", "name": "监管框架" },
+            { "id": "c2-legal-rhetoric", "name": "法律论证与措辞" }
+          ]
+        },
+        {
+          "id": "c2-geopolitics",
+          "name": "国际事务与地缘政治",
+          "topics": [
+            { "id": "c2-geopolitical-strategy", "name": "地缘政治战略" },
+            { "id": "c2-international-security", "name": "国际安全" },
+            { "id": "c2-conflict-resolution", "name": "国际冲突与调解" },
+            { "id": "c2-global-governance", "name": "全球治理" },
+            { "id": "c2-diplomatic-rhetoric", "name": "外交修辞与谈判语言" }
+          ]
+        },
+        {
+          "id": "c2-economics-finance",
+          "name": "高级经济与金融",
+          "topics": [
+            { "id": "c2-economic-theory", "name": "经济理论" },
+            { "id": "c2-monetary-policy", "name": "货币政策" },
+            { "id": "c2-fiscal-policy", "name": "财政政策" },
+            { "id": "c2-financial-instruments", "name": "金融工具" },
+            { "id": "c2-economic-forecasting", "name": "经济预测与风险评估" }
+          ]
+        },
+        {
+          "id": "c2-science-research",
+          "name": "前沿科学与研究",
+          "topics": [
+            { "id": "c2-quantum-science", "name": "量子科学" },
+            { "id": "c2-genetics", "name": "遗传学与基因技术" },
+            { "id": "c2-neuroscience", "name": "神经科学前沿" },
+            { "id": "c2-complex-systems", "name": "复杂系统" },
+            { "id": "c2-scientific-uncertainty", "name": "科学不确定性" }
+          ]
+        },
+        {
+          "id": "c2-sociology",
+          "name": "高级社会议题",
+          "topics": [
+            { "id": "c2-social-theory", "name": "社会理论" },
+            { "id": "c2-structural-inequality", "name": "结构性不平等" },
+            { "id": "c2-cultural-hegemony", "name": "文化霸权与意识形态" },
+            { "id": "c2-identity-politics", "name": "身份与社会认同" },
+            { "id": "c2-demographic-transitions", "name": "人口转型" }
+          ]
+        },
+        {
+          "id": "c2-rhetoric",
+          "name": "高级修辞与说服",
+          "topics": [
+            { "id": "c2-persuasive-strategies", "name": "复杂说服策略" },
+            { "id": "c2-political-rhetoric", "name": "政治修辞" },
+            { "id": "c2-ironic-language", "name": "反讽性语言" },
+            { "id": "c2-understatement", "name": "低调陈述与含蓄表达" },
+            { "id": "c2-hyperbole", "name": "夸张与强调" },
+            { "id": "c2-implicit-meaning", "name": "隐含意义与言外之意" }
+          ]
+        },
+        {
+          "id": "c2-idiomatic-language",
+          "name": "习语与地道表达",
+          "topics": [
+            { "id": "c2-advanced-idioms", "name": "高级习语" },
+            { "id": "c2-proverbs", "name": "谚语与格言" },
+            { "id": "c2-phrasal-verbs-nuance", "name": "短语动词的语义细微差异" },
+            { "id": "c2-figurative-language", "name": "比喻性语言" },
+            { "id": "c2-cultural-expressions", "name": "文化特定表达" }
+          ]
+        },
+        {
+          "id": "c2-lexical-precision",
+          "name": "词汇精准性与语义辨析",
+          "topics": [
+            { "id": "c2-fine-grained-synonyms", "name": "近义词精细辨析" },
+            { "id": "c2-connotation-denotation", "name": "内涵义与外延义" },
+            { "id": "c2-semantic-prosody", "name": "语义韵" },
+            { "id": "c2-collocational-restrictions", "name": "搭配限制" },
+            { "id": "c2-register-precision", "name": "语体精准选择" },
+            { "id": "c2-polysemy", "name": "多义词与语境义" }
+          ]
+        },
+        {
+          "id": "c2-pragmatics",
+          "name": "语用学与跨文化表达",
+          "topics": [
+            { "id": "c2-implicature", "name": "会话含义" },
+            { "id": "c2-speech-acts", "name": "言语行为" },
+            { "id": "c2-politeness-strategies", "name": "礼貌策略" },
+            { "id": "c2-face-saving", "name": "面子与关系维护" },
+            { "id": "c2-cross-cultural-pragmatics", "name": "跨文化语用差异" },
+            { "id": "c2-contextual-interpretation", "name": "语境与隐含意义" }
+          ]
+        }
+      ]
+    }
+  ]
+}

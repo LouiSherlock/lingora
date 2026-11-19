@@ -526,6 +526,9 @@
   .astryx-banner[data-status="error"] {
     --color-error-muted: #e56241;
     --color-on-error-muted: #1d1c11;
+    color: #fff;
+    --color-text-primary: #fff;
+    --color-text-secondary: #fff;
   }
 
   .astryx-card {
@@ -888,6 +891,19 @@
 
   .astryx-segmented-control-item {
     --color-text-secondary: light-dark(#baa79b, #d2c3ba);
+  }
+
+  .astryx-bottom-sheet {
+    max-width: 64rem;
+    width: calc(100vw - 2rem);
+  }
+
+  .astryx-banner-icon[data-status="error"] {
+    color: #fff;
+  }
+
+  .astryx-banner-description {
+    color: #fff;
   }
 
   .astryx-text[data-color="primary"] { color: var(--color-text-primary); }

@@ -1,4 +1,5 @@
 "use client";
+import { ArrowLeft } from "lucide-react";
 import { Suspense, useState, useSyncExternalStore } from "react";
 import { useParams, useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
@@ -70,13 +71,13 @@ function Assistant({ question, ai }: { question: Question; ai: ClientAISettings 
 
 function SessionContent() {
   const params = useParams<{id:string}>(); const router = useRouter();
-  const active = useLearningStore((s)=>s.active); const answers=useLearningStore((s)=>s.answers); const current=useLearningStore((s)=>s.current); const uncertain=useLearningStore((s)=>s.uncertain); const submittedIds=useLearningStore((s)=>s.submitted); const completed=useLearningStore((s)=>s.completed); const answer=useLearningStore((s)=>s.answer); const go=useLearningStore((s)=>s.go); const submit=useLearningStore((s)=>s.submit); const advance=useLearningStore((s)=>s.advance); const discard=useLearningStore((s)=>s.discard); const toggle=useLearningStore((s)=>s.toggleUncertain); const finish=useLearningStore((s)=>s.finish);
+  const active = useLearningStore((s)=>s.active); const answers=useLearningStore((s)=>s.answers); const current=useLearningStore((s)=>s.current); const submittedIds=useLearningStore((s)=>s.submitted); const completed=useLearningStore((s)=>s.completed); const answer=useLearningStore((s)=>s.answer); const go=useLearningStore((s)=>s.go); const submit=useLearningStore((s)=>s.submit); const advance=useLearningStore((s)=>s.advance); const discard=useLearningStore((s)=>s.discard); const finish=useLearningStore((s)=>s.finish);
   const [confirmExit,setConfirmExit]=useState(false);
   const [leaving,setLeaving]=useState(false);
   const mounted=useSyncExternalStore(subscribeToMount,getMounted,getServerMounted);
   const hydrated=useSyncExternalStore(subscribeToHydration,getHydrated,getServerHydrated);
   const ai=useLearningStore((s)=>s.settings);
-  if(!mounted || !hydrated || leaving) return <VStack className="centered-content"><Text>正在恢复练习…</Text></VStack>;
+  if(!mounted || !hydrated || leaving) return <VStack className="centered-content"><Text>{leaving ? "正在生成答题结果…" : "正在恢复练习…"}</Text></VStack>;
   if(!active || active.id!==params.id) return <VStack className="centered-content"><Card><VStack gap={3}><Heading level={2}>找不到这次练习</Heading><Text>练习可能已经结束，或链接已失效。</Text><Button label="重新开始练习" href="/practice/create" variant="primary"/></VStack></Card></VStack>;
   const practice = active;
   const q=active.questions[current];
@@ -86,13 +87,22 @@ function SessionContent() {
   const canSubmit=selectedAnswer.trim().length>0;
   function submitAnswer(){ if(!canSubmit || submitted) return; submit(q.id); if(isCorrect) confetti({particleCount:28,spread:42,startVelocity:24,origin:{y:.72}}); }
   function complete(){ if(!submitted) return; setLeaving(true); advance(); finish(); confetti({particleCount:120,spread:75,origin:{y:.65}}); router.push(`/practice/result/${practice.id}`); }
+  function skipQuestion(){
+    if (current < practice.questions.length - 1) {
+      advance();
+      return;
+    }
+    setLeaving(true);
+    finish();
+    router.push(`/practice/result/${practice.id}`);
+  }
   return <VStack gap={6} className="page-container page-container--compact">
-    <HStack as="header" hAlign="between" vAlign="center"><Heading level={2}>EnglishFlow</Heading><Button label="退出练习" variant="ghost" onClick={()=>setConfirmExit(true)}/></HStack>
+    <HStack as="header" hAlign="start"><Button label="返回" icon={<ArrowLeft size={16} />} href="/" variant="ghost" /></HStack>
     <AlertDialog isOpen={confirmExit} onOpenChange={setConfirmExit} title="退出练习？" description="本次答题进度和已填写的答案都不会保存，退出后需要重新开始。" cancelLabel="继续练习" actionLabel="放弃并退出" onAction={()=>{setLeaving(true); discard(); router.push("/");}}/>
     <VStack gap={2}><HStack hAlign="between"><Text type="label">{active.title}</Text><Text type="supporting">{current+1} / {active.questions.length}</Text></HStack><ProgressBar label="练习进度" isLabelHidden value={completed.length} max={active.questions.length} hasValueLabel formatValueLabel={(_, maximum) => `已完成 ${completed.length} / ${maximum}`} /></VStack>
     <motion.div key={q.id} initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:.2}}>
       <Card><VStack gap={5}>
-        <HStack hAlign="between" wrap="wrap"><HStack gap={2} vAlign="center"><Text type="label">QUESTION {String(current+1).padStart(2,"0")}</Text><Text type="supporting">{typeLabels[q.type]}</Text></HStack><Button label={uncertain.includes(q.id)?"已标记不确定":"标记不确定"} variant="ghost" onClick={()=>toggle(q.id)}/></HStack>
+        <HStack hAlign="between" wrap="wrap"><HStack gap={2} vAlign="center"><Text type="supporting">{typeLabels[q.type]}</Text></HStack></HStack>
         <Heading level={2}>{q.stem}</Heading>
         {q.type==="fill_blank"
           ? <TextInput label="你的答案" value={selectedAnswer} onChange={(value)=>answer(q.id,value)} onEnter={submitAnswer} placeholder="输入答案后提交" isReadOnly={submitted}/>
@@ -109,9 +119,12 @@ function SessionContent() {
       <Button label="上一题" variant="secondary" isDisabled={current===0} onClick={()=>go(current-1)}/>
       {submitted ? (current<active.questions.length-1
         ? <Button label="下一题" variant="primary" onClick={advance}/>
-        : <Button label="完成练习" variant="primary" onClick={complete}/>) : <Text type="supporting">提交答案后可进入下一题</Text>}
+        : <Button label="完成练习" variant="primary" onClick={complete}/>) : <HStack gap={2}>
+          <Button label="跳过" variant="secondary" onClick={skipQuestion}/>
+         
+        </HStack>}
     </HStack>
-    <Text type="supporting">提交后立即批改；只有进入下一题，进度才会前进。退出不会保存本次答题。</Text>
+  
   </VStack>;
 }
 

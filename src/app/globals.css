@@ -67,6 +67,78 @@ main {
   color: var(--color-on-dark) !important;
 }
 
+.astryx-bottom-sheet {
+  width: min(calc(64rem - 2.5rem), calc(100vw - 2.5rem)) !important;
+  max-width: calc(64rem - 2.5rem) !important;
+}
+
+.practice-generating {
+  min-height: 60vh;
+  color: var(--color-accent);
+  text-align: center;
+}
+
+.practice-generating__art {
+  width: 10rem;
+  height: 10rem;
+  overflow: visible;
+}
+
+.practice-generating__orbit {
+  transform-origin: center;
+  animation: practice-orbit 8s linear infinite;
+}
+
+.practice-generating__loop {
+  transform-origin: center;
+  animation: practice-weave 2.8s ease-in-out infinite;
+}
+
+.practice-generating__core {
+  transform-origin: center;
+  animation: practice-pulse 1.4s ease-in-out infinite alternate;
+}
+
+.practice-generating__spark {
+  animation: practice-spark 1.8s ease-in-out infinite alternate;
+}
+
+.practice-generating__spark--late {
+  animation-delay: 0.9s;
+}
+
+.result-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@keyframes practice-orbit {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes practice-weave {
+  50% { transform: rotate(18deg) scale(0.88); }
+}
+
+@keyframes practice-pulse {
+  to { transform: scale(1.35); }
+}
+
+@keyframes practice-spark {
+  to { opacity: 0.25; transform: scale(0.65); }
+}
+
+.astryx-banner[data-status="error"],
+.astryx-banner[data-status="error"] .astryx-text,
+.astryx-banner[data-status="error"] .astryx-heading {
+  color: #fff !important;
+}
+
+.astryx-banner-icon[data-status="error"],
+.astryx-banner-icon[data-status="error"] svg {
+  color: #fff !important;
+}
+
 @media (min-width: 48rem) {
   .grammar-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));

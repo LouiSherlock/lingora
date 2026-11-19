@@ -25,29 +25,18 @@ export default function Home() {
   return (
     <VStack gap={8} className="page-container page-container--regular">
         <HStack as="header" wrap="wrap" hAlign="between" vAlign="center" gap={4} className="site-header">
-          <HStack gap={2} vAlign="center"><Heading level={2}>Lingora</Heading><Badge label="MVP" variant="yellow" /></HStack>
+          <HStack gap={2} vAlign="center"><Heading level={2} color="accent">Lingora</Heading></HStack>
           <Button label="设置" href="/settings" variant="ghost" />
         </HStack>
 
         <HStack wrap="wrap" hAlign="between" vAlign="center" gap={6}>
           <VStack gap={2}>
-            <Text type="label">YOUR ENGLISH PRACTICE SPACE</Text>
+            <Text type="label">专属英语练习空间</Text>
             <Heading level={1}>今天想练什么？</Heading>
             <Text>设定目标，AI 会为你生成一组专属英语练习。</Text>
           </VStack>
           <Button label="开始 AI 练习" href="/practice/create" variant="primary" />
         </HStack>
-
-        <Card>
-          <HStack wrap="wrap" hAlign="between" vAlign="center" gap={6}>
-            <VStack gap={2}>
-              <Text type="label">AI POWERED</Text>
-              <Heading level={2}>Create your practice</Heading>
-              <Text>选择英语等级和知识点，快速开始一段有针对性的练习。</Text>
-            </VStack>
-            <Button label="创建专属练习" href="/practice/create" variant="primary" />
-          </HStack>
-        </Card>
 
         <VStack gap={4}>
           <HStack hAlign="between" vAlign="center">
@@ -125,3 +114,4 @@ export default function Home() {
     </VStack>
   );
 }
+

@@ -39,3 +39,41 @@ RULES:
   docs authoring     build an integration package, and every field it holds
   upgrade --from <old version> --apply   run after a dependency bump
 <!-- ASTRYX:END -->
+
+## Lingora repo notes
+
+**What this is.** AI-generated English practice (grammar + vocabulary) with a Chinese UI. Next.js 16.4 App Router, React 19.3, TypeScript, Zustand, Astryx design system. Single package managed with pnpm 11.0.9 — `pnpm-workspace.yaml` only lists `allowBuilds`, it is not a workspace. No database, auth, or tests.
+
+### Commands
+
+- `pnpm dev` — Turbopack dev server on :3000.
+- `pnpm lint` — ESLint 9 flat config, no auto-fix. Single file: `pnpm exec eslint src/app/page.tsx`.
+- `pnpm exec tsc --noEmit` — typecheck (there is no npm script).
+- `pnpm build` — stop `pnpm dev` first. Both share `.next`; with dev running, `next build` panicked twice with `read_task_output: task TaskId ... no longer exists`.
+- `pnpm exec astryx doctor --built src` — design-system/theme check; currently 0 fails, advisory warnings only.
+- There is no test runner, CI, or formatter. Don't invent `pnpm test`; verify with typecheck, lint, and the affected flow in the browser.
+
+### Architecture you can't infer from filenames
+
+- AI is configured per browser. `/settings` saves `baseUrl` + `model` in the Zustand store and encrypts the API key with AES-GCM in localStorage or sessionStorage, keeping the AES key in IndexedDB (`src/lib/client-ai.ts`). Requests carry `{ baseUrl, model, credential }`, which `src/lib/server-crypto.ts` decrypts with an in-process RSA key pair. Never add `NEXT_PUBLIC_*` keys or a server-side AI key.
+- Provider calls are raw `fetch` to `{baseUrl}/chat/completions` (and `/models`); no AI SDK or Zod. `validateProviderUrl` rejects localhost and private IPs, so local Ollama/LM Studio endpoints cannot be configured.
+- `POST /api/generate` normalizes model output in `normalizeQuestion` and enforces all three question types when `count >= 3`. Changing the `Question` shape in `src/lib/practice-data.ts` means updating that normalizer plus rendering in `practice/session/[id]` and `practice/result/[id]`.
+- Grading is client-side: `answer.trim().toLowerCase() === question.answer.trim().toLowerCase()`. The comparison is duplicated in the session and result pages; update both. `/api/grade` does not exist.
+- `docs/功能.md` is the original product spec, not the implementation. It still describes Tailwind, shadcn, Zod, IndexedDB practice history, `/mistakes`, `/analytics`, and `/api/grade`; none are implemented. `src/app/mistakes/` and `src/app/analytics/` are empty placeholders.
+- Persisted names retain the old product name: store key `englishflow-state`, key `englishflow-encrypted-api-key`, IndexedDB `englishflow-credentials`. Renaming them silently loses users' history and keys.
+- Grammar content is static in `src/lib/practice-data.ts`; `/grammar/[slug]` prebuilds via `generateStaticParams`, so new topics appear by adding them there.
+
+### Next.js 16 specifics
+
+- `next.config.ts` enables `cacheComponents`, `partialPrefetching`, and `reactCompiler`. Read `node_modules/next/dist/docs/01-app/` before touching routing or caching; this version differs from older App Router defaults.
+- `params` and `searchParams` are Promises; await them. `practice/create/page.tsx` opts out of instant-navigation checks with `export const instant = false` because it reads `searchParams`; keep it unless the route is restructured.
+- `LayoutProps<"/">` in `src/app/layout.tsx` is a Next-generated global type, not an import.
+- Every page is a client component except the `practice/create` server wrapper and `grammar/[slug]`. Pages that read the persisted store wait for `persist.hasHydrated()`; keep that gate to avoid hydration mismatches.
+
+### UI, styling, and theme
+
+- Use Astryx imports (`@astryxdesign/core/VStack`, `.../Card`, …) rather than plain HTML layout. Existing exceptions: `motion.div` for animation and semantic `section`/`header`/`main`.
+- The Astryx instructions above mention Tailwind utilities, but **Tailwind is not installed**. Use component props (`gap`, `padding`, `variant`), the classes in `src/app/globals.css` (`page-container`, `page-container--compact|regular|spacious`, `site-header`, `recommendation-grid`, `grammar-grid`, `centered-content`, `result-summary`), and `var(--color-*)`/spacing tokens.
+- The app is dark-only: `layout.tsx` sets `data-theme="dark"` and `<Theme mode="dark">`. `globals.css` hardcodes `#261a13`, duplicating the theme's `--color-background-surface`; prefer the token when editing.
+- Theme source is `themes/lingora/` (`lingora.settings.json` and custom overrides in `lingora.theme.ts`). `themes/lingora/lingora.{css,js,settings.ts}`, `src/themes/lingora/*`, and `src/astryx-themes.ts` are generated — do not hand-edit. Change palette/tokens with `pnpm exec astryx experimental theme editor ...`, then re-run `astryx doctor --built src`; ESLint ignores both theme directories.
+- UI copy is Chinese; English is only for generated question stems/options. Explanations and error messages stay Simplified Chinese.

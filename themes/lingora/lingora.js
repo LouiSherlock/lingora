@@ -401,7 +401,10 @@ export const lingoraTheme = {
       },
       "status:error": {
         "--color-error-muted": "#e56241",
-        "--color-on-error-muted": "#1d1c11"
+        "--color-on-error-muted": "#1d1c11",
+        "color": "#fff",
+        "--color-text-primary": "#fff",
+        "--color-text-secondary": "#fff"
       }
     },
     "card": {
@@ -735,6 +738,22 @@ export const lingoraTheme = {
     "segmented-control-item": {
       "base": {
         "--color-text-secondary": "light-dark(#baa79b, #d2c3ba)"
+      }
+    },
+    "bottom-sheet": {
+      "base": {
+        "maxWidth": "64rem",
+        "width": "calc(100vw - 2rem)"
+      }
+    },
+    "banner-icon": {
+      "status:error": {
+        "color": "#fff"
+      }
+    },
+    "banner-description": {
+      "base": {
+        "color": "#fff"
       }
     }
   },

@@ -7,4 +7,29 @@ import {lingoraSettings} from './lingora.settings';
 export const lingoraTheme = defineTheme({
   extends: lingoraSettings,
   name: 'lingora',
+  components: {
+    'bottom-sheet': {
+      base: {
+        maxWidth: '64rem',
+        width: 'calc(100vw - 2rem)',
+      },
+    },
+    banner: {
+      'status:error': {
+        color: '#fff',
+        '--color-text-primary': '#fff',
+        '--color-text-secondary': '#fff',
+      },
+    },
+    'banner-icon': {
+      'status:error': {
+        color: '#fff',
+      },
+    },
+    'banner-description': {
+      base: {
+        color: '#fff',
+      },
+    },
+  },
 });

@@ -1,4 +1,5 @@
 "use client";
+import { ArrowLeft } from "lucide-react";
 
 import { useEffect, useState } from "react";
 import { Badge } from "@astryxdesign/core/Badge";
@@ -27,6 +28,27 @@ export default function Settings() {
   const [message, setMessage] = useState("");
   const [rememberError, setRememberError] = useState("");
   const [isEditing, setIsEditing] = useState(() => !saved.model || !hasClientAPIKey());
+  const [hydrated, setHydrated] = useState(false);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    setSelectedModel(saved.model);
+    setBaseUrl(saved.baseUrl === "https://api.openai.com/v1" ? "https://opencode.ai/inference/openai/v1" : saved.baseUrl);
+  }, [saved.baseUrl, saved.model]);
+
+  useEffect(() => {
+    if (!hydrated) return;
+    let active = true;
+    void getClientAPIKey().then((key) => {
+      if (!active) return;
+      setApiKey(key);
+      setIsEditing(!saved.model || !key);
+    }).catch(() => { if (active) { setApiKey(""); setIsEditing(true); } });
+    return () => { active = false; };
+  }, [hydrated, saved.model]);
 
   useEffect(() => {
     if (rememberKey) {
@@ -38,7 +60,7 @@ export default function Settings() {
         }
       });
     }
-  }, [rememberKey]);
+  }, []);
 
   async function editConfiguration() {
     const existingKey = await getClientAPIKey();
@@ -57,8 +79,9 @@ export default function Settings() {
       const response = await fetch("/api/models", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ baseUrl, credential }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? "获取模型失败。");
+      const preferredModel = selectedModel || saved.model;
       update({ models: data.models });
-      setSelectedModel(data.models.includes(saved.model) ? saved.model : data.models[0] ?? "");
+      setSelectedModel(data.models.includes(preferredModel) ? preferredModel : data.models[0] ?? "");
       setMessage(data.models.length ? `已获取 ${data.models.length} 个模型，请选择后确认。` : "接口连接成功，但没有返回可选模型。");
     } catch (error) {
       setMessage(error instanceof Error ? error.message : "连接失败。");
@@ -74,7 +97,7 @@ export default function Settings() {
     }
     try {
       await saveClientAPIKey(apiKey, rememberKey);
-      update({ baseUrl: baseUrl.replace(/\/$/, ""), model: selectedModel });
+      update({ baseUrl: baseUrl.replace(/\/$/, ""), model: selectedModel, models: savedModels });
       setApiKey("");
       setMessage("");
       setIsEditing(false);
@@ -84,8 +107,8 @@ export default function Settings() {
   }
 
   return <VStack gap={5} className="page-container page-container--regular">
-    <HStack as="header" hAlign="between" wrap="wrap" gap={3}><Heading level={2}>Lingora</Heading><Button label="首页" href="/" variant="ghost" /></HStack>
-    <VStack gap={1}><Text type="label">SETTINGS</Text><Heading level={1}>连接 AI 模型</Heading><Text>使用 OpenAI 兼容接口获取模型，并将它用于练习生成与 AI 助教。</Text></VStack>
+    <HStack as="header" hAlign="start"><Button label="返回" icon={<ArrowLeft size={16} />} href="/" variant="ghost" /></HStack>
+    <VStack gap={1}><Text type="label">设置</Text><Heading level={1}>连接 AI 模型</Heading><Text>使用 OpenAI 兼容接口获取模型，并将它用于练习生成与 AI 助教。</Text></VStack>
     <VStack gap={2}>
       <Switch
         label="记住 API Key"
@@ -104,14 +127,15 @@ export default function Settings() {
       {rememberError && <Banner status="error" title="保存设置失败" description={rememberError} />}
     </VStack>
     {!isEditing && saved.model ? <Card><VStack gap={4}><HStack hAlign="between" wrap="wrap" vAlign="center"><VStack gap={1}><HStack gap={2} vAlign="center"><Heading level={2}>已连接</Heading><Badge label="可用" variant="success" /></HStack><Text type="supporting">AI Key 已加密保存在当前浏览器中。</Text></VStack><Button label="编辑配置" variant="secondary" onClick={editConfiguration} /></HStack><VStack gap={1}><Text type="label">兼容接口</Text><Text>{saved.baseUrl}</Text></VStack><VStack gap={1}><Text type="label">已选模型</Text><Text>{saved.model}</Text></VStack></VStack></Card> : <Card><VStack gap={4}>
-      <TextInput label="兼容接口 Base URL" value={baseUrl} onChange={setBaseUrl} placeholder="https://api.example.com/v1" />
-      <TextInput label="API Key" type="password" value={apiKey} onChange={setApiKey} placeholder="输入服务商提供的 API Key" />
+      <TextInput label="兼容接口地址" value={baseUrl} onChange={setBaseUrl} placeholder="https://api.example.com/v1" />
+      <TextInput label="API Key" type="password" value={apiKey} onChange={setApiKey} placeholder="请输入服务商提供的密钥" />
       <Button label={busy ? "正在获取模型…" : "获取可选模型"} variant="secondary" isDisabled={busy || !baseUrl || !apiKey} onClick={loadModels} />
-      {savedModels.length > 0 ? <VStack gap={2}><Text type="label">选择模型</Text><DropdownMenu button={{ label: selectedModel || "请选择模型", variant: "secondary" }} items={savedModels.map((model) => ({ id: model, label: model, onClick: () => setSelectedModel(model) }))} /></VStack> : <TextInput label="当前模型" value={selectedModel} onChange={setSelectedModel} isReadOnly />}
+      {savedModels.length > 0 ? <VStack gap={2} hAlign="start"><Text type="label">选择模型</Text><DropdownMenu button={{ label: selectedModel || "请选择模型", variant: "secondary", className: "justify-start text-left" }} items={savedModels.map((model) => ({ id: model, label: model, onClick: () => setSelectedModel(model) }))} /></VStack> : <TextInput label="当前模型" value={selectedModel} onChange={setSelectedModel} isReadOnly />}
       {message && <Banner status="error" title="配置提示" description={message} />}
       <HStack gap={2} wrap="wrap"><Button label="确认并保存" variant="primary" isDisabled={!selectedModel || busy} onClick={confirm} />{saved.model && <Button label="取消" variant="ghost" onClick={() => { setBaseUrl(saved.baseUrl); setSelectedModel(saved.model); setIsEditing(false); }} />}</HStack>
       <Text type="supporting">AI Key 使用 AES-GCM 加密后保存在浏览器中。保存方式由“记住 API Key”控制。</Text>
     </VStack></Card>}
   </VStack>;
 }
+
 
