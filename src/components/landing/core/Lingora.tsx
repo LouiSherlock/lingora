@@ -168,7 +168,7 @@ const styles = stylex.create({
     fontFamily: 'inherit',
     fontWeight: 700,
     fontSize: 17,
-    color: 'var(--color-on-accent)',
+    color: 'var(--color-background-surface)',
     backgroundColor: 'var(--color-accent)',
     boxShadow: '0 10px 40px -10px color-mix(in srgb, var(--color-accent) 50%, transparent)',
     outline: { default: 'none', ':focus-visible': `2px solid ${'var(--color-accent)'}` },

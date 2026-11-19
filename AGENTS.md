@@ -77,3 +77,5 @@ RULES:
 - The app is dark-only: `layout.tsx` sets `data-theme="dark"` and `<Theme mode="dark">`. `globals.css` hardcodes `#261a13`, duplicating the theme's `--color-background-surface`; prefer the token when editing.
 - Theme source is `themes/lingora/` (`lingora.settings.json` and custom overrides in `lingora.theme.ts`). `themes/lingora/lingora.{css,js,settings.ts}`, `src/themes/lingora/*`, and `src/astryx-themes.ts` are generated — do not hand-edit. Change palette/tokens with `pnpm exec astryx experimental theme editor ...`, then re-run `astryx doctor --built src`; ESLint ignores both theme directories.
 - UI copy is Chinese; English is only for generated question stems/options. Explanations and error messages stay Simplified Chinese.
+
+让你做什么就做什么，不要擅自做任务，不要猜测需求，不懂就问
