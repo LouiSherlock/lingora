@@ -19,9 +19,9 @@ describe("pickSessionId", () => {
     expect(pickSessionId({ conversation_id: "c1" })).toBe("c1");
   });
 
-  it("never treats the completion id as a conversation", () => {
-    // OpenAI-compatible responses put `chatcmpl-…` in `id`; it identifies one answer.
-    expect(pickSessionId({ id: "chatcmpl-36d1eb0d" })).toBe("");
+  it("reads the provider's id as the conversation id", () => {
+    // This gateway returns its conversation id in `id`; it is forwarded as `conversation_id`.
+    expect(pickSessionId({ id: "chatcmpl-36d1eb0d" })).toBe("chatcmpl-36d1eb0d");
   });
 
   it("falls back to response headers", () => {

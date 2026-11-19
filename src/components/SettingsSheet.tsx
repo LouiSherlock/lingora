@@ -14,7 +14,7 @@ import { Switch } from "@astryxdesign/core/Switch";
 import { Text } from "@astryxdesign/core/Text";
 import { TextInput } from "@astryxdesign/core/TextInput";
 import { VStack } from "@astryxdesign/core/VStack";
-import { encryptAPIKey, getClientAPIKey, hasClientAPIKey, saveClientAPIKey, setClientAPIKeyRemembered } from "../lib/client-ai";
+import { discardLegacyCredential, getClientAPIKey, hasClientAPIKey, saveClientAPIKey, setClientAPIKeyRemembered } from "../lib/client-ai";
 import { useLearningStore } from "../stores/learning-store";
 
 const triggerStyles = stylex.create({
@@ -48,6 +48,7 @@ export function SettingsSheet() {
 
   useEffect(() => {
     setHydrated(true);
+    discardLegacyCredential();
   }, []);
 
   useEffect(() => {
@@ -91,8 +92,7 @@ export function SettingsSheet() {
     setBusy(true);
     setMessage("");
     try {
-      const credential = await encryptAPIKey(apiKey);
-      const response = await fetch("/api/models", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ baseUrl, credential }) });
+      const response = await fetch("/api/models", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ baseUrl, apiKey }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? "获取模型失败。");
       const preferredModel = selectedModel || saved.model;
@@ -143,7 +143,7 @@ export function SettingsSheet() {
       <Switch
         label="记住 API Key"
         value={rememberKey}
-        description={rememberKey ? "加密保存在当前浏览器中，之后打开页面仍可使用。" : "仅保存在当前标签页会话中，关闭标签页后需要重新输入。"}
+        description={rememberKey ? "保存在当前浏览器中，之后打开页面仍可使用。" : "仅保存在当前标签页会话中，关闭标签页后需要重新输入。"}
         onChange={(checked) => {
           try {
             setClientAPIKeyRemembered(checked);
@@ -156,14 +156,14 @@ export function SettingsSheet() {
       />
       {rememberError && <Banner status="error" title="保存设置失败" description={rememberError} />}
     </VStack>
-    {!isEditing && saved.model ? <Card><VStack gap={4}><HStack hAlign="between" wrap="wrap" vAlign="center"><VStack gap={1}><HStack gap={2} vAlign="center"><Heading level={2}>已连接</Heading><Badge label="可用" variant="success" /></HStack><Text type="supporting">AI Key 已加密保存在当前浏览器中。</Text></VStack><Button label="编辑配置" variant="secondary" onClick={editConfiguration} /></HStack><VStack gap={1}><Text type="label">兼容接口</Text><Text>{saved.baseUrl}</Text></VStack><VStack gap={1}><Text type="label">已选模型</Text><Text>{saved.model}</Text></VStack></VStack></Card> : <Card><VStack gap={4}>
+    {!isEditing && saved.model ? <Card><VStack gap={4}><HStack hAlign="between" wrap="wrap" vAlign="center"><VStack gap={1}><HStack gap={2} vAlign="center"><Heading level={2}>已连接</Heading><Badge label="可用" variant="success" /></HStack><Text type="supporting">AI Key 已保存在当前浏览器中。</Text></VStack><Button label="编辑配置" variant="secondary" onClick={editConfiguration} /></HStack><VStack gap={1}><Text type="label">兼容接口</Text><Text>{saved.baseUrl}</Text></VStack><VStack gap={1}><Text type="label">已选模型</Text><Text>{saved.model}</Text></VStack></VStack></Card> : <Card><VStack gap={4}>
       <TextInput label="兼容接口地址" value={baseUrl} onChange={setBaseUrl} placeholder="https://api.example.com/v1" />
       <TextInput label="API Key" type="password" value={apiKey} onChange={setApiKey} placeholder="请输入服务商提供的密钥" />
       <Button label={busy ? "正在获取模型…" : "获取可选模型"} variant="secondary" isDisabled={busy || !baseUrl || !apiKey} onClick={loadModels} />
       {savedModels.length > 0 ? <VStack gap={2} hAlign="start"><Text type="label">选择模型</Text><DropdownMenu button={{ label: selectedModel || "请选择模型", variant: "secondary", className: "justify-start text-left" }} items={savedModels.map((model) => ({ id: model, label: model, onClick: () => setSelectedModel(model) }))} /></VStack> : <TextInput label="当前模型" value={selectedModel} onChange={setSelectedModel} isReadOnly />}
       {message && <Banner status="error" title="配置提示" description={message} />}
       <HStack gap={2} wrap="wrap"><Button label="确认并保存" variant="primary" isDisabled={!selectedModel || busy} onClick={confirm} />{saved.model && <Button label="取消" variant="ghost" onClick={() => { setBaseUrl(saved.baseUrl); setSelectedModel(saved.model); setIsEditing(false); }} />}</HStack>
-      <Text type="supporting">AI Key 使用 AES-GCM 加密后保存在浏览器中。保存方式由“记住 API Key”控制。</Text>
+      <Text type="supporting">AI Key 以明文保存在浏览器存储中，并随请求以明文发送，请仅在个人设备上使用。保存方式由“记住 API Key”控制。</Text>
     </VStack></Card>}
     </BottomSheet>
   </>;

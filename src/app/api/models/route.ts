@@ -5,8 +5,8 @@ import { readProvider } from "@/lib/ai/settings";
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json() as { baseUrl?: unknown; credential?: unknown };
-    const provider = readProvider({ baseUrl: body.baseUrl, credential: body.credential }, { requireModel: false });
+    const body = await request.json() as { baseUrl?: unknown; apiKey?: unknown };
+    const provider = readProvider({ baseUrl: body.baseUrl, apiKey: body.apiKey }, { requireModel: false });
     let models: string[];
     try {
       models = await listModels(provider);

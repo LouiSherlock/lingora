@@ -49,7 +49,7 @@ export default function CreatePracticeClient({ initialTopic, initialLevel }: Cre
     setError("");
     try {
       const aiConfig = await getClientAISettings(ai);
-      if (!aiConfig.baseUrl || !aiConfig.credential || !aiConfig.model) throw new Error("请先在设置中填写兼容接口，获取并选择模型后确认配置。");
+      if (!aiConfig.baseUrl || !aiConfig.apiKey || !aiConfig.model) throw new Error("请先在设置中填写兼容接口，获取并选择模型后确认配置。");
       const response = await fetch("/api/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ topic, level, difficulty, count: Number(count), kind, custom, ai: aiConfig }), signal: controller.signal });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error);

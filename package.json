@@ -11,11 +11,13 @@
     "theme:build": "astryx theme build src/lingora-themes.ts --out src/themes/lingora/lingora.css"
   },
   "dependencies": {
+    "@ai-sdk/openai-compatible": "^3.0.93",
     "@astryxdesign/cli": "^0.7.16",
     "@astryxdesign/core": "^0.7.16",
     "@astryxdesign/theme-butter": "^0.7.16",
     "@astryxdesign/theme-neutral": "^0.7.16",
     "@stylexjs/stylex": "^0.19.2",
+    "ai": "^7.0.176",
     "canvas-confetti": "^1.9.4",
     "lucide-react": "^1.74.0",
     "motion": "^14.14.0",
