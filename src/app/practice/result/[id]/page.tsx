@@ -1,10 +1,9 @@
 "use client";
 import { ArrowLeft, ChartNoAxesColumnIncreasing, CircleCheck, RotateCcw } from "lucide-react";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Banner } from "@astryxdesign/core/Banner";
 import { useRouter } from "next/navigation";
-import confetti from "canvas-confetti";
 import { motion } from "motion/react";
 import { Badge } from "@astryxdesign/core/Badge";
 import { Button } from "@astryxdesign/core/Button";
@@ -28,18 +27,10 @@ const typeLabels: Record<Question["type"], string> = {
 export default function PracticeResult() {
   const router = useRouter();
   const result = useLearningStore((state) => state.latestResult);
-  const history = useLearningStore((state) => state.history);
   const start = useLearningStore((state) => state.start);
   const ai = useLearningStore((state) => state.settings);
   const [regenerating, setRegenerating] = useState(false);
   const [generationError, setGenerationError] = useState("");
-  const levelUp = history.length > 0 && history.length % 5 === 0;
-
-  useEffect(() => {
-    if (levelUp) {
-      confetti({ particleCount: 160, spread: 100, origin: { y: 0.55 } });
-    }
-  }, [levelUp]);
 
   if (!result) {
     return <VStack gap={4} className="page-container page-container--spacious"><Heading level={1}>暂时没有练习结果</Heading><Text>先完成一组练习，再查看详细解析。</Text><Button label="开始练习" href="/practice/create" variant="primary" /></VStack>;
@@ -79,7 +70,7 @@ export default function PracticeResult() {
     {regenerating ? <PracticeGenerating title="正在生成答题" description="AI 正在根据错题为你设计相似的新题…" /> : <>
     {generationError && <Banner status="warning" title="新题生成失败" description={generationError} isDismissable onDismiss={() => setGenerationError("")} />}
     <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
-      <Card><VStack gap={3} className="result-summary"><Badge label="练习已完成" variant="success" /><Heading level={1}>{percentage}%</Heading><Text>{practice.title} · 答对 {score} / {practice.questions.length} 题</Text>{levelUp && <Text type="label">学习等级提升，继续保持节奏！</Text>}</VStack></Card>
+      <Card><VStack gap={3} className="result-summary"><Badge label="练习已完成" variant="success" /><Heading level={1}>{percentage}%</Heading><Text>{practice.title} · 答对 {score} / {practice.questions.length} 题</Text></VStack></Card>
     </motion.div>
     <HStack gap={3} className="result-stats"><Card><HStack gap={3} vAlign="start"><CircleCheck size={24} aria-hidden="true" /><VStack gap={1}><Text type="label">答对</Text><Heading level={3}>{score}</Heading></VStack></HStack></Card><Card><HStack gap={3} vAlign="start"><RotateCcw size={24} aria-hidden="true" /><VStack gap={1}><Text type="label">待复习</Text><Heading level={3}>{wrongQuestions.length}</Heading></VStack></HStack></Card><Card><HStack gap={3} vAlign="start"><ChartNoAxesColumnIncreasing size={24} aria-hidden="true" /><VStack gap={1}><Text type="label">正确率</Text><Heading level={3}>{percentage}%</Heading></VStack></HStack></Card></HStack>
     {weakPoints.length > 0 && <Card><VStack gap={2}><Heading level={3}>优先复习</Heading><Text>{weakPoints.join("、")}</Text><Text type="supporting">先理解下方解析，再开始针对练习。</Text></VStack></Card>}

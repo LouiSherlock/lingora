@@ -42,40 +42,51 @@ RULES:
 
 ## Lingora repo notes
 
-**What this is.** AI-generated English practice (grammar + vocabulary) with a Chinese UI. Next.js 16.4 App Router, React 19.3, TypeScript, Zustand, Astryx design system. Single package managed with pnpm 11.0.9 — `pnpm-workspace.yaml` only lists `allowBuilds`, it is not a workspace. No database, auth, or tests.
+**What this is.** AI-generated English practice (grammar + vocabulary) with a Chinese UI. Next.js 16.4.6 App Router, React 19.3, TypeScript, Zustand, Astryx. Single package with pnpm 11.0.9; `pnpm-workspace.yaml` only lists build approvals, it is not a workspace. No database, auth, CI, or formatter.
 
 ### Commands
 
 - `pnpm dev` — Turbopack dev server on :3000.
-- `pnpm lint` — ESLint 9 flat config, no auto-fix. Single file: `pnpm exec eslint src/app/page.tsx`.
-- `pnpm exec tsc --noEmit` — typecheck (there is no npm script).
-- `pnpm build` — stop `pnpm dev` first. Both share `.next`; with dev running, `next build` panicked twice with `read_task_output: task TaskId ... no longer exists`.
+- `pnpm lint` — ESLint 9 flat config, no auto-fix. One file: `pnpm exec eslint src/app/page.tsx`.
+- `pnpm exec tsc --noEmit` — typecheck; there is no npm script.
+- `pnpm test` — Vitest (4 files). One file: `pnpm exec vitest run src/lib/practice-grade.test.ts`.
+- `pnpm theme:build` — rebuild the theme outputs from `src/lingora-themes.ts`; `--check` verifies freshness.
 - `pnpm exec astryx doctor --built src` — design-system/theme check; currently 0 fails, advisory warnings only.
-- There is no test runner, CI, or formatter. Don't invent `pnpm test`; verify with typecheck, lint, and the affected flow in the browser.
+- `pnpm build` — stop `pnpm dev` first. Both use `.next`; concurrent runs have crashed with `read_task_output: task TaskId ... no longer exists`.
 
-### Architecture you can't infer from filenames
+### AI request path
 
-- AI is configured on the server. `.env` supplies `PROVIDER_API_KEY` and `src/lib/ai/settings.ts` fixes the endpoint to `https://opencode.ai/inference/openai/v1`. `/settings` only selects `model`, which is persisted in the Zustand store; requests carry `{ model }` and never the key. The key stays server-side and must never be logged or sent to the browser.
-- Provider calls go through the AI SDK (`ai` v7) with `@ai-sdk/openai-compatible`: `src/lib/ai/client.ts` builds a per-request `createOpenAICompatible` client and calls `generateText`; `{baseURL}/models` stays a raw `fetch` because the SDK has no model-listing API. JSON mode and `conversation_id` are injected with the provider's `transformRequestBody` (v7 rejects system messages inside `messages` by default, so the system prompt is passed as `system`), and errors are re-mapped from `APICallError`/`RetryError` in `src/lib/ai/client.ts`. The endpoint is a constant, so local Ollama/LM Studio endpoints still cannot be used.
-- `POST /api/generate` normalizes model output in `normalizeQuestion` and enforces all three question types when `count >= 3`. Changing the `Question` shape in `src/lib/practice-data.ts` means updating that normalizer plus rendering in `practice/session/[id]` and `practice/result/[id]`.
-- Grading is client-side: `answer.trim().toLowerCase() === question.answer.trim().toLowerCase()`. The comparison is duplicated in the session and result pages; update both. `/api/grade` does not exist.
-- `docs/功能.md` is the original product spec, not the implementation. It still describes Tailwind, shadcn, Zod, IndexedDB practice history, `/mistakes`, `/analytics`, and `/api/grade`; none are implemented. `src/app/mistakes/` and `src/app/analytics/` are empty placeholders.
-- Persisted names retain the old product name: the Zustand store key is `englishflow-state`. `discardLegacyCredential()` clears the browser keys earlier builds used (`englishflow-api-key`, `englishflow-encrypted-api-key`) and the `englishflow-credentials` IndexedDB database on load. Renaming the store key silently loses users' history.
-- Grammar content is static in `src/lib/practice-data.ts`; `/grammar/[slug]` prebuilds via `generateStaticParams`, so new topics appear by adding them there.
+- Credentials are server-only: `.env` provides `PROVIDER_API_KEY`; `.env*` is gitignored. Never log, commit, or send the key to the browser. The base URL is fixed to `https://opencode.ai/inference/openai/v1` in `src/lib/ai/settings.ts`.
+- `opencode` is a singleton `createOpenAICompatible` client created at module load, so it reads `PROVIDER_API_KEY` at server start. Restart after changing `.env`. `readModel()` validates the browser's `{ model }`; routes never accept `baseUrl` or `apiKey`.
+- The `/settings` route only redirects home. The actual settings UI is `src/components/SettingsSheet.tsx` in the home header; it selects a model only. Zustand settings are `{ model, models }`; `src/lib/client-ai.ts` keeps legacy-key cleanup and `getClientAISettings()`.
+- `POST /api/generate` is non-streaming JSON (`generateText` + `responseFormat`). `POST /api/explain` streams UI messages (`streamText` + `toUIMessageStreamResponse`); `TutorSheet` consumes it with `@ai-sdk/react` `useChat` + `DefaultChatTransport`.
+- There is no server conversation/session id; `src/lib/ai/session.ts` was removed. Tutor history is persisted client-side in the Zustand store (`tutorMessages`, capped at the last 40) and restored into `useChat` when `TutorSheet` mounts.
+- The tutor sheet's open state is `?tutor=open` on the session URL, written with `history.replaceState` (not `router.replace`) so refresh reopens the sheet without a route transition or interrupting the stream.
+- `/api/models` is a raw `fetch` because the SDK has no model-listing API; on failure it retries `https://opencode.ai/inference/v1/models`.
+- Provider failures map to Chinese `AiError` messages in `errors.ts` / `client.ts`; keep user-facing errors Chinese.
+- Wrong-question regeneration sends up to 12,000 characters of context (`custom`).
+- Changing `Question`/`Practice` in `src/lib/practice-data.ts` means updating `src/lib/ai/practice/normalize.ts`, `src/lib/practice-grade.ts`, and rendering in `practice/session/[id]` and `practice/result/[id]`.
+
+### Deterministic rules
+
+- Grading lives only in `src/lib/practice-grade.ts` (`normalizeAnswer`, `isAnswerCorrect`, `answerLabel`). Do not compare answers in pages. `/api/grade` does not exist.
+- `grammarTopics` in `src/lib/practice-data.ts` is currently unused: the `/grammar` routes were removed. Delete it or wire a replacement route before relying on it.
+- The Zustand store key is `englishflow-state`; renaming it loses users' history. `discardLegacyCredential()` clears the old `englishflow-api-key`, `englishflow-encrypted-api-key`, and `englishflow-credentials` IndexedDB database.
+- `docs/功能.md` is the original product spec, not the implementation; it still names Tailwind, shadcn, IndexedDB, `/grammar`, `/mistakes`, `/analytics`, and `/api/grade`, which do not exist.
 
 ### Next.js 16 specifics
 
-- `next.config.ts` enables `cacheComponents`, `partialPrefetching`, and `reactCompiler`. Read `node_modules/next/dist/docs/01-app/` before touching routing or caching; this version differs from older App Router defaults.
-- `params` and `searchParams` are Promises; await them. `practice/create/page.tsx` opts out of instant-navigation checks with `export const instant = false` because it reads `searchParams`; keep it unless the route is restructured.
+- `next.config.ts` enables `cacheComponents`, `partialPrefetching`, and `reactCompiler`. Read `node_modules/next/dist/docs/01-app/` before changing routing or caching.
+- `params` and `searchParams` are Promises. `practice/create/page.tsx` keeps `export const instant = false` because it reads `searchParams`.
 - `LayoutProps<"/">` in `src/app/layout.tsx` is a Next-generated global type, not an import.
-- Every page is a client component except the `practice/create` server wrapper and `grammar/[slug]`. Pages that read the persisted store wait for `persist.hasHydrated()`; keep that gate to avoid hydration mismatches.
+- Interactive pages are client components; `src/app/page.tsx` and the `practice/create` wrapper are server components (home and create delegate to client components). Pages that read the persisted store gate on `persist.hasHydrated()` (see the `useSyncExternalStore` pattern in the session page) to avoid hydration mismatches.
 
-### UI, styling, and theme
+### UI, styling, theme
 
-- Use Astryx imports (`@astryxdesign/core/VStack`, `.../Card`, …) rather than plain HTML layout. Existing exceptions: `motion.div` for animation and semantic `section`/`header`/`main`.
-- The Astryx instructions above mention Tailwind utilities, but **Tailwind is not installed**. Use component props (`gap`, `padding`, `variant`), the classes in `src/app/globals.css` (`page-container`, `page-container--compact|regular|spacious`, `site-header`, `recommendation-grid`, `grammar-grid`, `centered-content`, `result-summary`), and `var(--color-*)`/spacing tokens.
-- The app is dark-only: `layout.tsx` sets `data-theme="dark"` and `<Theme mode="dark">`. `globals.css` hardcodes `#261a13`, duplicating the theme's `--color-background-surface`; prefer the token when editing.
-- Theme source is `themes/lingora/` (`lingora.settings.json` and custom overrides in `lingora.theme.ts`). `themes/lingora/lingora.{css,js,settings.ts}`, `src/themes/lingora/*`, and `src/astryx-themes.ts` are generated — do not hand-edit. Change palette/tokens with `pnpm exec astryx experimental theme editor ...`, then re-run `astryx doctor --built src`; ESLint ignores both theme directories.
+- Use Astryx components. Tailwind is NOT installed despite the Astryx block above; use component props, the classes in `src/app/globals.css`, and `var(--color-*)`/spacing tokens. The app is dark-only (`data-theme="dark"`, `<Theme mode="dark">`).
+- App-specific CSS lives in `globals.css` (`page-container*`, `site-header`, grids, `tutor-sheet*`, scrollbars, bottom-sheet width). Add classes there rather than new CSS files.
+- Theme source is `src/lingora-themes.ts` (`export default defineTheme(...)`, extends butter). Put app-only variables under `localTokens` (e.g. `--layout-page-width`) and component overrides under `components` (e.g. banner error color). Run `pnpm theme:build`; verify freshness with the same build plus `--check`. `src/themes/lingora/{css,js,d.ts}` is generated and must not be hand-edited. The experimental theme editor is not wired here (no CLI-managed theme folder), so edit the source and build. ESLint ignores the theme directories.
+- **StyleX/theme cascade gotcha:** `.babelrc.js` sets `runtimeInjection: true`, and injected atomic classes are unlayered, so they beat every rule in `@layer astryx-theme`. A declaration that happens to match an Astryx class (e.g. button `color`/`padding-inline`, selector border) can silently override theme values after hydration. If a component's color or size changes after load, compare computed styles with and without the `style[data-stylex]` sheet before chasing the theme.
 - UI copy is Chinese; English is only for generated question stems/options. Explanations and error messages stay Simplified Chinese.
 
 让你做什么就做什么，不要擅自做任务，不要猜测需求，不懂就问

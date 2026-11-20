@@ -79,13 +79,6 @@ main {
   padding-bottom: 1rem;
 }
 
-.recommendation-grid,
-.grammar-grid {
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: minmax(0, 1fr);
-}
-
 .centered-content {
   align-items: center;
   justify-content: center;
@@ -181,13 +174,3 @@ main {
   to { opacity: 0.25; transform: scale(0.65); }
 }
 
-
-@media (min-width: 48rem) {
-  .grammar-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .recommendation-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}

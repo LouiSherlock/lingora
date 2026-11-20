@@ -1,8 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
+import { DefaultChatTransport, type UIMessage } from "ai";
 import { BotMessageSquare } from "lucide-react";
 import { Avatar } from "@astryxdesign/core/Avatar";
 import { BottomSheet } from "@astryxdesign/core/BottomSheet";
@@ -16,18 +16,52 @@ import { VStack } from "@astryxdesign/core/VStack";
 import { getClientAISettings, type ClientAISettings } from "@/lib/client-ai";
 import { answerLabel } from "@/lib/practice-grade";
 import type { Question } from "@/lib/practice-data";
+import { useLearningStore } from "@/stores/learning-store";
 
 type TutorSheetProps = {
   question: Question;
   ai: ClientAISettings;
 };
 
+const EMPTY_TUTOR_MESSAGES: UIMessage[] = [];
+
+/** 刷新后从地址栏恢复助教面板的展开状态。 */
+function readTutorOpenFromURL() {
+  if (typeof window === "undefined") return false;
+  return new URLSearchParams(window.location.search).get("tutor") === "open";
+}
+
 export function TutorSheet({ question, ai }: TutorSheetProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(readTutorOpenFromURL);
   const [draft, setDraft] = useState("");
+
+  /**
+   * URL 只作为刷新恢复用的标记；用 replaceState 更新，避免触发 Next 路由
+   * 导航（否则可能重渲染并中断正在进行的回答）。
+   */
+  function setTutorOpen(open: boolean) {
+    setIsOpen(open);
+    const url = new URL(window.location.href);
+    if (open) url.searchParams.set("tutor", "open");
+    else url.searchParams.delete("tutor");
+    window.history.replaceState(window.history.state, "", url);
+  }
+  const tutorMessages = useLearningStore((s) => s.tutorMessages);
+  const setTutorMessages = useLearningStore((s) => s.setTutorMessages);
   const transport = useMemo(() => new DefaultChatTransport({ api: "/api/explain" }), []);
-  const { messages, sendMessage, status, stop, error } = useChat({ transport });
+  const { messages, sendMessage, status, stop, error } = useChat({
+    // 只作为挂载时的初始消息；刷新后从 store 恢复。
+    messages: tutorMessages ?? EMPTY_TUTOR_MESSAGES,
+    transport,
+  });
   const isStreaming = status === "submitted" || status === "streaming";
+
+  // 流式期间不写 localStorage；提交时先存用户问题，完成后存完整回答。
+  useEffect(() => {
+    if (messages.length && (status === "submitted" || status === "ready")) {
+      setTutorMessages(messages);
+    }
+  }, [messages, status, setTutorMessages]);
 
   async function ask(value: string) {
     const followUp = value.trim();
@@ -38,22 +72,22 @@ export function TutorSheet({ question, ai }: TutorSheetProps) {
       body: {
         question: question.stem,
         answer: answerLabel(question),
-        explanation: question.explanation,
+        options: question.options,
         ai: clientAI,
       },
     });
   }
 
   return <>
-    <Button label="AI 助教" icon={<BotMessageSquare size={16} />} variant="secondary" onClick={() => setIsOpen(true)} />
-    <BottomSheet isOpen={isOpen} onOpenChange={setIsOpen} label="AI 助教" height="tall" padding={0} purpose="form">
+    <Button label="AI 助教" icon={<BotMessageSquare size={16} />} variant="secondary" onClick={() => setTutorOpen(true)} />
+    <BottomSheet isOpen={isOpen} onOpenChange={setTutorOpen} label="AI 助教" height="tall" padding={0} purpose="form">
       <VStack gap={0} className="tutor-sheet">
         <HStack className="tutor-sheet__header" hAlign="between" vAlign="center">
           <VStack gap={1}>
             <Heading level={2}>AI 助教</Heading>
-            <Text type="supporting">本次练习的对话会在这里保留</Text>
+            <Text type="supporting">本次练习的对话会保留，刷新后仍可继续</Text>
           </VStack>
-          <Button label="关闭" variant="ghost" size="sm" onClick={() => setIsOpen(false)} />
+          <Button label="关闭" variant="ghost" size="sm" onClick={() => setTutorOpen(false)} />
         </HStack>
         <ChatLayout
           density="compact"
@@ -70,7 +104,7 @@ export function TutorSheet({ question, ai }: TutorSheetProps) {
         >
           <ChatMessageList align="top" isStreaming={isStreaming}>
             {messages.map((message) => <ChatMessage key={message.id} sender={message.role} avatar={message.role === "assistant" ? <Avatar name="AI 助教" size="sm" /> : null}>
-              <ChatMessageBubble variant={message.role === "assistant" ? "ghost" : "filled"} name={message.role === "assistant" ? "AI 助教" : "你"}>
+              <ChatMessageBubble variant="filled">
                 <Markdown density="compact">{message.parts.filter((part) => part.type === "text").map((part) => part.text).join("") || (message.role === "assistant" ? "正在思考…" : "")}</Markdown>
               </ChatMessageBubble>
             </ChatMessage>)}

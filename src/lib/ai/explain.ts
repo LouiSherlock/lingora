@@ -7,7 +7,10 @@ import { tutorSystemPrompt } from "./prompts";
 const requestSchema = z.object({
   question: z.string().min(1).max(2000),
   answer: z.string().max(500).optional(),
-  explanation: z.string().max(4000).optional(),
+  options: z.array(z.object({
+    key: z.string().max(20),
+    text: z.string().max(500),
+  })).max(4).optional(),
   messages: z.array(z.unknown()).min(1).max(40),
 });
 
@@ -22,8 +25,8 @@ export function parseTutorRequest(body: unknown): TutorInput {
 export async function streamTutorReply(input: TutorInput & { model: string; messages: UIMessage[]; signal?: AbortSignal }) {
   const context = [
     `题目：${input.question}`,
-    input.answer ? `正确答案：${input.answer}` : "",
-    input.explanation ? `解析：${input.explanation}` : "",
+    input.options?.length ? `选项：${input.options.map((option) => `${option.key}. ${option.text}`).join("；")}` : "",
+    input.answer ? `用户回答：${input.answer}` : "",
   ].filter(Boolean).join("\n");
   const history = await convertToModelMessages(input.messages);
   const messages: ModelMessage[] = [
