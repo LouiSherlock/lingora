@@ -3,10 +3,9 @@ import { listModels } from "@/lib/ai/client";
 import { toErrorBody } from "@/lib/ai/errors";
 import { readProvider } from "@/lib/ai/settings";
 
-export async function POST(request: Request) {
+export async function POST() {
   try {
-    const body = await request.json() as { baseUrl?: unknown; apiKey?: unknown };
-    const provider = readProvider({ baseUrl: body.baseUrl, apiKey: body.apiKey }, { requireModel: false });
+    const provider = readProvider({}, { requireModel: false });
     let models: string[];
     try {
       models = await listModels(provider);

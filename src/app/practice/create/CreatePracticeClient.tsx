@@ -4,11 +4,13 @@ import { ArrowLeft } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Banner } from "@astryxdesign/core/Banner";
+import { BottomSheet } from "@astryxdesign/core/BottomSheet";
 import { Button } from "@astryxdesign/core/Button";
 import { Card } from "@astryxdesign/core/Card";
 import { Heading } from "@astryxdesign/core/Heading";
 import { HStack } from "@astryxdesign/core/HStack";
-import { Selector } from "@astryxdesign/core/Selector";
+import { Item } from "@astryxdesign/core/Item";
+import { List } from "@astryxdesign/core/List";
 import { Switch } from "@astryxdesign/core/Switch";
 import { Text } from "@astryxdesign/core/Text";
 import { TextInput } from "@astryxdesign/core/TextInput";
@@ -17,6 +19,7 @@ import { getClientAISettings } from "../../../lib/client-ai";
 import { useLearningStore } from "../../../stores/learning-store";
 import presets from "../../../data/preset.json";
 import { PracticeGenerating } from "../../../components/PracticeGenerating";
+import { SelectField } from "../../../components/SelectField";
 
 type CreatePracticeClientProps = { initialTopic: string; initialLevel: string };
 
@@ -31,15 +34,13 @@ export default function CreatePracticeClient({ initialTopic, initialLevel }: Cre
   const [difficulty, setDifficulty] = useState("Medium");
   const [count, setCount] = useState("5");
   const [kind, setKind] = useState("Grammar");
+  const [isTopicSheetOpen, setIsTopicSheetOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const requestController = useRef<AbortController | null>(null);
   useEffect(() => () => requestController.current?.abort(), []);
   const levelPreset = presets.levels.find((item) => item.id === level);
   const topicGroups = kind === "Grammar" ? levelPreset?.grammar : levelPreset?.vocabulary;
-  const topicOptions = (topicGroups ?? []).flatMap((group) => [
-    { type: "section" as const, title: group.name, options: group.topics.map((item) => ({ value: item.name, label: item.name })) },
-  ]);
 
   async function generate() {
     const controller = new AbortController();
@@ -49,7 +50,7 @@ export default function CreatePracticeClient({ initialTopic, initialLevel }: Cre
     setError("");
     try {
       const aiConfig = await getClientAISettings(ai);
-      if (!aiConfig.baseUrl || !aiConfig.apiKey || !aiConfig.model) throw new Error("请先在设置中填写兼容接口，获取并选择模型后确认配置。");
+      if (!aiConfig.model) throw new Error("请先在设置中选择模型。");
       const response = await fetch("/api/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ topic, level, difficulty, count: Number(count), kind, custom, ai: aiConfig }), signal: controller.signal });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error);
@@ -74,11 +75,27 @@ export default function CreatePracticeClient({ initialTopic, initialLevel }: Cre
     {error && <Banner status="warning" title="练习生成失败" description={error} isDismissable onDismiss={() => setError("")} endContent={<Button label="检查 AI 设置" href="/settings" variant="secondary" />} />}
     <Card><VStack gap={5}>
       <VStack gap={2}><Text type="label">学习类型</Text><HStack gap={2} wrap="wrap">{([ ["Grammar", "语法"], ["Vocabulary", "词汇"] ] as const).map(([value, label]) => <Button key={value} label={label} variant={kind === value ? "primary" : "secondary"} onClick={() => setKind(value)} />)}</HStack></VStack>
-      <VStack gap={2}><Text type="label">英语等级</Text><HStack wrap="wrap" gap={2}>{["A1", "A2", "B1", "B2", "C1", "C2"].map((value) => <Button key={value} label={value} variant={level === value ? "primary" : "secondary"} onClick={() => setLevel(value)} />)}</HStack></VStack>
+      <VStack gap={2}><Text type="label">英语等级</Text><HStack wrap="wrap" gap={2}>{["A1", "A2", "B1", "B2", "C1", "C2"].map((value) => <Button key={value} label={value} variant={level === value ? "primary" : "secondary"} onClick={() => { if (value !== level) { setLevel(value); setTopic(""); } }} />)}</HStack></VStack>
       <VStack gap={2}>
         {isManualTopic
           ? <TextInput label="知识点 / 主题" value={topic} onChange={setTopic} placeholder="例如：现在完成时、旅行词汇" />
-          : <Selector label="选择知识点 / 主题" options={topicOptions} value={topicOptions.some((option) => option.type === "section" && option.options.some((item) => item.value === topic)) ? topic : ""} onChange={setTopic} hasSearch placeholder="按英语等级选择主题" />}
+          : <>
+              <SelectField label="选择知识点 / 主题" value={topic} placeholder="按英语等级选择主题" onClick={() => setIsTopicSheetOpen(true)} />
+              <BottomSheet isOpen={isTopicSheetOpen} onOpenChange={setIsTopicSheetOpen} label="选择知识点 / 主题" height="tall">
+                <VStack gap={4}>
+                  {(topicGroups ?? []).map((group) => (
+                    <VStack key={group.name} gap={1}>
+                      <Text type="label" color="accent">{group.name}</Text>
+                      <List density="compact" edge="flush">
+                        {group.topics.map((item) => (
+                          <Item key={item.name} label={item.name} isSelected={item.name === topic} onClick={() => { setTopic(item.name); setIsTopicSheetOpen(false); }} />
+                        ))}
+                      </List>
+                    </VStack>
+                  ))}
+                </VStack>
+              </BottomSheet>
+            </>}
         <HStack hAlign="end" paddingBlockStart={1}>
           <Switch label="手动输入主题" value={isManualTopic} onChange={setIsManualTopic} />
         </HStack>

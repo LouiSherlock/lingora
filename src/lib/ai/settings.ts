@@ -2,11 +2,12 @@ import { z } from "zod";
 import { validateProviderUrl } from "../ai-url";
 import { AiError } from "./errors";
 
+/** Fixed OpenAI-compatible endpoint; the browser never supplies it. */
+export const PROVIDER_BASE_URL = "https://opencode.ai/inference/openai/v1";
+
 /** What the browser sends as `ai` on every AI request. */
 const providerSchema = z.object({
-  baseUrl: z.string().max(500),
   model: z.string().max(200).optional(),
-  apiKey: z.string().max(2048),
 });
 
 export type Provider = {
@@ -27,34 +28,29 @@ export function providerBaseURL(provider: Provider): string {
   return `${provider.origin.origin}${provider.prefix}`;
 }
 
-function readAPIKey(apiKey: string): string {
-  const value = apiKey.trim();
-  if (!value) throw new Error("API key is required");
+function readServerAPIKey(): string {
+  const value = process.env.PROVIDER_API_KEY?.trim();
+  if (!value) throw new AiError("config", "服务端未配置 PROVIDER_API_KEY，请在 .env 中设置后重启服务。");
   return value;
 }
 
 /**
- * Validates the AI configuration a route received. Every AI route goes through
- * here, so the checks cannot drift apart.
+ * Validates the model a route received and pairs it with the server-side key
+ * and fixed endpoint. Every AI route goes through here, so the checks cannot
+ * drift apart.
  */
 export function readProvider(input: unknown, options: { requireModel?: boolean } = {}): Provider {
   const { requireModel = true } = options;
-  const parsed = providerSchema.safeParse(input);
+  const parsed = providerSchema.safeParse(input ?? {});
   if (!parsed.success) throw new AiError("config");
-  const origin = validateProviderUrl(parsed.data.baseUrl);
-  if (!origin) throw new AiError("config", "兼容接口地址无效，请填写公网可访问的 http(s) 地址。");
-  let apiKey: string;
-  try {
-    apiKey = readAPIKey(parsed.data.apiKey);
-  } catch {
-    throw new AiError("config", "无法读取 API Key，请重新填写并确认配置。");
-  }
+  const origin = validateProviderUrl(PROVIDER_BASE_URL);
+  if (!origin) throw new AiError("config", "AI 接口地址无效，请检查服务端配置。");
   const model = parsed.data.model?.trim() ?? "";
-  if (requireModel && !model) throw new AiError("config", "请先选择模型。");
+  if (requireModel && !model) throw new AiError("config", "请先在设置中选择模型。");
   return {
     origin,
     prefix: origin.pathname.replace(/\/$/, ""),
     model,
-    apiKey,
+    apiKey: readServerAPIKey(),
   };
 }

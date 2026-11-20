@@ -12,7 +12,7 @@ type LearningState = {
   active: Practice | null; answers: AnswerMap; current: number; uncertain: string[]; submitted: string[]; completed: string[]; history: Practice[];
   latestResult: { practice: Practice; answers: AnswerMap } | null;
   conversation: ChatTurn[];
-  settings: { baseUrl: string; model: string; models: string[]; rememberKey: boolean };
+  settings: { model: string; models: string[] };
   start: (p: Practice) => void; answer: (id: string, value: string) => void; go: (n: number) => void;
   submit: (id: string) => void; advance: () => void; discard: () => void;
   toggleUncertain: (id: string) => void; finish: () => void; updateSettings: (s: Partial<LearningState["settings"]>) => void;
@@ -21,7 +21,7 @@ type LearningState = {
 };
 export const useLearningStore = create<LearningState>()(persist((set, get) => ({
   active: null, answers: {}, current: 0, uncertain: [], submitted: [], completed: [], history: [], latestResult: null, conversation: [],
-  settings: { baseUrl: "https://opencode.ai/inference/openai/v1", model: "", models: [], rememberKey: true },
+  settings: { model: "", models: [] },
   start: (p) => set({ active: p, answers: {}, current: 0, uncertain: [], submitted: [], completed: [], conversation: [] }),
   answer: (id, value) => set({ answers: { ...get().answers, [id]: value } }),
   go: (n) => set({ current: Math.max(0, Math.min(n, (get().active?.questions.length ?? 1) - 1)) }),

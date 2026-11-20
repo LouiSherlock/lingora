@@ -9,7 +9,7 @@ const DEFAULT_STATUS: Record<AiErrorCode, number> = {
 };
 
 const DEFAULT_MESSAGE: Record<AiErrorCode, string> = {
-  config: "请先完成 AI 兼容接口配置，并选择模型。",
+  config: "请先在设置中选择模型。",
   "invalid-request": "请求参数无效。",
   upstream: "AI 服务暂时不可用，请稍后重试。",
   timeout: "AI 服务响应超时，请稍后重试。",
