@@ -124,6 +124,12 @@ main {
   text-align: center;
 }
 
+/* Markdown 正文里的标题和加粗统一使用主题色。 */
+.astryx-markdown :is(h1, h2, h3),
+.astryx-markdown strong {
+  color: var(--color-accent);
+}
+
 .practice-generating__art {
   width: 10rem;
   height: 10rem;

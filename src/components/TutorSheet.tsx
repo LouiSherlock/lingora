@@ -3,13 +3,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
-import { BotMessageSquare } from "lucide-react";
-import { Avatar } from "@astryxdesign/core/Avatar";
+import { Bot, BotMessageSquare } from "lucide-react";
 import { BottomSheet } from "@astryxdesign/core/BottomSheet";
 import { Button } from "@astryxdesign/core/Button";
 import { ChatComposer, ChatLayout, ChatMessage, ChatMessageBubble, ChatMessageList } from "@astryxdesign/core/Chat";
 import { Heading } from "@astryxdesign/core/Heading";
 import { HStack } from "@astryxdesign/core/HStack";
+import { Icon } from "@astryxdesign/core/Icon";
 import { Markdown } from "@astryxdesign/core/Markdown";
 import { Text } from "@astryxdesign/core/Text";
 import { VStack } from "@astryxdesign/core/VStack";
@@ -55,6 +55,10 @@ export function TutorSheet({ question, ai }: TutorSheetProps) {
     transport,
   });
   const isStreaming = status === "submitted" || status === "streaming";
+  const lastMessage = messages[messages.length - 1];
+  // 发出后到第一个 assistant 消息出现之前，先渲染一个“思考中”占位。
+  const showsPendingAssistant = isStreaming && lastMessage?.role !== "assistant";
+  const assistantAvatar = <Icon icon={Bot} size="lg" color="accent" />;
 
   // 流式期间不写 localStorage；提交时先存用户问题，完成后存完整回答。
   useEffect(() => {
@@ -80,7 +84,7 @@ export function TutorSheet({ question, ai }: TutorSheetProps) {
 
   return <>
     <Button label="AI 助教" icon={<BotMessageSquare size={16} />} variant="secondary" onClick={() => setTutorOpen(true)} />
-    <BottomSheet isOpen={isOpen} onOpenChange={setTutorOpen} label="AI 助教" height="tall" padding={0} purpose="form">
+    <BottomSheet isOpen={isOpen} onOpenChange={setTutorOpen} label="AI 助教" height="tall" padding={0} purpose="info">
       <VStack gap={0} className="tutor-sheet">
         <HStack className="tutor-sheet__header" hAlign="between" vAlign="center">
           <VStack gap={1}>
@@ -103,11 +107,16 @@ export function TutorSheet({ question, ai }: TutorSheetProps) {
           emptyState={<VStack gap={2} className="tutor-sheet__empty"><Heading level={3}>有什么想问的？</Heading><Text>我会结合当前题目、答案和解析为你说明。</Text></VStack>}
         >
           <ChatMessageList align="top" isStreaming={isStreaming}>
-            {messages.map((message) => <ChatMessage key={message.id} sender={message.role} avatar={message.role === "assistant" ? <Avatar name="AI 助教" size="sm" /> : null}>
+            {messages.map((message) => <ChatMessage key={message.id} sender={message.role} avatar={message.role === "assistant" ? assistantAvatar : null}>
               <ChatMessageBubble variant="filled">
                 <Markdown density="compact">{message.parts.filter((part) => part.type === "text").map((part) => part.text).join("") || (message.role === "assistant" ? "正在思考…" : "")}</Markdown>
               </ChatMessageBubble>
             </ChatMessage>)}
+            {showsPendingAssistant && <ChatMessage sender="assistant" avatar={assistantAvatar}>
+              <ChatMessageBubble variant="filled">
+                <Markdown density="compact">正在思考…</Markdown>
+              </ChatMessageBubble>
+            </ChatMessage>}
           </ChatMessageList>
         </ChatLayout>
       </VStack>

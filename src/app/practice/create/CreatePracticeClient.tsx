@@ -72,7 +72,7 @@ export default function CreatePracticeClient({ initialTopic, initialLevel }: Cre
     <HStack as="header" hAlign="start"><Button label="返回" icon={<ArrowLeft size={16} />} href="/" variant="ghost" onClick={() => requestController.current?.abort()} /></HStack>
     {loading ? <PracticeGenerating /> : <>
     <VStack gap={1}><Text type="label">个性化练习</Text><Heading level={1}>创建 AI 练习</Heading><Text>设置练习目标，生成适合你的英语题目。</Text></VStack>
-    {error && <Banner status="warning" title="练习生成失败" description={error} isDismissable onDismiss={() => setError("")} endContent={<Button label="检查 AI 设置" href="/settings" variant="secondary" />} />}
+    {error && <Banner status="warning" title="练习生成失败" description={error} isDismissable onDismiss={() => setError("")} endContent={<Button label="检查 AI 设置" href="/settings" style={{color:'var(--color-on-warning-muted)',borderColor:'var(--color-on-warning-muted)'}} />} />}
     <Card><VStack gap={5}>
       <VStack gap={2}><Text type="label">学习类型</Text><HStack gap={2} wrap="wrap">{([ ["Grammar", "语法"], ["Vocabulary", "词汇"] ] as const).map(([value, label]) => <Button key={value} label={label} variant={kind === value ? "primary" : "secondary"} onClick={() => setKind(value)} />)}</HStack></VStack>
       <VStack gap={2}><Text type="label">英语等级</Text><HStack wrap="wrap" gap={2}>{["A1", "A2", "B1", "B2", "C1", "C2"].map((value) => <Button key={value} label={value} variant={level === value ? "primary" : "secondary"} onClick={() => { if (value !== level) { setLevel(value); setTopic(""); } }} />)}</HStack></VStack>
