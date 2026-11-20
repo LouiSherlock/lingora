@@ -42,7 +42,7 @@ RULES:
 
 ## Lingora repo notes
 
-**What this is.** AI-generated English practice (grammar + vocabulary) with a Chinese UI. Next.js 16.4.6 App Router, React 19.3, TypeScript, Zustand, Astryx. Single package with pnpm 11.0.9; `pnpm-workspace.yaml` only lists build approvals, it is not a workspace. No database, auth, CI, or formatter.
+**What this is.** AI-generated English practice (grammar + vocabulary) with a Chinese UI. Next.js 16.4.6 App Router, React 19.3, TypeScript, Zustand, Astryx. Single package with pnpm 11.0.9; `pnpm-workspace.yaml` only lists build approvals, it is not a workspace. No database, CI, or formatter; auth uses a configured six-digit code and one-hour JWT.
 
 ### Commands
 
@@ -57,6 +57,7 @@ RULES:
 ### AI request path
 
 - Credentials are server-only: `.env` provides `PROVIDER_API_KEY`; `.env*` is gitignored. Never log, commit, or send the key to the browser. The base URL is fixed to `https://opencode.ai/inference/openai/v1` in `src/lib/ai/settings.ts`.
+- Protected API requests use `Authorization: Bearer <JWT>` through `src/lib/auth-client.ts`; `src/proxy.ts` guards APIs, client-side `AuthGuard` redirects unauthenticated non-home pages, and AI API route handlers repeat JWT verification as defense in depth. Configure `AUTH_SECRET` (at least 32 characters) and six-digit `AUTH_CODE` in `.env.local`; do not commit real values. Tokens are stored only in localStorage; do not add an auth cookie.
 - `opencode` is a singleton `createOpenAICompatible` client created at module load, so it reads `PROVIDER_API_KEY` at server start. Restart after changing `.env`. `readModel()` validates the browser's `{ model }`; routes never accept `baseUrl` or `apiKey`.
 - The `/settings` route only redirects home. The actual settings UI is `src/components/SettingsSheet.tsx` in the home header; it selects a model only. Zustand settings are `{ model, models }`; `src/lib/client-ai.ts` keeps legacy-key cleanup and `getClientAISettings()`.
 - `POST /api/generate` is non-streaming JSON (`generateText` + `responseFormat`). `POST /api/explain` streams UI messages (`streamText` + `toUIMessageStreamResponse`); `TutorSheet` consumes it with `@ai-sdk/react` `useChat` + `DefaultChatTransport`.

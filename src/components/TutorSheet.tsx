@@ -17,6 +17,7 @@ import { getClientAISettings, type ClientAISettings } from "@/lib/client-ai";
 import { answerLabel } from "@/lib/practice-grade";
 import type { Question } from "@/lib/practice-data";
 import { useLearningStore } from "@/stores/learning-store";
+import { apiFetch } from "@/lib/auth-client";
 
 type TutorSheetProps = {
   question: Question;
@@ -48,7 +49,7 @@ export function TutorSheet({ question, ai }: TutorSheetProps) {
   }
   const tutorMessages = useLearningStore((s) => s.tutorMessages);
   const setTutorMessages = useLearningStore((s) => s.setTutorMessages);
-  const transport = useMemo(() => new DefaultChatTransport({ api: "/api/explain" }), []);
+  const transport = useMemo(() => new DefaultChatTransport({ api: "/api/explain", fetch: apiFetch }), []);
   const { messages, sendMessage, status, stop, error } = useChat({
     // 只作为挂载时的初始消息；刷新后从 store 恢复。
     messages: tutorMessages ?? EMPTY_TUTOR_MESSAGES,

@@ -1,9 +1,9 @@
 import { z } from "zod";
-import type { Practice, Question } from "../../practice-data";
-import { chatCompletion, type ChatMessage } from "../client";
-import { AiError } from "../errors";
-import { practiceSystemPrompt, practiceTypeRepair } from "../prompts";
-import { QUESTION_TYPES, normalizeQuestions, parseQuestionsPayload, typeCoverage } from "./normalize";
+import type { Practice, Question } from "@/lib/practice-data.ts";
+import { chatCompletion, type ChatMessage } from "@/lib/ai/client.ts";
+import { AiError } from "@/lib/ai/errors.ts";
+import { practiceSystemPrompt, practiceTypeRepair } from "@/lib/ai/prompts.ts";
+import { QUESTION_TYPES, normalizeQuestions, parseQuestionsPayload, typeCoverage } from "@/lib/ai/practice/normalize.ts";
 
 const requestSchema = z.object({
   topic: z.string().max(120).optional(),

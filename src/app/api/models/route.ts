@@ -1,7 +1,11 @@
 import { toErrorBody } from '@/lib/ai/errors';
 import { NextResponse } from 'next/server';
+import { authorizeApiRequest } from '@/lib/api-auth';
 
-export async function POST() {
+export async function POST(request: Request) {
+  const authResponse = await authorizeApiRequest(request);
+  if (authResponse) return authResponse;
+
   try {
 
     return NextResponse.json({

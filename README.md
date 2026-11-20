@@ -16,7 +16,7 @@ Lingora 是一个面向中文学习者的英语练习应用。它不像题库那
 ## 核心功能
 
 ### 1. 三十秒开始
-首页直接选目标等级（A1–C2），点「开始练习」进入创建页。背景是漂移的英文词云，鼠标划过会散开。
+首页直接选目标等级（A1–C2），点「开始 AI 练习」进入创建页。首次使用会弹出 6 位登录码输入框，验证成功后自动继续；直接进入任何其他页面都需要有效登录，否则会返回首页。背景是漂移的英文词云，鼠标划过会散开。
 
 ### 2. 按需定制练习
 - **学习类型**：语法 / 词汇
@@ -87,7 +87,7 @@ Lingora 是一个面向中文学习者的英语练习应用。它不像题库那
 pnpm install
 ```
 
-在项目根目录创建 `.env`：
+在项目根目录创建 `.env.local`（或 `.env`）：
 
 ```bash
 # 必填：服务端调用 AI 的密钥，永远不会下发到浏览器
@@ -95,7 +95,15 @@ PROVIDER_API_KEY=your-api-key
 
 # 选填：OpenAI 兼容接口地址
 PROVIDER_BASE_URL=https://your-endpoint/v1
+
+# 登录认证：AUTH_SECRET 使用 openssl rand -base64 32 生成
+# node -e "console.log(require('node:crypto').randomBytes(32).toString('base64'))"
+AUTH_SECRET=your-random-secret-at-least-32-characters
+# 私有的 6 位登录码
+AUTH_CODE=replace-with-your-private-6-digit-code
 ```
+
+登录码错误时会按来源 IP 限流：15 分钟内最多 5 次失败。限流状态保存在当前 Node.js 进程内，多实例部署时请替换为 Redis 等共享存储，并确保反向代理覆盖 `x-forwarded-for`。JWT 保存在浏览器 `localStorage`，所有受保护的 API 请求都会带上 Bearer token；非首页页面由客户端检查登录状态后开放。请注意 `localStorage` token 可能被 XSS 读取。
 
 启动开发服务器：
 
@@ -103,7 +111,7 @@ PROVIDER_BASE_URL=https://your-endpoint/v1
 pnpm dev        # http://localhost:3000
 ```
 
-首次使用请在右上角「设置」里选择模型（或直接填写模型名称）。
+登录后请在右上角「设置」里选择模型（或直接填写模型名称）。
 
 ## 常用命令
 

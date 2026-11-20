@@ -1,6 +1,6 @@
 import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
 import { z } from "zod";
-import { AiError } from "./errors";
+import { AiError } from "@/lib/ai/errors.ts";
 
 /** Fixed OpenAI-compatible endpoint; the browser never supplies it. */
 const PROVIDER_BASE_URL = process.env.PROVIDER_BASE_URL as string;

@@ -1,6 +1,6 @@
 import { z } from "zod";
-import type { Question } from "../../practice-data";
-import { AiError } from "../errors";
+import type { Question } from "@/lib/practice-data.ts";
+import { AiError } from "@/lib/ai/errors.ts";
 
 export const QUESTION_TYPES: Question["type"][] = ["single_choice", "fill_blank", "true_false"];
 

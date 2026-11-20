@@ -1,11 +1,12 @@
 'use client';
 
-import { useRef, useState, type PointerEvent } from 'react';
+import { useEffect, useRef, useState, type PointerEvent } from 'react';
 import * as stylex from '@stylexjs/stylex';
 import { motion, useMotionValue, useReducedMotion, useSpring, type Variants } from 'motion/react';
 import { useRouter } from 'next/navigation';
-import WordField, { type WordFieldHandle } from './WordField';
+import WordField, { type WordFieldHandle } from '@/components/landing/core/WordField.tsx';
 import { SettingsSheet } from '@/components/SettingsSheet';
+import { getToken, requestLogin } from '@/lib/auth-client';
 
 const GOALS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
 const MOBILE = '@media (max-width: 720px)';
@@ -180,7 +181,28 @@ export default function Lingora({ onStart }: { onStart?: (level: string) => void
   const router = useRouter();
   const reduce = useReducedMotion();
   const fieldRef = useRef<WordFieldHandle>(null);
+  const pendingLevel = useRef<string | null>(null);
   const [selected, setSelected] = useState("A2");
+
+  useEffect(() => {
+    const continueAfterLogin = () => {
+      const level = pendingLevel.current;
+      if (!level) return;
+      pendingLevel.current = null;
+      onStart?.(level);
+      router.push(`/practice/create?level=${level}`);
+    };
+    const cancelPendingStart = () => {
+      pendingLevel.current = null;
+    };
+
+    window.addEventListener("auth:success", continueAfterLogin);
+    window.addEventListener("auth:cancel", cancelPendingStart);
+    return () => {
+      window.removeEventListener("auth:success", continueAfterLogin);
+      window.removeEventListener("auth:cancel", cancelPendingStart);
+    };
+  }, [onStart, router]);
 
   // magnetic CTA
   const mx = useMotionValue(0);
@@ -201,6 +223,11 @@ export default function Lingora({ onStart }: { onStart?: (level: string) => void
   const handleStart = (e: PointerEvent<HTMLButtonElement>) => {
     const r = e.currentTarget.getBoundingClientRect();
     fieldRef.current?.burst(r.left + r.width / 2, r.top + r.height / 2);
+    if (!getToken()) {
+      pendingLevel.current = selected;
+      requestLogin();
+      return;
+    }
     onStart?.(selected);
     router.push(`/practice/create?level=${selected}`);
   };

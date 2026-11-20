@@ -1,4 +1,4 @@
-import CreatePracticeClient from "./CreatePracticeClient";
+import CreatePracticeClient from "@/app/practice/create/CreatePracticeClient.tsx";
 
 export const instant = false;
 

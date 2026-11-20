@@ -15,11 +15,12 @@ import { Switch } from "@astryxdesign/core/Switch";
 import { Text } from "@astryxdesign/core/Text";
 import { TextInput } from "@astryxdesign/core/TextInput";
 import { VStack } from "@astryxdesign/core/VStack";
-import { getClientAISettings } from "../../../lib/client-ai";
-import { useLearningStore } from "../../../stores/learning-store";
-import presets from "../../../data/preset.json";
-import { PracticeGenerating } from "../../../components/PracticeGenerating";
-import { SelectField } from "../../../components/SelectField";
+import { getClientAISettings } from '@/lib/client-ai.ts';
+import { useLearningStore } from "@/stores/learning-store.ts";
+import presets from "@/data/preset.json";
+import { PracticeGenerating } from "@/components/PracticeGenerating.tsx";
+import { SelectField } from "@/components/SelectField.tsx";
+import { apiFetch } from "@/lib/auth-client";
 
 type CreatePracticeClientProps = { initialLevel: string };
 
@@ -51,7 +52,7 @@ export default function CreatePracticeClient({ initialLevel }: CreatePracticeCli
     try {
       const aiConfig = await getClientAISettings(ai);
       if (!aiConfig.model) throw new Error("请先在设置中选择模型。");
-      const response = await fetch("/api/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ topic, level, difficulty, count: Number(count), kind, custom, ai: aiConfig }), signal: controller.signal });
+      const response = await apiFetch("/api/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ topic, level, difficulty, count: Number(count), kind, custom, ai: aiConfig }), signal: controller.signal });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error);
       start(data.practice);

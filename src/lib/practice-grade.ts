@@ -1,4 +1,4 @@
-import type { Question } from "./practice-data";
+import type { Question } from "@/lib/practice-data.ts";
 
 export function normalizeAnswer(value: string | undefined): string {
   return (value ?? "").trim().toLowerCase();

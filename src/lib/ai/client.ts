@@ -1,6 +1,6 @@
 import { APICallError, generateText, RetryError, streamText, type ModelMessage } from "ai";
-import { AiError } from "./errors";
-import { opencode, readProviderAPIKey } from "./settings";
+import { AiError } from "@/lib/ai/errors.ts";
+import { opencode, readProviderAPIKey } from "@/lib/ai/settings.ts";
 
 export type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
@@ -74,7 +74,6 @@ export async function chatCompletion(model: string, options: ChatOptions): Promi
   }
 
   if (!result.text.trim()) throw new AiError("invalid-output", "AI 没有返回内容，请稍后重试。");
-
   return { content: result.text };
 }
 

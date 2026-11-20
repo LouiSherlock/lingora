@@ -3,8 +3,12 @@ import { validateUIMessages } from "ai";
 import { toErrorBody } from "@/lib/ai/errors";
 import { parseTutorRequest, streamTutorReply } from "@/lib/ai/explain";
 import { readModel } from "@/lib/ai/settings";
+import { authorizeApiRequest } from "@/lib/api-auth";
 
 export async function POST(request: Request) {
+  const authResponse = await authorizeApiRequest(request);
+  if (authResponse) return authResponse;
+
   try {
     const body = await request.json();
     const input = parseTutorRequest(body);

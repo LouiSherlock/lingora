@@ -12,7 +12,8 @@ import { Selector } from "@astryxdesign/core/Selector";
 import { Text } from "@astryxdesign/core/Text";
 import { TextInput } from "@astryxdesign/core/TextInput";
 import { VStack } from "@astryxdesign/core/VStack";
-import { useLearningStore } from "../stores/learning-store";
+import { useLearningStore } from "@/stores/learning-store.ts";
+import { apiFetch } from "@/lib/auth-client";
 
 const triggerStyles = stylex.create({
   settings: {
@@ -41,7 +42,7 @@ export function SettingsSheet() {
     setBusy(true);
     setMessage("");
     try {
-      const response = await fetch("/api/models", { method: "POST" });
+      const response = await apiFetch("/api/models", { method: "POST" });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? "获取模型失败。");
       const list: string[] = Array.isArray(data.models) ? data.models : [];

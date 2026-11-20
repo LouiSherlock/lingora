@@ -16,9 +16,9 @@ import { TextInput } from "@astryxdesign/core/TextInput";
 import { VStack } from "@astryxdesign/core/VStack";
 import { ProgressBar } from "@astryxdesign/core/ProgressBar";
 import { TutorSheet } from "@/components/TutorSheet";
-import { useLearningStore } from "../../../../stores/learning-store";
-import { answerLabel, isAnswerCorrect, normalizeAnswer } from "../../../../lib/practice-grade";
-import type { Question } from "../../../../lib/practice-data";
+import { useLearningStore } from "@/stores/learning-store.ts";
+import { answerLabel, isAnswerCorrect, normalizeAnswer } from "@/lib/practice-grade.ts";
+import type { Question } from "@/lib/practice-data.ts";
 
 const typeLabels: Record<Question["type"], string> = {
   single_choice: "单项选择",

@@ -1,8 +1,8 @@
 import { convertToModelMessages, type ModelMessage, type UIMessage } from "ai";
 import { z } from "zod";
-import { streamChatCompletion } from "./client";
-import { AiError } from "./errors";
-import { tutorSystemPrompt } from "./prompts";
+import { streamChatCompletion } from "@/lib/ai/client.ts";
+import { AiError } from "@/lib/ai/errors.ts";
+import { tutorSystemPrompt } from "@/lib/ai/prompts.ts";
 
 const requestSchema = z.object({
   question: z.string().min(1).max(2000),
