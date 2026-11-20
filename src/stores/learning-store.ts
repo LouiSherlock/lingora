@@ -46,7 +46,7 @@ type LearningState = {
 };
 export const useLearningStore = create<LearningState>()(persist((set, get) => ({
   active: null, answers: {}, current: 0, submitted: [], completed: [], tutorMessages: [], latestResult: null,
-  settings: { model: '', models: [] },
+  settings: { model: 'deepseek-v4.1-flash', models: [] },
   start: (p) => set({ active: p, answers: {}, current: 0, submitted: [], completed: [], tutorMessages: [] }),
   answer: (id, value) => set({ answers: { ...get().answers, [id]: value } }),
   go: (n) => set({ current: Math.max(0, Math.min(n, (get().active?.questions.length ?? 1) - 1)) }),

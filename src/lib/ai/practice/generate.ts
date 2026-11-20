@@ -1,5 +1,5 @@
 import { z } from "zod";
-import type { Practice } from "../../practice-data";
+import type { Practice, Question } from "../../practice-data";
 import { chatCompletion, type ChatMessage } from "../client";
 import { AiError } from "../errors";
 import { practiceSystemPrompt, practiceTypeRepair } from "../prompts";
@@ -42,17 +42,43 @@ type GenerateInput = GenerateFields & {
   signal?: AbortSignal;
 };
 
+const KIND_LABELS: Record<string, string> = { Grammar: "语法", Vocabulary: "词汇" };
+
+const DIFFICULTY_LABELS: Record<string, string> = { Easy: "简单", Medium: "普通", Hard: "困难" };
+
+const TYPE_LABELS: Record<Question["type"], string> = {
+  single_choice: "单项选择",
+  fill_blank: "填空",
+  true_false: "判断",
+};
+
+/** 把创建页的选择拼成一段中文需求，而不是丢给模型一个 JSON。 */
+function buildUserPrompt(input: GenerateFields): string {
+  const requiredTypes = QUESTION_TYPES.map((type) => TYPE_LABELS[type]).join("、");
+  return [
+    "请生成一组英语练习题。",
+    "",
+    `- 学习类型：${KIND_LABELS[input.kind] ?? input.kind}`,
+    `- 目标等级：${input.level}`,
+    `- 知识点 / 主题：${input.topic}`,
+    `- 难度：${DIFFICULTY_LABELS[input.difficulty] ?? input.difficulty}`,
+    `- 题目数量：${input.count} 题`,
+    `- 需要覆盖的题型：${requiredTypes}`,
+    ...(input.custom ? [`- 额外要求：${input.custom}`] : []),
+  ].join("\n");
+}
+
 /**
  * Asks the model for a question set.
  */
 export async function generatePractice(input: GenerateInput): Promise<Practice> {
-  const { topic, level, difficulty, count, kind, custom } = input;
-  const userPayload = JSON.stringify({ topic, level, difficulty, count, kind, custom, requiredTypes: QUESTION_TYPES });
+  const { topic, level, count } = input;
+  const userPrompt = buildUserPrompt(input);
 
   async function request(extraInstruction = "") {
     const messages: ChatMessage[] = [
       { role: "system", content: extraInstruction ? `${practiceSystemPrompt}\n${extraInstruction}` : practiceSystemPrompt },
-      { role: "user", content: userPayload },
+      { role: "user", content: userPrompt },
     ];
     const result = await chatCompletion(input.model, { messages, json: true, signal: input.signal });
     return normalizeQuestions(parseQuestionsPayload(result.content), { level, topic, count });

@@ -1,11 +1,8 @@
-export const practiceSystemPrompt = `Create English practice questions. Return JSON {questions:[{type,level,knowledgePoints,stem,options,answer,explanation}]}.
-Allowed types: single_choice, fill_blank, true_false.
-Cover all three types whenever count is 3 or more: include at least one of each, and keep them roughly balanced.
-single_choice: 3-4 options with keys A, B, C, D; answer is the correct option key.
-true_false: exactly two options: A = 正确, B = 错误; answer must be A or B.
-fill_blank: options must be an empty array; answer is one short English word or phrase.
-stem and option text are in English. Explanations are in Simplified Chinese and must explain why the answer is correct in 2-4 sentences, not just repeat the answer.
-Always generate questions in Chinese, except for the English parts that belong to the questions themselves. Ensure that all answers are accurate.`;
+export const practiceSystemPrompt = `创建英语练习题。返回 JSON 格式：{questions:[{type,level,knowledgePoints,stem,options,answer,explanation}]}。
+允许的题型：single_choice（单选题）、fill_blank（填空题）、true_false（判断题）。
+需涵盖所有三种题型：每种题型至少包含一道，并保持数量大致均衡。single_choice（单选题）：包含 3-4 个选项，键名为 A、B、C、D；answer 为正确选项的键名。true_false（判断题）：严格包含两个选项：A = 正确，B = 错误；answer 必须是 A 或 B。fill_blank（填空题）：options 必须为空数组；answer 为一个简短的英文单词或短语。
+题干（stem）使用简体中文(除了应该是题目的英文部分)。解析（explanation）使用简体中文，且必须用 2-4 句话解释为什么该答案是正确的，而不仅仅是重复答案。
+必须确保答案是对的。`;
 
 export const practiceTypeRepair = "The previous response missed a required question type. This time you MUST include single_choice, fill_blank and true_false questions.";
 
