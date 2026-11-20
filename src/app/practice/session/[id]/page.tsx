@@ -11,13 +11,12 @@ import { Card } from "@astryxdesign/core/Card";
 import { ClickableCard } from "@astryxdesign/core/ClickableCard";
 import { Heading } from "@astryxdesign/core/Heading";
 import { HStack } from "@astryxdesign/core/HStack";
-import { Markdown } from "@astryxdesign/core/Markdown";
 import { Text } from "@astryxdesign/core/Text";
 import { TextInput } from "@astryxdesign/core/TextInput";
 import { VStack } from "@astryxdesign/core/VStack";
 import { ProgressBar } from "@astryxdesign/core/ProgressBar";
+import { TutorSheet } from "@/components/TutorSheet";
 import { useLearningStore } from "../../../../stores/learning-store";
-import { getClientAISettings, type ClientAISettings } from "../../../../lib/client-ai";
 import { answerLabel, isAnswerCorrect, normalizeAnswer } from "../../../../lib/practice-grade";
 import type { Question } from "../../../../lib/practice-data";
 
@@ -37,36 +36,6 @@ function subscribeToHydration(onStoreChange: () => void) {
 
 const getHydrated = () => useLearningStore.persist.hasHydrated();
 const getServerHydrated = () => false;
-
-function Assistant({ question, ai }: { question: Question; ai: ClientAISettings }) {
-  const conversation = useLearningStore((state) => state.conversation);
-  const sessionId = useLearningStore((state) => state.active?.aiSessionId ?? "");
-  const appendTurns = useLearningStore((state) => state.appendTurns);
-  const noteSessionId = useLearningStore((state) => state.noteSessionId);
-  const [followUp, setFollowUp] = useState("");
-  const [reply, setReply] = useState("");
-  const [asking, setAsking] = useState(false);
-  async function ask() {
-    const question_ = followUp.trim();
-    if (!question_) return;
-    setAsking(true);
-    setReply("");
-    try {
-      const response = await fetch("/api/explain", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ question: question.stem, answer: answerLabel(question), explanation: question.explanation, followUp: question_, history: conversation, conversationId: sessionId, ai: await getClientAISettings(ai) }) });
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error);
-      appendTurns([{ role: "user", content: question_ }, { role: "assistant", content: data.reply }]);
-      noteSessionId(data.aiSessionId ?? "");
-      setReply(data.reply);
-      setFollowUp("");
-    } catch (error) {
-      setReply(error instanceof Error ? error.message : "暂时无法获取回答。");
-    } finally {
-      setAsking(false);
-    }
-  }
-  return <Card><VStack gap={3}><Heading level={3}>AI 助教</Heading><TextInput label="针对这道题继续提问" value={followUp} onChange={setFollowUp} placeholder="例如：为什么这里要用现在完成时？"/><Button label={asking ? "正在思考…" : "提问"} variant="secondary" isDisabled={asking || !followUp.trim()} onClick={ask}/>{reply && <Markdown density="compact">{reply}</Markdown>}</VStack></Card>;
-}
 
 function SessionContent() {
   const params = useParams<{id:string}>(); const router = useRouter();
@@ -119,7 +88,7 @@ function SessionContent() {
         ? <Button label="下一题" variant="primary" onClick={advance}/>
         : <Button label="完成练习" variant="primary" onClick={complete}/>) : null}
     </HStack>
-    <Assistant key={`assistant-${q.id}`} question={q} ai={ai}/>
+    <TutorSheet key={`assistant-${active.id}`} question={q} ai={ai}/>
   </VStack>;
 }
 

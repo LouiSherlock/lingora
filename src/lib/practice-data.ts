@@ -1,5 +1,5 @@
 export type Question = { id: string; type: "single_choice" | "fill_blank" | "true_false"; level: string; knowledgePoints: string[]; stem: string; options: { key: string; text: string }[]; answer: string; explanation: string };
-export type Practice = { id: string; title: string; questions: Question[]; createdAt: string; aiSessionId?: string };
+export type Practice = { id: string; title: string; questions: Question[]; createdAt: string };
 export const grammarTopics = [
   { slug: "present-perfect", title: "Present Perfect", chinese: "现在完成时", level: "A2", category: "时态", summary: "连接过去与现在，表达经历、结果或持续状态。", formula: "have / has + past participle", examples: ["I have finished my work.", "She has lived here since 2020.", "Have you ever tried sushi?"], tip: "明确的过去时间（yesterday、last year）通常使用一般过去时。" },
   { slug: "present-simple", title: "Present Simple", chinese: "一般现在时", level: "A1", category: "时态", summary: "表达习惯、事实和普遍真理。", formula: "主语 + 动词原形（第三人称单数加 -s）", examples: ["I drink tea every morning.", "The sun rises in the east."], tip: "第三人称单数主语后，动词通常加 -s 或 -es。" },

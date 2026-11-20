@@ -57,8 +57,8 @@ export default function PracticeResult() {
     try {
       const aiConfig = await getClientAISettings(ai);
       const topics = [...new Set(wrongQuestions.flatMap((question) => question.knowledgePoints))];
-      const examples = wrongQuestions.map((question) => ({ type: question.type, level: question.level, knowledgePoints: question.knowledgePoints, stem: question.stem, options: question.options, userAnswer: answers[question.id] ? answerLabel(question, answers[question.id]) : "未作答", correctAnswer: answerLabel(question), explanation: question.explanation }));
-      const response = await fetch("/api/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ topic: topics.join("、"), level: wrongQuestions[0].level, count: Math.max(5, wrongQuestions.length), kind: "Grammar", conversationId: practice.aiSessionId, custom: `请根据以下错题生成全新的类似题目，不要复用原题或选项。错题样例：${JSON.stringify(examples)}`, ai: aiConfig }) });
+      const examples = wrongQuestions.slice(0, 5).map((question) => ({ type: question.type, level: question.level, knowledgePoints: question.knowledgePoints, stem: question.stem, options: question.options, userAnswer: answers[question.id] ? answerLabel(question, answers[question.id]) : "未作答", correctAnswer: answerLabel(question), explanation: question.explanation }));
+      const response = await fetch("/api/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ topic: topics.join("、"), level: wrongQuestions[0].level, count: Math.max(5, wrongQuestions.length), kind: "Grammar", custom: `请根据以下错题生成全新的类似题目，不要复用原题或选项。错题样例：${JSON.stringify(examples)}`, ai: aiConfig }) });
       const data = await response.json();
       if (!response.ok) throw new Error(data.error ?? "生成失败，请稍后重试。");
       start(data.practice); router.push(`/practice/session/${data.practice.id}`);

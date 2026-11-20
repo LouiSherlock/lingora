@@ -1,8 +1,6 @@
-import { createOpenAICompatible } from "@ai-sdk/openai-compatible";
-import { APICallError, generateText, RetryError } from "ai";
+import { APICallError, generateText, RetryError, streamText, type ModelMessage } from "ai";
 import { AiError } from "./errors";
-import { pickSessionId } from "./session";
-import { endpoint, providerBaseURL, type Provider } from "./settings";
+import { opencode, readProviderAPIKey } from "./settings";
 
 export type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
@@ -10,18 +8,12 @@ export type ChatOptions = {
   messages: ChatMessage[];
   /** Ask the provider for a JSON object response. */
   json?: boolean;
-  /** Conversation to continue, when the provider supports it. */
-  sessionId?: string;
   timeoutMs?: number;
   /** Caller's abort signal (client disconnect, page navigation). */
   signal?: AbortSignal;
 };
 
-export type ChatResult = {
-  content: string;
-  /** Provider-issued conversation id, or "" when it returned none. */
-  sessionId: string;
-};
+export type ChatResult = { content: string };
 
 /** Guards against a provider streaming megabytes back into the JSON parser. */
 const MAX_BODY_LENGTH = 2_000_000;
@@ -52,22 +44,10 @@ function providerError(error: unknown): AiError {
 /**
  * One chat completion through the AI SDK's OpenAI-compatible provider.
  *
- * `transformRequestBody` carries the two OpenAI-compatible extras this app
- * relies on: `response_format` for JSON question sets, and `conversation_id`
- * when a provider handed one back earlier.
+ * The singleton OpenAI-compatible client is reused for every request; only
+ * the selected model and request payload vary.
  */
-export async function chatCompletion(provider: Provider, options: ChatOptions): Promise<ChatResult> {
-  const client = createOpenAICompatible({
-    name: "lingora",
-    apiKey: provider.apiKey,
-    baseURL: providerBaseURL(provider),
-    transformRequestBody: (body) => ({
-      ...body,
-      ...(options.json ? { response_format: { type: "json_object" } } : {}),
-      ...(options.sessionId ? { conversation_id: options.sessionId } : {}),
-    }),
-  });
-
+export async function chatCompletion(model: string, options: ChatOptions): Promise<ChatResult> {
   const system = options.messages
     .filter((message) => message.role === "system")
     .map((message) => message.content)
@@ -80,9 +60,10 @@ export async function chatCompletion(provider: Provider, options: ChatOptions): 
   let result: Awaited<ReturnType<typeof generateText>>;
   try {
     result = await generateText({
-      model: client.chatModel(provider.model),
+      model: opencode.chatModel(model),
       ...(system ? { system } : {}),
       messages,
+      ...(options.json ? { responseFormat: { type: "json" as const } } : {}),
       // The callers already retry deliberately (e.g. the question-type repair pass).
       maxRetries: 0,
       timeout: options.timeoutMs ?? 60_000,
@@ -94,19 +75,38 @@ export async function chatCompletion(provider: Provider, options: ChatOptions): 
 
   if (!result.text.trim()) throw new AiError("invalid-output", "AI 没有返回内容，请稍后重试。");
 
-  return {
-    content: result.text,
-    sessionId: pickSessionId(result.finalStep.response.body, result.finalStep.response.headers),
-  };
+  return { content: result.text };
+}
+
+export function streamChatCompletion(model: string, messages: ModelMessage[], options: Omit<ChatOptions, "messages" | "json"> = {}) {
+  const system = messages
+    .filter((message) => message.role === "system" && typeof message.content === "string")
+    .map((message) => message.content)
+    .filter(Boolean)
+    .join("\n\n");
+  const chatMessages = messages.filter((message) => message.role !== "system");
+
+  try {
+    return streamText({
+      model: opencode.chatModel(model),
+      ...(system ? { system } : {}),
+      messages: chatMessages,
+      maxRetries: 0,
+      timeout: options.timeoutMs ?? 60_000,
+      ...(options.signal ? { abortSignal: options.signal } : {}),
+      onError: ({ error }) => providerError(error),
+    });
+  } catch (error) {
+    throw providerError(error);
+  }
 }
 
 /** GET /models — used to populate the model picker. */
-export async function listModels(provider: Provider, timeoutMs = 15_000): Promise<string[]> {
-  const url = new URL(`${endpoint(provider, "models").toString()}`);
+export async function listModels(path = "/inference/openai/v1/models", timeoutMs = 15_000): Promise<string[]> {
   let response: Response;
   try {
-    response = await fetch(url, {
-      headers: { Authorization: `Bearer ${provider.apiKey}` },
+    response = await fetch(`https://opencode.ai${path}`, {
+      headers: { Authorization: `Bearer ${readProviderAPIKey()}` },
       signal: AbortSignal.timeout(timeoutMs),
     });
   } catch (error) {

@@ -3,7 +3,6 @@ import type { Practice } from "../../practice-data";
 import { chatCompletion, type ChatMessage } from "../client";
 import { AiError } from "../errors";
 import { practiceSystemPrompt, practiceTypeRepair } from "../prompts";
-import { type Provider } from "../settings";
 import { QUESTION_TYPES, normalizeQuestions, parseQuestionsPayload, typeCoverage } from "./normalize";
 
 const requestSchema = z.object({
@@ -11,7 +10,7 @@ const requestSchema = z.object({
   level: z.string().max(2).optional(),
   difficulty: z.string().max(20).optional(),
   kind: z.string().max(20).optional(),
-  custom: z.string().max(1000).optional(),
+  custom: z.string().max(12_000).optional(),
   count: z.unknown().optional(),
 });
 
@@ -39,20 +38,15 @@ export function parseGenerateFields(body: unknown): GenerateFields {
 }
 
 export type GenerateInput = GenerateFields & {
-  conversationId: string;
-  provider: Provider;
+  model: string;
   signal?: AbortSignal;
 };
 
 /**
- * Asks the model for a question set and returns a practice. A provider-issued
- * conversation id, when there is one, is carried forward and stored on the
- * practice; it is never replaced by an empty value.
+ * Asks the model for a question set.
  */
 export async function generatePractice(input: GenerateInput): Promise<Practice> {
   const { topic, level, difficulty, count, kind, custom } = input;
-  let sessionId = input.conversationId;
-
   const userPayload = JSON.stringify({ topic, level, difficulty, count, kind, custom, requiredTypes: QUESTION_TYPES });
 
   async function request(extraInstruction = "") {
@@ -60,8 +54,7 @@ export async function generatePractice(input: GenerateInput): Promise<Practice> 
       { role: "system", content: extraInstruction ? `${practiceSystemPrompt}\n${extraInstruction}` : practiceSystemPrompt },
       { role: "user", content: userPayload },
     ];
-    const result = await chatCompletion(input.provider, { messages, json: true, sessionId, signal: input.signal });
-    sessionId = result.sessionId || sessionId;
+    const result = await chatCompletion(input.model, { messages, json: true, signal: input.signal });
     return normalizeQuestions(parseQuestionsPayload(result.content), { level, topic, count });
   }
 
@@ -82,6 +75,5 @@ export async function generatePractice(input: GenerateInput): Promise<Practice> 
     title: `${topic} · ${level}`,
     questions,
     createdAt: new Date().toISOString(),
-    ...(sessionId ? { aiSessionId: sessionId } : {}),
   };
 }

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@ai-sdk/openai-compatible": "^3.0.93",
+    "@ai-sdk/react": "^4.0.181",
     "@astryxdesign/cli": "^0.7.16",
     "@astryxdesign/core": "^0.7.16",
     "@astryxdesign/theme-butter": "^0.7.16",
