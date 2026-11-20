@@ -219,6 +219,13 @@ export const lingoraTheme = {
     "--shadow-inset-warning": "inset 0px 0px 0px 2px #51470030",
     "--shadow-inset-error": "inset 0px 0px 0px 2px #821b0030"
   },
+  localTokens: {
+    "--layout-page-width": "64rem"
+  },
+  __localTokenOwners: {
+    "--layout-page-width": "lingora"
+  },
+  __localTokenLineage: ["lingora"],
   components: {
     "heading": {
       "level:1": {
@@ -400,7 +407,8 @@ export const lingoraTheme = {
       },
       "status:error": {
         "--color-error-muted": "#e56241",
-        "--color-on-error-muted": "#1d1c11"
+        "--color-on-error-muted": "#1d1c11",
+        "color": "var(--color-on-dark)"
       }
     },
     "card": {

@@ -1,6 +1,6 @@
 @import "@astryxdesign/core/reset.css";
 @import "@astryxdesign/core/astryx.css";
-@import "@astryxdesign/theme-butter/fonts.css";
+/*@import "@astryxdesign/theme-butter/fonts.css";*/
 @import "../themes/lingora/lingora.css";
 
 html {
@@ -102,8 +102,8 @@ main {
 }
 
 .astryx-bottom-sheet {
-  width: min(calc(64rem - 2.5rem), calc(100vw - 2.5rem)) !important;
-  max-width: calc(64rem - 2.5rem) !important;
+  width: min(calc(var(--layout-page-width) - var(--spacing-10)), calc(100vw - var(--spacing-10))) !important;
+  max-width: calc(var(--layout-page-width) - var(--spacing-10)) !important;
 }
 
 .practice-generating {
@@ -163,16 +163,6 @@ main {
   to { opacity: 0.25; transform: scale(0.65); }
 }
 
-.astryx-banner[data-status="error"],
-.astryx-banner[data-status="error"] .astryx-text,
-.astryx-banner[data-status="error"] .astryx-heading {
-  color: #fff !important;
-}
-
-.astryx-banner-icon[data-status="error"],
-.astryx-banner-icon[data-status="error"] svg {
-  color: #fff !important;
-}
 
 @media (min-width: 48rem) {
   .grammar-grid {

@@ -307,6 +307,7 @@
     --color-border-warning: var(--color-text-warning);
     --color-border-error: var(--color-text-error);
     --duration-exit: var(--duration-fast);
+    --layout-page-width: 64rem;
   }
 
   :scope {
@@ -525,6 +526,7 @@
   .astryx-banner[data-status="error"] {
     --color-error-muted: #e56241;
     --color-on-error-muted: #1d1c11;
+    color: var(--color-on-dark);
   }
 
   .astryx-card {
