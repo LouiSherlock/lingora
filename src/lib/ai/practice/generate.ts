@@ -14,7 +14,7 @@ const requestSchema = z.object({
   count: z.unknown().optional(),
 });
 
-export type GenerateFields = {
+type GenerateFields = {
   topic: string;
   level: string;
   difficulty: string;
@@ -37,7 +37,7 @@ export function parseGenerateFields(body: unknown): GenerateFields {
   };
 }
 
-export type GenerateInput = GenerateFields & {
+type GenerateInput = GenerateFields & {
   model: string;
   signal?: AbortSignal;
 };

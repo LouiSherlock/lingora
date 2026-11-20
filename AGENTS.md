@@ -49,7 +49,7 @@ RULES:
 - `pnpm dev` — Turbopack dev server on :3000.
 - `pnpm lint` — ESLint 9 flat config, no auto-fix. One file: `pnpm exec eslint src/app/page.tsx`.
 - `pnpm exec tsc --noEmit` — typecheck; there is no npm script.
-- `pnpm test` — Vitest (4 files). One file: `pnpm exec vitest run src/lib/practice-grade.test.ts`.
+- `pnpm test` — Vitest (4 files under `tests/`; `vitest.config.mts` maps `@/*` to `src/*`). One file: `pnpm exec vitest run tests/lib/practice-grade.test.ts`.
 - `pnpm theme:build` — rebuild the theme outputs from `src/lingora-themes.ts`; `--check` verifies freshness.
 - `pnpm exec astryx doctor --built src` — design-system/theme check; currently 0 fails, advisory warnings only.
 - `pnpm build` — stop `pnpm dev` first. Both use `.next`; concurrent runs have crashed with `read_task_output: task TaskId ... no longer exists`.
@@ -70,7 +70,6 @@ RULES:
 ### Deterministic rules
 
 - Grading lives only in `src/lib/practice-grade.ts` (`normalizeAnswer`, `isAnswerCorrect`, `answerLabel`). Do not compare answers in pages. `/api/grade` does not exist.
-- `grammarTopics` in `src/lib/practice-data.ts` is currently unused: the `/grammar` routes were removed. Delete it or wire a replacement route before relying on it.
 - The Zustand store key is `englishflow-state`; renaming it loses users' history. `discardLegacyCredential()` clears the old `englishflow-api-key`, `englishflow-encrypted-api-key`, and `englishflow-credentials` IndexedDB database.
 - `docs/功能.md` is the original product spec, not the implementation; it still names Tailwind, shadcn, IndexedDB, `/grammar`, `/mistakes`, `/analytics`, and `/api/grade`, which do not exist.
 
@@ -83,7 +82,7 @@ RULES:
 
 ### UI, styling, theme
 
-- Use Astryx components. Tailwind is NOT installed despite the Astryx block above; use component props, the classes in `src/app/globals.css`, and `var(--color-*)`/spacing tokens. The app is dark-only (`data-theme="dark"`, `<Theme mode="dark">`).
+- Use Astryx components first, then Tailwind v4 utilities. `tailwindcss` + `@tailwindcss/postcss` are installed and wired through `postcss.config.mjs`; `src/app/globals.css` declares `@layer reset, theme, base, astryx-base, astryx-theme, components, utilities;` above every `@import` and loads `@astryxdesign/core/tailwind-theme.css`, so `text-primary`, `bg-surface`, `p-4`, `rounded-lg` resolve to theme tokens. Preflight is intentionally not imported (Astryx's reset wins). Keep app CSS in `@layer base` / `@layer components`; unlayered rules, and StyleX's runtime-injected atomic classes, outrank every Tailwind utility. The app is dark-only (`data-theme="dark"`, `<Theme mode="dark">`).
 - App-specific CSS lives in `globals.css` (`page-container*`, `site-header`, grids, `tutor-sheet*`, scrollbars, bottom-sheet width). Add classes there rather than new CSS files.
 - Theme source is `src/lingora-themes.ts` (`export default defineTheme(...)`, extends butter). Put app-only variables under `localTokens` (e.g. `--layout-page-width`) and component overrides under `components` (e.g. banner error color). Run `pnpm theme:build`; verify freshness with the same build plus `--check`. `src/themes/lingora/{css,js,d.ts}` is generated and must not be hand-edited. The experimental theme editor is not wired here (no CLI-managed theme folder), so edit the source and build. ESLint ignores the theme directories.
 - **StyleX/theme cascade gotcha:** `.babelrc.js` sets `runtimeInjection: true`, and injected atomic classes are unlayered, so they beat every rule in `@layer astryx-theme`. A declaration that happens to match an Astryx class (e.g. button `color`/`padding-inline`, selector border) can silently override theme values after hydration. If a component's color or size changes after load, compare computed styles with and without the `style[data-stylex]` sheet before chasing the theme.

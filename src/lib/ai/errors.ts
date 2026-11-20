@@ -1,4 +1,4 @@
-export type AiErrorCode = "config" | "invalid-request" | "upstream" | "timeout" | "invalid-output";
+type AiErrorCode = "config" | "invalid-request" | "upstream" | "timeout" | "invalid-output";
 
 const DEFAULT_STATUS: Record<AiErrorCode, number> = {
   config: 400,

@@ -12,11 +12,11 @@ import { Heading } from "@astryxdesign/core/Heading";
 import { HStack } from "@astryxdesign/core/HStack";
 import { Text } from "@astryxdesign/core/Text";
 import { VStack } from "@astryxdesign/core/VStack";
-import type { Question } from "../../../../lib/practice-data";
-import { answerLabel, isAnswerCorrect } from "../../../../lib/practice-grade";
-import { useLearningStore } from "../../../../stores/learning-store";
-import { getClientAISettings } from "../../../../lib/client-ai";
-import { PracticeGenerating } from "../../../../components/PracticeGenerating";
+import type { Question } from '@/lib/practice-data';
+import { answerLabel, isAnswerCorrect } from '@/lib/practice-grade';
+import { useLearningStore } from '@/stores/learning-store';
+import { getClientAISettings } from '@/lib/client-ai';
+import { PracticeGenerating } from '@/components/PracticeGenerating';
 
 const typeLabels: Record<Question["type"], string> = {
   single_choice: "单项选择",
@@ -33,7 +33,7 @@ export default function PracticeResult() {
   const [generationError, setGenerationError] = useState("");
 
   if (!result) {
-    return <VStack gap={4} className="page-container page-container--spacious"><Heading level={1}>暂时没有练习结果</Heading><Text>先完成一组练习，再查看详细解析。</Text><Button label="开始练习" href="/practice/create" variant="primary" /></VStack>;
+    return <VStack gap={4} className="page-container page-container--spacious min-h-screen " justify="center"><Heading level={1}>暂时没有练习结果</Heading><Text>先完成一组练习，再查看详细解析。</Text><Button label="开始练习" href="/practice/create" variant="primary" /></VStack>;
   }
 
   const { practice, answers } = result;

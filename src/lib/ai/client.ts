@@ -4,7 +4,7 @@ import { opencode, readProviderAPIKey } from "./settings";
 
 export type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
-export type ChatOptions = {
+type ChatOptions = {
   messages: ChatMessage[];
   /** Ask the provider for a JSON object response. */
   json?: boolean;
@@ -13,7 +13,7 @@ export type ChatOptions = {
   signal?: AbortSignal;
 };
 
-export type ChatResult = { content: string };
+type ChatResult = { content: string };
 
 /** Guards against a provider streaming megabytes back into the JSON parser. */
 const MAX_BODY_LENGTH = 2_000_000;

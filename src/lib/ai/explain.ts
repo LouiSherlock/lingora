@@ -14,7 +14,7 @@ const requestSchema = z.object({
   messages: z.array(z.unknown()).min(1).max(40),
 });
 
-export type TutorInput = z.infer<typeof requestSchema>;
+type TutorInput = z.infer<typeof requestSchema>;
 
 export function parseTutorRequest(body: unknown): TutorInput {
   const parsed = requestSchema.safeParse(body);

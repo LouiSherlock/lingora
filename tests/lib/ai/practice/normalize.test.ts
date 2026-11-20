@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { normalizeQuestion, normalizeQuestions, parseQuestionsPayload, typeCoverage } from "./normalize";
+import { normalizeQuestion, normalizeQuestions, parseQuestionsPayload, typeCoverage } from "@/lib/ai/practice/normalize";
 
 const ctx = { level: "A2", topic: "现在完成时", count: 5 };
 

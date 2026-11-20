@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { AiError, isAiError, toErrorBody } from "./errors";
+import { AiError, isAiError, toErrorBody } from "@/lib/ai/errors";
 
 describe("AiError", () => {
   it("carries a code, status and Chinese message", () => {

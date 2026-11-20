@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { Question } from "./practice-data";
-import { answerLabel, isAnswerCorrect, normalizeAnswer } from "./practice-grade";
+import type { Question } from "@/lib/practice-data";
+import { answerLabel, isAnswerCorrect, normalizeAnswer } from "@/lib/practice-grade";
 
 const question: Question = {
   id: "q1",

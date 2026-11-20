@@ -21,9 +21,9 @@ import presets from "../../../data/preset.json";
 import { PracticeGenerating } from "../../../components/PracticeGenerating";
 import { SelectField } from "../../../components/SelectField";
 
-type CreatePracticeClientProps = { initialTopic: string; initialLevel: string };
+type CreatePracticeClientProps = { initialLevel: string };
 
-export default function CreatePracticeClient({ initialTopic, initialLevel }: CreatePracticeClientProps) {
+export default function CreatePracticeClient({ initialLevel }: CreatePracticeClientProps) {
   const router = useRouter();
   const start = useLearningStore((state) => state.start);
   const ai = useLearningStore((state) => state.settings);

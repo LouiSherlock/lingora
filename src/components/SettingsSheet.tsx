@@ -12,7 +12,6 @@ import { Selector } from "@astryxdesign/core/Selector";
 import { Text } from "@astryxdesign/core/Text";
 import { TextInput } from "@astryxdesign/core/TextInput";
 import { VStack } from "@astryxdesign/core/VStack";
-import { discardLegacyCredential } from "../lib/client-ai";
 import { useLearningStore } from "../stores/learning-store";
 
 const triggerStyles = stylex.create({
@@ -37,10 +36,6 @@ export function SettingsSheet() {
   const [selectedModel, setSelectedModel] = useState(saved.model);
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
-
-  useEffect(() => {
-    discardLegacyCredential();
-  }, []);
 
   async function loadModels() {
     setBusy(true);

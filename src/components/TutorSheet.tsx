@@ -89,7 +89,6 @@ export function TutorSheet({ question, ai }: TutorSheetProps) {
         <HStack className="tutor-sheet__header" hAlign="between" vAlign="center">
           <VStack gap={1}>
             <Heading level={2}>AI 助教</Heading>
-            <Text type="supporting">本次练习的对话会保留，刷新后仍可继续</Text>
           </VStack>
           <Button label="关闭" variant="ghost" size="sm" onClick={() => setTutorOpen(false)} />
         </HStack>

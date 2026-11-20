@@ -14,8 +14,6 @@ type LearningState = {
   answers: AnswerMap;
   /** 当前题目下标（0-based），始终夹在 0..questions.length-1。 */
   current: number;
-  /** 用户标记为“不确定”的题目 id；目前无页面读取，预留给后续 UI。 */
-  uncertain: string[];
   /** 已提交答案的题目 id；提交后题目锁定，不能再修改答案。 */
   submitted: string[];
   /** 已提交并进入下一题的题目 id；只用于进度条的“已完成”数量。 */
@@ -39,8 +37,6 @@ type LearningState = {
   advance: () => void;
   /** 放弃当前练习并清空本次状态。 */
   discard: () => void;
-  /** 切换某题的“不确定”标记；目前无 UI 使用。 */
-  toggleUncertain: (id: string) => void;
   /** 完成练习：写入 latestResult，清空本次状态；设置不变。 */
   finish: () => void;
   /** 保存助教对话，自动截取最近 40 条；刷新后由 persist 恢复。 */
@@ -49,9 +45,9 @@ type LearningState = {
   updateSettings: (s: Partial<LearningState['settings']>) => void;
 };
 export const useLearningStore = create<LearningState>()(persist((set, get) => ({
-  active: null, answers: {}, current: 0, uncertain: [], submitted: [], completed: [], tutorMessages: [], latestResult: null,
+  active: null, answers: {}, current: 0, submitted: [], completed: [], tutorMessages: [], latestResult: null,
   settings: { model: '', models: [] },
-  start: (p) => set({ active: p, answers: {}, current: 0, uncertain: [], submitted: [], completed: [], tutorMessages: [] }),
+  start: (p) => set({ active: p, answers: {}, current: 0, submitted: [], completed: [], tutorMessages: [] }),
   answer: (id, value) => set({ answers: { ...get().answers, [id]: value } }),
   go: (n) => set({ current: Math.max(0, Math.min(n, (get().active?.questions.length ?? 1) - 1)) }),
   // 幂等：重复提交同一题不会产生重复 id。
@@ -64,13 +60,12 @@ export const useLearningStore = create<LearningState>()(persist((set, get) => ({
     const nextCompleted = id && submitted.includes(id) && !completed.includes(id) ? [...completed, id] : completed;
     set({ completed: nextCompleted, current: Math.min(current + 1, active.questions.length - 1) });
   },
-  discard: () => set({ active: null, answers: {}, current: 0, uncertain: [], submitted: [], completed: [], tutorMessages: [] }),
-  toggleUncertain: (id) => set({ uncertain: get().uncertain.includes(id) ? get().uncertain.filter((x) => x !== id) : [...get().uncertain, id] }),
+  discard: () => set({ active: null, answers: {}, current: 0, submitted: [], completed: [], tutorMessages: [] }),
   finish: () => {
     const { active, answers } = get();
     if (!active) return;
     // 先快照再清空：结果页读 latestResult。
-    set({ latestResult: { practice: active, answers }, active: null, answers: {}, current: 0, uncertain: [], submitted: [], completed: [], tutorMessages: [] });
+    set({ latestResult: { practice: active, answers }, active: null, answers: {}, current: 0, submitted: [], completed: [], tutorMessages: [] });
   },
   setTutorMessages: (messages) => {
     if (!get().active) return;
@@ -78,14 +73,13 @@ export const useLearningStore = create<LearningState>()(persist((set, get) => ({
   },
   updateSettings: (s) => set({ settings: { ...get().settings, ...s } }),
 }), {
-  name: 'englishflow-state',
-  storage: createJSONStorage(() => localStorage),
+  name: 'lingora',
+  storage: createJSONStorage(() => sessionStorage),
   // 只持久化数据字段；action 不写入 localStorage。
   partialize: (s) => ({
     active: s.active,
     answers: s.answers,
     current: s.current,
-    uncertain: s.uncertain,
     submitted: s.submitted,
     completed: s.completed,
     tutorMessages: s.tutorMessages,

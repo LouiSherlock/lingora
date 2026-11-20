@@ -3,12 +3,15 @@ import { z } from "zod";
 import { AiError } from "./errors";
 
 /** Fixed OpenAI-compatible endpoint; the browser never supplies it. */
-export const PROVIDER_BASE_URL = "https://opencode.ai/inference/openai/v1";
+const PROVIDER_BASE_URL = process.env.PROVIDER_BASE_URL as string;
 
 export const opencode = createOpenAICompatible({
   name: "opencode",
   baseURL: PROVIDER_BASE_URL,
   apiKey: process.env.PROVIDER_API_KEY,
+  headers:{
+    'x-opencode-session':'71aea6cc-0241-4fd4-8e6a-9eac34a4a829'
+  }
 });
 
 /** What the browser sends as `ai` on every AI request. */

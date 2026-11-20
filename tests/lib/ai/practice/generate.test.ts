@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseGenerateFields } from "./generate";
+import { parseGenerateFields } from "@/lib/ai/practice/generate";
 
 describe("parseGenerateFields", () => {
   it("accepts the larger context used for wrong-question regeneration", () => {
