@@ -18,7 +18,9 @@ const styles = stylex.create({
   trigger: {
     alignItems: 'center',
     backgroundColor: {
-      default: 'transparent',
+      // 不要用关键字 transparent：它会和 Astryx 的 .xjbqb8w 同哈希，而本项目
+      // runtimeInjection 会把它注入为无层规则，导致列表项的 :hover 被覆盖。
+      default: 'rgba(0, 0, 0, 0)',
       ':hover': 'var(--color-neutral)',
     },
     borderColor: 'var(--color-border-emphasized)',
