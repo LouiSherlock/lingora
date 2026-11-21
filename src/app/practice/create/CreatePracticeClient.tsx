@@ -1,13 +1,10 @@
 "use client";
-import { ArrowLeft } from "lucide-react";
-
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Banner } from "@astryxdesign/core/Banner";
 import { BottomSheet } from "@astryxdesign/core/BottomSheet";
 import { Button } from "@astryxdesign/core/Button";
 import { Card } from "@astryxdesign/core/Card";
-import { Heading } from "@astryxdesign/core/Heading";
 import { HStack } from "@astryxdesign/core/HStack";
 import { Item } from "@astryxdesign/core/Item";
 import { List } from "@astryxdesign/core/List";
@@ -19,6 +16,7 @@ import { getClientAISettings } from '@/lib/client-ai.ts';
 import { useLearningStore } from "@/stores/learning-store.ts";
 import { PracticeGenerating } from "@/components/PracticeGenerating.tsx";
 import { SelectField } from "@/components/SelectField.tsx";
+import { Toolbar } from "@/components/Toolbar";
 import { apiFetch } from "@/lib/auth-client";
 
 type CreatePracticeClientProps = { initialLevel: string };
@@ -86,9 +84,9 @@ export default function CreatePracticeClient({ initialLevel }: CreatePracticeCli
   }
 
   return <VStack gap={6} className="page-container page-container--regular">
-    <HStack as="header" hAlign="start"><Button label="返回" icon={<ArrowLeft size={16} />} href="/" variant="ghost" onClick={() => requestController.current?.abort()} /></HStack>
+    <Toolbar title="创建 AI 练习" onBack={() => requestController.current?.abort()} />
     {loading ? <PracticeGenerating /> : <>
-    <VStack gap={1}><Text type="label">个性化练习</Text><Heading level={1}>创建 AI 练习</Heading><Text>设置练习目标，生成适合你的英语题目。</Text></VStack>
+    <Text>设置练习目标，生成适合你的英语题目。</Text>
     {error && <Banner status="warning" title="练习生成失败" description={error} isDismissable onDismiss={() => setError("")} endContent={<Button label="检查 AI 设置" href="/settings" style={{color:'var(--color-on-warning-muted)',borderColor:'var(--color-on-warning-muted)'}} />} />}
     <Card><VStack gap={5}>
       <VStack gap={2}><Text type="label">学习类型</Text><HStack gap={2} wrap="wrap">{([ ["Grammar", "语法"], ["Vocabulary", "词汇"] ] as const).map(([value, label]) => <Button key={value} label={label} variant={kind === value ? "primary" : "secondary"} onClick={() => setKind(value)} />)}</HStack></VStack>

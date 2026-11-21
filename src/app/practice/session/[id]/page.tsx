@@ -1,5 +1,4 @@
 "use client";
-import { ArrowLeft } from "lucide-react";
 import { Suspense, useState, useSyncExternalStore } from "react";
 import { useParams, useRouter } from "next/navigation";
 import confetti from "canvas-confetti";
@@ -16,6 +15,7 @@ import { TextInput } from "@astryxdesign/core/TextInput";
 import { VStack } from "@astryxdesign/core/VStack";
 import { ProgressBar } from "@astryxdesign/core/ProgressBar";
 import { TutorSheet } from "@/components/TutorSheet";
+import { Toolbar } from "@/components/Toolbar";
 import { useLearningStore } from "@/stores/learning-store.ts";
 import { answerLabel, isAnswerCorrect, normalizeAnswer } from "@/lib/practice-grade.ts";
 import type { Question } from "@/lib/practice-data.ts";
@@ -65,7 +65,7 @@ function SessionContent() {
     router.push(`/practice/result/${practice.id}`);
   }
   return <VStack gap={6} className="page-container page-container--compact">
-    <HStack as="header" hAlign="between" vAlign="center"><Button label="返回" icon={<ArrowLeft size={16} />} href="/" variant="ghost" /><TutorSheet key={`assistant-${active.id}`} question={q} ai={ai}/></HStack>
+    <Toolbar endContent={<TutorSheet key={`assistant-${active.id}`} question={q} ai={ai} />} />
     <AlertDialog isOpen={confirmExit} onOpenChange={setConfirmExit} title="退出练习？" description="本次答题进度和已填写的答案都不会保存，退出后需要重新开始。" cancelLabel="继续练习" actionLabel="放弃并退出" onAction={()=>{setLeaving(true); discard(); router.push("/");}}/>
     <VStack gap={2}><HStack hAlign="between"><Text type="label">{active.title}</Text><Text type="supporting">{current+1} / {active.questions.length}</Text></HStack><ProgressBar label="练习进度" isLabelHidden value={completed.length} max={active.questions.length} hasValueLabel formatValueLabel={(_, maximum) => `已完成 ${completed.length} / ${maximum}`} /></VStack>
     <motion.div key={q.id} initial={{opacity:0,y:10}} animate={{opacity:1,y:0}} transition={{duration:.2}}>

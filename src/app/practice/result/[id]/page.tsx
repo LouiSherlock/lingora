@@ -1,5 +1,5 @@
 "use client";
-import { ArrowLeft, ChartNoAxesColumnIncreasing, CircleCheck, RotateCcw } from "lucide-react";
+import { ChartNoAxesColumnIncreasing, CircleCheck, RotateCcw } from "lucide-react";
 
 import { useState } from "react";
 import { Banner } from "@astryxdesign/core/Banner";
@@ -18,6 +18,7 @@ import { answerLabel, isAnswerCorrect } from '@/lib/practice-grade';
 import { useLearningStore } from '@/stores/learning-store';
 import { getClientAISettings } from '@/lib/client-ai';
 import { PracticeGenerating } from '@/components/PracticeGenerating';
+import { Toolbar } from '@/components/Toolbar';
 import { apiFetch } from "@/lib/auth-client";
 
 const typeLabels: Record<Question["type"], string> = {
@@ -68,7 +69,7 @@ export default function PracticeResult() {
   }
 
   return <VStack gap={6} className="page-container page-container--regular">
-    <HStack as="header" hAlign="start"><Button label="返回" icon={<ArrowLeft size={16} />} href="/" variant="ghost" /></HStack>
+    <Toolbar title="练习结果" />
     {regenerating ? <PracticeGenerating title="正在生成答题" description="AI 正在根据错题为你设计相似的新题…" /> : <>
     {generationError && <Banner status="warning" title="新题生成失败" description={generationError} isDismissable onDismiss={() => setGenerationError("")} />}
     <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>

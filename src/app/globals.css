@@ -90,14 +90,17 @@
   }
 
   .page-container--compact {
+    --_page-pad-top: 1.5rem;
     padding-block: 1.5rem;
   }
 
   .page-container--regular {
+    --_page-pad-top: 2rem;
     padding-block: 2rem;
   }
 
   .page-container--spacious {
+    --_page-pad-top: 2.5rem;
     padding-block: 2.5rem;
   }
 
@@ -105,6 +108,39 @@
     align-items: center;
     justify-content: center;
     min-height: 100vh;
+  }
+
+  /* 安卓风格顶部标题栏：返回 / 居中标题 / 右侧操作。 */
+  .app-toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    /* 抵消 page-container 的顶部内边距，让标题栏贴到最顶部。 */
+    margin-block-start: calc(-1 * var(--_page-pad-top, 0px));
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: var(--spacing-2);
+    min-height: 3.5rem;
+    padding-block: var(--spacing-2);
+    border-bottom: 1px solid var(--color-border);
+    background-color: var(--color-background-body);
+  }
+
+  .app-toolbar__back {
+    justify-self: start;
+  }
+
+  .app-toolbar__title {
+    min-width: 0;
+    overflow: hidden;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .app-toolbar__actions {
+    justify-self: end;
   }
 
   .result-summary {
