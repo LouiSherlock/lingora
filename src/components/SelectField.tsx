@@ -28,7 +28,9 @@ const styles = stylex.create({
     borderStyle: 'solid',
     borderWidth: 1,
     boxSizing: 'border-box',
-    color: 'var(--color-text-primary)',
+    // 不显式写 color：它会生成和 Astryx 按钮同哈希的 .x1tgivj0，
+    // runtimeInjection 注入的无层规则会盖掉主题里 secondary 按钮的强调色。
+    // 按钮已从页面继承 --color-text-primary，无需重复声明。
     cursor: {
       default: 'pointer',
       ':disabled': 'default',
