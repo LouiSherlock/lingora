@@ -24,7 +24,8 @@ const styles = stylex.create({
     paddingTop: 'env(safe-area-inset-top, 0px)',
     paddingBottom: 'env(safe-area-inset-bottom, 0px)',
     backgroundColor: 'var(--color-background-surface)',
-    color: 'var(--color-text-primary)',
+    // 不显式写 color: var(--color-text-primary)：它生成的 .x1tgivj0 无层规则会
+    // 盖掉 Astryx 主题里 secondary 按钮的强调色；这里继承 body 的同一颜色即可。
     fontFamily: "Noto Sans SC, Outfit, system-ui, -apple-system, PingFang SC, Microsoft YaHei, sans-serif",
     WebkitFontSmoothing: 'antialiased',
   },

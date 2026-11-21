@@ -180,11 +180,6 @@
   .practice-generating__spark--late {
     animation-delay: 0.9s;
   }
-
-  .result-stats {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
 }
 
 @keyframes practice-orbit {
