@@ -44,4 +44,5 @@ next-env.d.ts
 .pnpm-store
 .playwright-mcp
 
-.idea
+.idea/
+.local/

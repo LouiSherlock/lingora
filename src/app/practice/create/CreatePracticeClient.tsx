@@ -17,12 +17,16 @@ import { TextInput } from "@astryxdesign/core/TextInput";
 import { VStack } from "@astryxdesign/core/VStack";
 import { getClientAISettings } from '@/lib/client-ai.ts';
 import { useLearningStore } from "@/stores/learning-store.ts";
-import presets from "@/data/preset.json";
 import { PracticeGenerating } from "@/components/PracticeGenerating.tsx";
 import { SelectField } from "@/components/SelectField.tsx";
 import { apiFetch } from "@/lib/auth-client";
 
 type CreatePracticeClientProps = { initialLevel: string };
+
+type PresetTopic = { id: string; name: string };
+type PresetGroup = { id: string; name: string; topics: PresetTopic[] };
+type PresetLevel = { id: string; grammar: PresetGroup[]; vocabulary: PresetGroup[] };
+type PresetData = { levels: PresetLevel[] };
 
 export default function CreatePracticeClient({ initialLevel }: CreatePracticeClientProps) {
   const router = useRouter();
@@ -38,9 +42,21 @@ export default function CreatePracticeClient({ initialLevel }: CreatePracticeCli
   const [isTopicSheetOpen, setIsTopicSheetOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [presets, setPresets] = useState<PresetData | null>(null);
+  const [presetsError, setPresetsError] = useState("");
   const requestController = useRef<AbortController | null>(null);
   useEffect(() => () => requestController.current?.abort(), []);
-  const levelPreset = presets.levels.find((item) => item.id === level);
+
+  useEffect(() => {
+    let cancelled = false;
+    apiFetch("/api/presets")
+      .then((res) => (res.ok ? res.json() : Promise.reject(new Error("主题数据加载失败。"))))
+      .then((data: PresetData) => { if (!cancelled) setPresets(data); })
+      .catch((reason) => { if (!cancelled) setPresetsError(reason instanceof Error ? reason.message : "主题数据加载失败。"); });
+    return () => { cancelled = true; };
+  }, []);
+
+  const levelPreset = presets?.levels.find((item) => item.id === level);
   const topicGroups = kind === "Grammar" ? levelPreset?.grammar : levelPreset?.vocabulary;
 
   async function generate() {
@@ -84,16 +100,20 @@ export default function CreatePracticeClient({ initialLevel }: CreatePracticeCli
               <SelectField label="选择知识点 / 主题" value={topic} placeholder="按英语等级选择主题" onClick={() => setIsTopicSheetOpen(true)} />
               <BottomSheet isOpen={isTopicSheetOpen} onOpenChange={setIsTopicSheetOpen} label="选择知识点 / 主题" height="tall">
                 <VStack gap={4}>
-                  {(topicGroups ?? []).map((group) => (
-                    <VStack key={group.name} gap={1}>
-                      <Text type="label" color="accent">{group.name}</Text>
-                      <List density="compact" edge="flush">
-                        {group.topics.map((item) => (
-                          <Item key={item.name} label={item.name} isSelected={item.name === topic} onClick={() => { setTopic(item.name); setIsTopicSheetOpen(false); }} />
+                  {presetsError
+                    ? <Banner status="warning" title="主题加载失败" description={presetsError} />
+                    : presets === null
+                      ? <Text type="supporting">正在加载主题…</Text>
+                      : (topicGroups ?? []).map((group) => (
+                          <VStack key={group.name} gap={1}>
+                            <Text type="label" color="accent">{group.name}</Text>
+                            <List density="compact" edge="flush">
+                              {group.topics.map((item) => (
+                                <Item key={item.name} label={item.name} isSelected={item.name === topic} onClick={() => { setTopic(item.name); setIsTopicSheetOpen(false); }} />
+                              ))}
+                            </List>
+                          </VStack>
                         ))}
-                      </List>
-                    </VStack>
-                  ))}
                 </VStack>
               </BottomSheet>
             </>}
