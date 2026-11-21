@@ -11,7 +11,10 @@ export const metadata: Metadata = {
   description: "Your English practice space",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+  settings,
+}: LayoutProps<"/"> & { settings: React.ReactNode }) {
   return (
     <html lang="en" data-theme="dark" data-astryx-theme="lingora">
       <body>
@@ -20,6 +23,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           <Suspense fallback={null}>
             <AuthGuard>
               <main>{children}</main>
+              {settings}
             </AuthGuard>
           </Suspense>
         </Theme>

@@ -89,4 +89,3 @@ RULES:
 - **StyleX/theme cascade gotcha:** `.babelrc.js` sets `runtimeInjection: true`, and injected atomic classes are unlayered, so they beat every rule in `@layer astryx-theme`. A declaration that happens to match an Astryx class (e.g. button `color`/`padding-inline`, selector border) can silently override theme values after hydration. If a component's color or size changes after load, compare computed styles with and without the `style[data-stylex]` sheet before chasing the theme.
 - UI copy is Chinese; English is only for generated question stems/options. Explanations and error messages stay Simplified Chinese.
 
-让你做什么就做什么，不要擅自做任务，不要猜测需求，不懂就问

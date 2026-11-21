@@ -5,7 +5,7 @@ import * as stylex from '@stylexjs/stylex';
 import { motion, useMotionValue, useReducedMotion, useSpring, type Variants } from 'motion/react';
 import { useRouter } from 'next/navigation';
 import WordField, { type WordFieldHandle } from '@/components/landing/core/WordField.tsx';
-import { SettingsSheet } from '@/components/SettingsSheet';
+import { SettingsSheetTrigger } from '@/components/SettingsSheet';
 import { getToken, requestLogin } from '@/lib/auth-client';
 
 const GOALS = ['A1', 'A2', 'B1', 'B2', 'C1', 'C2'];
@@ -266,7 +266,7 @@ export default function Lingora({ onStart }: { onStart?: (level: string) => void
 
       <header {...stylex.props(styles.header)}>
         <motion.a href="#" {...stylex.props(styles.logo)} {...fade(0.2)}>Lingora</motion.a>
-        <SettingsSheet />
+        <SettingsSheetTrigger />
         <motion.span
           {...stylex.props(styles.rule)}
           style={{ originX: 0 }}
