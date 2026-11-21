@@ -7,6 +7,12 @@ export default defineTheme({
   tokens: {
     // '--color-accent': ['#FF4500', '#FF7A45'],   // [亮色, 暗色]
     // '--radius-container': '32px',
+    '--radius-inner': '0px',
+    '--radius-element': '0px',
+    '--radius-container': '0px',
+    '--radius-page': '0px',
+    '--radius-chat': '0px',
+
   },
   localTokens: {
     '--layout-page-width': '64rem',

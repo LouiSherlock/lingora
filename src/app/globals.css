@@ -146,14 +146,6 @@
     text-align: center;
   }
 
-  .login-otp-slot {
-    border-color: var(--color-border-emphasized);
-  }
-
-  .login-otp-slot[data-active="true"] {
-    border-color: var(--color-accent);
-  }
-
   /* Markdown 正文里的标题和加粗统一使用主题色。 */
   .astryx-markdown :is(h1, h2, h3),
   .astryx-markdown strong {

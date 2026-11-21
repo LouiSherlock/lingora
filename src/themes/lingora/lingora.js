@@ -205,10 +205,10 @@ export const lingoraTheme = {
     "--color-icon-yellow": "light-dark(#443c00, #443c00)",
     "--color-text-yellow": "light-dark(#443c00, #443c00)",
     "--radius-none": "0px",
-    "--radius-inner": "0.375rem",
-    "--radius-element": "0.5rem",
-    "--radius-container": "0.75rem",
-    "--radius-page": "1.5rem",
+    "--radius-inner": "0px",
+    "--radius-element": "0px",
+    "--radius-container": "0px",
+    "--radius-page": "0px",
     "--radius-full": "9999px",
     "--shadow-low": "0 2px 4px #1d1c110d, 0 4px 8px #1d1c111a",
     "--shadow-med": "0 2px 4px #1d1c110d, 0 4px 12px #1d1c111a",
@@ -217,7 +217,8 @@ export const lingoraTheme = {
     "--shadow-inset-selected": "inset 0px 0px 0px 2px #79786a50",
     "--shadow-inset-success": "inset 0px 0px 0px 2px #004a0530",
     "--shadow-inset-warning": "inset 0px 0px 0px 2px #51470030",
-    "--shadow-inset-error": "inset 0px 0px 0px 2px #821b0030"
+    "--shadow-inset-error": "inset 0px 0px 0px 2px #821b0030",
+    "--radius-chat": "0px"
   },
   localTokens: {
     "--layout-page-width": "64rem"

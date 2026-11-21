@@ -108,12 +108,12 @@ export function AuthOverlay() {
           >
             <InputOTPGroup>
               {Array.from({ length: 6 }, (_, index) => (
-                <InputOTPSlot key={index} index={index} className="login-otp-slot" />
+                <InputOTPSlot key={index} index={index} />
               ))}
             </InputOTPGroup>
           </InputOTP>
         </HStack>
-        {error ? <Banner status="error" title={error} /> : <Text type="supporting">填满 6 位后会自动验证。</Text>}
+        {error ? <Banner status="error" title={error} /> : null}
         <HStack gap={2} hAlign="end">
           <Button
             label="取消"
@@ -121,13 +121,7 @@ export function AuthOverlay() {
             isDisabled={loading}
             onClick={() => handleOpenChange(false)}
           />
-          <Button
-            label="验证并登录"
-            variant="primary"
-            isLoading={loading}
-            isDisabled={loading || code.length !== 6}
-            onClick={() => void submit(code)}
-          />
+
         </HStack>
       </VStack>
     </Dialog>
