@@ -2,8 +2,8 @@ import { z } from "zod";
 import type { Practice, Question } from "@/lib/practice-data.ts";
 import { chatCompletion, type ChatMessage } from "@/lib/ai/client.ts";
 import { AiError } from "@/lib/ai/errors.ts";
-import { practiceSystemPrompt, practiceTypeRepair } from "@/lib/ai/prompts.ts";
-import { QUESTION_TYPES, normalizeQuestions, parseQuestionsPayload, typeCoverage } from "@/lib/ai/practice/normalize.ts";
+import { practiceSystemPrompt } from "@/lib/ai/prompts.ts";
+import { QUESTION_TYPES, normalizeQuestions, parseQuestionsPayload } from "@/lib/ai/practice/normalize.ts";
 
 const requestSchema = z.object({
   topic: z.string().max(120).optional(),
@@ -75,26 +75,13 @@ export async function generatePractice(input: GenerateInput): Promise<Practice> 
   const { topic, level, count } = input;
   const userPrompt = buildUserPrompt(input);
 
-  async function request(extraInstruction = "") {
-    const messages: ChatMessage[] = [
-      { role: "system", content: extraInstruction ? `${practiceSystemPrompt}\n${extraInstruction}` : practiceSystemPrompt },
-      { role: "user", content: userPrompt },
-    ];
-    const result = await chatCompletion(input.model, { messages, json: true, signal: input.signal });
-    return normalizeQuestions(parseQuestionsPayload(result.content), { level, topic, count });
-  }
-
-  let questions = await request();
+  const messages: ChatMessage[] = [
+    { role: "system", content: practiceSystemPrompt },
+    { role: "user", content: userPrompt },
+  ];
+  const result = await chatCompletion(input.model, { messages, json: true, signal: input.signal });
+  const questions = normalizeQuestions(parseQuestionsPayload(result.content), { level, topic, count });
   if (!questions.length) throw new AiError("invalid-output", "AI 返回的题目格式不完整，请更换模型或重新生成。");
-
-  if (count >= 3 && typeCoverage(questions) < QUESTION_TYPES.length) {
-    try {
-      const retry = await request(practiceTypeRepair);
-      if (typeCoverage(retry) > typeCoverage(questions)) questions = retry;
-    } catch {
-      // Keep the first batch when the retry fails; partial type coverage is better than no practice.
-    }
-  }
 
   return {
     id: crypto.randomUUID(),

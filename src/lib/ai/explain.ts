@@ -10,6 +10,7 @@ const requestSchema = z.object({
   userAnswer: z.string().max(500).optional(),
   /** 题库里的正确答案，用于和用户回答对比。 */
   correctAnswer: z.string().max(500).optional(),
+  /** 选项（选择题），带 key 与文本。 */
   options: z.array(z.object({
     key: z.string().max(20),
     text: z.string().max(500),

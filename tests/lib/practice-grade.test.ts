@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { Question } from "@/lib/practice-data";
-import { answerLabel, isAnswerCorrect, normalizeAnswer } from "@/lib/practice-grade";
+import { answerLabel, answerText, isAnswerCorrect, normalizeAnswer } from "@/lib/practice-grade";
 
 const question: Question = {
   id: "q1",
@@ -15,29 +15,50 @@ const question: Question = {
 
 describe("normalizeAnswer", () => {
   it("ignores case and surrounding space", () => {
-    expect(normalizeAnswer("  B ")).toBe("b");
+    expect(normalizeAnswer("  b ")).toBe("b");
     expect(normalizeAnswer(undefined)).toBe("");
   });
 });
 
 describe("isAnswerCorrect", () => {
-  it("grades case-insensitively", () => {
+  it("grades the option key case-insensitively", () => {
+    expect(isAnswerCorrect(question, "B")).toBe(true);
     expect(isAnswerCorrect(question, "b")).toBe(true);
     expect(isAnswerCorrect(question, "A")).toBe(false);
     expect(isAnswerCorrect(question, undefined)).toBe(false);
   });
+
+  it("grades fill-in answers with the same rule", () => {
+    const fill: Question = { ...question, type: "fill_blank", options: [], answer: "have done" };
+
+    expect(isAnswerCorrect(fill, "Have Done")).toBe(true);
+    expect(isAnswerCorrect(fill, "done")).toBe(false);
+  });
+});
+
+describe("answerText", () => {
+  it("turns a key into its option text", () => {
+    expect(answerText(question, "B")).toBe("has lived");
+    expect(answerText(question)).toBe("has lived");
+  });
+
+  it("returns fill-in answers and unknown values unchanged", () => {
+    const fill: Question = { ...question, type: "fill_blank", options: [], answer: "have done" };
+
+    expect(answerText(fill)).toBe("have done");
+    expect(answerText(question, "Z")).toBe("Z");
+  });
 });
 
 describe("answerLabel", () => {
-  it("prefixes the option key", () => {
+  it("prefixes the option key for display", () => {
     expect(answerLabel(question, "B")).toBe("B. has lived");
-  });
-
-  it("defaults to the correct answer", () => {
     expect(answerLabel(question)).toBe("B. has lived");
   });
 
   it("returns fill-in answers unchanged", () => {
-    expect(answerLabel({ ...question, options: [], answer: "have done" }, "Have done")).toBe("Have done");
+    const fill: Question = { ...question, type: "fill_blank", options: [], answer: "have done" };
+
+    expect(answerLabel(fill)).toBe("have done");
   });
 });

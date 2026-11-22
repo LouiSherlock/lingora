@@ -14,14 +14,14 @@ import { Markdown } from "@astryxdesign/core/Markdown";
 import { Text } from "@astryxdesign/core/Text";
 import { VStack } from "@astryxdesign/core/VStack";
 import { getClientAISettings, type ClientAISettings } from "@/lib/client-ai";
-import { answerLabel } from "@/lib/practice-grade";
+import { answerText } from "@/lib/practice-grade";
 import type { Question } from "@/lib/practice-data";
 import { useLearningStore } from "@/stores/learning-store";
 import { apiFetch } from "@/lib/auth-client";
 
 type TutorSheetProps = {
   question: Question;
-  /** 用户对该题的作答（原始 key 或填空文本）；未作答时不传。 */
+  /** 用户对该题的作答（选项 key 或填空内容）；未作答时不传。 */
   answer?: string;
   ai: ClientAISettings;
 };
@@ -78,8 +78,8 @@ export function TutorSheet({ question, answer, ai }: TutorSheetProps) {
     await sendMessage({ text: followUp }, {
       body: {
         question: question.stem,
-        userAnswer: answer ? answerLabel(question, answer) : undefined,
-        correctAnswer: answerLabel(question),
+        userAnswer: answer ? answerText(question, answer) : undefined,
+        correctAnswer: answerText(question),
         options: question.options,
         ai: clientAI,
       },
