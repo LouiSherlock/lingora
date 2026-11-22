@@ -21,6 +21,8 @@ import { apiFetch } from "@/lib/auth-client";
 
 type TutorSheetProps = {
   question: Question;
+  /** 用户对该题的作答（原始 key 或填空文本）；未作答时不传。 */
+  answer?: string;
   ai: ClientAISettings;
 };
 
@@ -32,7 +34,7 @@ function readTutorOpenFromURL() {
   return new URLSearchParams(window.location.search).get("tutor") === "open";
 }
 
-export function TutorSheet({ question, ai }: TutorSheetProps) {
+export function TutorSheet({ question, answer, ai }: TutorSheetProps) {
   const [isOpen, setIsOpen] = useState(readTutorOpenFromURL);
   const [draft, setDraft] = useState("");
 
@@ -76,7 +78,8 @@ export function TutorSheet({ question, ai }: TutorSheetProps) {
     await sendMessage({ text: followUp }, {
       body: {
         question: question.stem,
-        answer: answerLabel(question),
+        userAnswer: answer ? answerLabel(question, answer) : undefined,
+        correctAnswer: answerLabel(question),
         options: question.options,
         ai: clientAI,
       },

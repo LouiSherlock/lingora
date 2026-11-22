@@ -65,7 +65,7 @@ function SessionContent() {
     router.push(`/practice/result/${practice.id}`);
   }
   return <VStack gap={0} className="page-container page-container--shell page-container--compact">
-    <Toolbar endContent={<TutorSheet key={`assistant-${active.id}`} question={q} ai={ai} />} />
+    <Toolbar endContent={<TutorSheet key={`assistant-${active.id}`} question={q} answer={answers[q.id]} ai={ai} />} />
     <VStack gap={6} className="page-container__content">
     <AlertDialog isOpen={confirmExit} onOpenChange={setConfirmExit} title="退出练习？" description="本次答题进度和已填写的答案都不会保存，退出后需要重新开始。" cancelLabel="继续练习" actionLabel="放弃并退出" onAction={()=>{setLeaving(true); discard(); router.push("/");}}/>
     <VStack gap={2}><HStack hAlign="between"><Text type="label">{active.title}</Text><Text type="supporting">{current+1} / {active.questions.length}</Text></HStack><ProgressBar label="练习进度" isLabelHidden value={completed.length} max={active.questions.length} hasValueLabel formatValueLabel={(_, maximum) => `已完成 ${completed.length} / ${maximum}`} /></VStack>
