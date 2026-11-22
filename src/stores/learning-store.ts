@@ -4,7 +4,7 @@ import { createJSONStorage, persist } from 'zustand/middleware';
 import type { UIMessage } from 'ai';
 import type { Practice } from '@/lib/practice-data.ts';
 
-/** question.id -> 用户原始答案（选项 key 或填空文本），不做标准化。 */
+/** question.id -> 用户原始答案（选项 key 或填空内容），不做标准化。 */
 type AnswerMap = Record<string, string>;
 
 type LearningState = {
