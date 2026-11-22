@@ -10,6 +10,7 @@ import { Item } from "@astryxdesign/core/Item";
 import { List } from "@astryxdesign/core/List";
 import { Switch } from "@astryxdesign/core/Switch";
 import { Text } from "@astryxdesign/core/Text";
+import { TextArea } from "@astryxdesign/core/TextArea";
 import { TextInput } from "@astryxdesign/core/TextInput";
 import { VStack } from "@astryxdesign/core/VStack";
 import { getClientAISettings } from '@/lib/client-ai.ts';
@@ -87,13 +88,13 @@ export default function CreatePracticeClient({ initialLevel }: CreatePracticeCli
     <Toolbar title="创建 AI 练习" onBack={() => requestController.current?.abort()} />
     {loading ? <PracticeGenerating /> : <>
     <Text>设置练习目标，生成适合你的英语题目。</Text>
-    {error && <Banner status="warning" title="练习生成失败" description={error} isDismissable onDismiss={() => setError("")} endContent={<Button label="检查 AI 设置" href="/settings" style={{color:'var(--color-on-warning-muted)',borderColor:'var(--color-on-warning-muted)'}} />} />}
+    {error && <Banner status="warning" title="练习生成失败" description={error} isDismissable onDismiss={() => setError("")} endContent={<Button label="检查 AI 设置" href="/settings" className="banner-action" />} />}
     <Card><VStack gap={5}>
       <VStack gap={2}><Text type="label">学习类型</Text><HStack gap={2} wrap="wrap">{([ ["Grammar", "语法"], ["Vocabulary", "词汇"] ] as const).map(([value, label]) => <Button key={value} label={label} variant={kind === value ? "primary" : "secondary"} onClick={() => setKind(value)} />)}</HStack></VStack>
       <VStack gap={2}><Text type="label">英语等级</Text><HStack wrap="wrap" gap={2}>{["A1", "A2", "B1", "B2", "C1", "C2"].map((value) => <Button key={value} label={value} variant={level === value ? "primary" : "secondary"} onClick={() => { if (value !== level) { setLevel(value); setTopic(""); } }} />)}</HStack></VStack>
       <VStack gap={2}>
         {isManualTopic
-          ? <TextInput label="知识点 / 主题" value={topic} onChange={setTopic} placeholder="例如：现在完成时、旅行词汇" />
+          ? <TextArea label="知识点 / 主题" rows={3} containerClassName="topic-textarea" value={topic} onChange={setTopic} placeholder="例如：现在完成时、旅行词汇" />
           : <>
               <SelectField label="选择知识点 / 主题" value={topic} placeholder="按英语等级选择主题" onClick={() => setIsTopicSheetOpen(true)} />
               <BottomSheet isOpen={isTopicSheetOpen} onOpenChange={setIsTopicSheetOpen} label="选择知识点 / 主题" height="tall">
@@ -116,7 +117,7 @@ export default function CreatePracticeClient({ initialLevel }: CreatePracticeCli
               </BottomSheet>
             </>}
         <HStack hAlign="end" paddingBlockStart={1}>
-          <Switch label="手动输入主题" value={isManualTopic} onChange={setIsManualTopic} />
+          <Switch label="手动输入主题" value={isManualTopic} onChange={(isManual) => { setIsManualTopic(isManual); setTopic(""); }} />
         </HStack>
       </VStack>
       <VStack gap={2}><Text type="label">难度</Text><HStack gap={2} wrap="wrap">{([ ["Easy", "简单"], ["Medium", "普通"], ["Hard", "困难"] ] as const).map(([value, label]) => <Button key={value} label={label} variant={difficulty === value ? "primary" : "secondary"} onClick={() => setDifficulty(value)} />)}</HStack></VStack>

@@ -148,6 +148,41 @@
     padding-block: 1.25rem;
   }
 
+  /* 结果统计卡：手机两列（答对 / 待复习）+ 正确率独占一行，桌面一行三列。 */
+  .result-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .result-stats > :last-child {
+    grid-column: 1 / -1;
+  }
+
+  @media (min-width: 48rem) {
+    .result-stats {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .result-stats > :last-child {
+      grid-column: auto;
+    }
+  }
+
+  /* Banner 里的操作按钮：文字和边框跟随 banner 状态前景色，与标题一致。 */
+  .banner-action {
+    color: var(--color-on-warning-muted);
+    border-color: currentColor;
+  }
+
+  /* Banner 内建控件（关闭 / 折叠）：同样用 banner 状态前景色，而不是主题的金色。 */
+  .astryx-banner .astryx-button[data-variant="ghost"] {
+    color: var(--color-text-primary);
+  }
+
+  /* 手动主题输入：固定 3 行高度，禁用原生拖动调整行数。 */
+  .topic-textarea textarea {
+    resize: none;
+  }
+
   .feedback-error-text {
     color: var(--color-on-dark) !important;
   }
