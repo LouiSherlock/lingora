@@ -27,6 +27,9 @@ type PresetGroup = { id: string; name: string; topics: PresetTopic[] };
 type PresetLevel = { id: string; grammar: PresetGroup[]; vocabulary: PresetGroup[] };
 type PresetData = { levels: PresetLevel[] };
 
+/** 与 `src/lib/ai/practice/generate.ts` 里 topic 的 max(120) 保持一致，超长会被服务端拒绝。 */
+const TOPIC_MAX = 120;
+
 export default function CreatePracticeClient({ initialLevel }: CreatePracticeClientProps) {
   const router = useRouter();
   const start = useLearningStore((state) => state.start);
@@ -94,7 +97,7 @@ export default function CreatePracticeClient({ initialLevel }: CreatePracticeCli
       <VStack gap={2}><Text type="label">英语等级</Text><HStack wrap="wrap" gap={2}>{["A1", "A2", "B1", "B2", "C1", "C2"].map((value) => <Button key={value} label={value} variant={level === value ? "primary" : "secondary"} onClick={() => { if (value !== level) { setLevel(value); setTopic(""); } }} />)}</HStack></VStack>
       <VStack gap={2}>
         {isManualTopic
-          ? <TextArea label="知识点 / 主题" rows={3} containerClassName="topic-textarea" value={topic} onChange={setTopic} placeholder="例如：现在完成时、旅行词汇" />
+          ? <TextInput label="知识点 / 主题" value={topic} onChange={(value) => setTopic(value.slice(0, TOPIC_MAX))} placeholder={`例如：现在完成时、旅行词汇（${TOPIC_MAX} 字以内）`} />
           : <>
               <SelectField label="选择知识点 / 主题" value={topic} placeholder="按英语等级选择主题" onClick={() => setIsTopicSheetOpen(true)} />
               <BottomSheet isOpen={isTopicSheetOpen} onOpenChange={setIsTopicSheetOpen} label="选择知识点 / 主题" height="tall">
@@ -122,7 +125,7 @@ export default function CreatePracticeClient({ initialLevel }: CreatePracticeCli
       </VStack>
       <VStack gap={2}><Text type="label">难度</Text><HStack gap={2} wrap="wrap">{([ ["Easy", "简单"], ["Medium", "普通"], ["Hard", "困难"] ] as const).map(([value, label]) => <Button key={value} label={label} variant={difficulty === value ? "primary" : "secondary"} onClick={() => setDifficulty(value)} />)}</HStack></VStack>
       <VStack gap={2}><Text type="label">题目数量</Text><HStack gap={2} wrap="wrap">{["5", "10", "15", "20"].map((value) => <Button key={value} label={`${value} 题`} variant={count === value ? "primary" : "secondary"} onClick={() => setCount(value)} />)}</HStack></VStack>
-      <TextInput label="自定义要求" value={custom} onChange={setCustom} placeholder="重点考察容易混淆的语法用法" />
+      <TextArea label="自定义要求" rows={3} containerClassName="fixed-textarea" value={custom} onChange={setCustom} placeholder="重点考察容易混淆的语法用法" />
       <Text type="supporting">支持单选、填空和判断；题干为英文，解析为中文。</Text>
       <Button label={loading ? "正在生成…" : "生成练习方案"} variant="primary" isDisabled={loading || !topic.trim()} onClick={generate} />
     </VStack></Card>

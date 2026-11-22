@@ -178,8 +178,8 @@
     color: var(--color-text-primary);
   }
 
-  /* 手动主题输入：固定 3 行高度，禁用原生拖动调整行数。 */
-  .topic-textarea textarea {
+  /* 多行文本框：固定 3 行高度，禁用原生拖动调整行数。 */
+  .fixed-textarea textarea {
     resize: none;
   }
 
