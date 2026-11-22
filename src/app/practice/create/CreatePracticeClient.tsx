@@ -87,8 +87,9 @@ export default function CreatePracticeClient({ initialLevel }: CreatePracticeCli
     }
   }
 
-  return <VStack gap={6} className="page-container page-container--regular">
+  return <VStack gap={0} className="page-container page-container--shell page-container--regular">
     <Toolbar title="创建 AI 练习" onBack={() => requestController.current?.abort()} />
+    <VStack gap={6} className="page-container__content">
     {loading ? <PracticeGenerating /> : <>
     <Text>设置练习目标，生成适合你的英语题目。</Text>
     {error && <Banner status="warning" title="练习生成失败" description={error} isDismissable onDismiss={() => setError("")} endContent={<Button label="检查 AI 设置" href="/settings" className="banner-action" />} />}
@@ -130,6 +131,7 @@ export default function CreatePracticeClient({ initialLevel }: CreatePracticeCli
       <Button label={loading ? "正在生成…" : "生成练习方案"} variant="primary" isDisabled={loading || !topic.trim()} onClick={generate} />
     </VStack></Card>
     </>}
+    </VStack>
   </VStack>;
 }
 

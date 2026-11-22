@@ -68,8 +68,9 @@ export default function PracticeResult() {
     router.push(`/practice/session/${nextPractice.id}`);
   }
 
-  return <VStack gap={6} className="page-container page-container--regular">
+  return <VStack gap={0} className="page-container page-container--shell page-container--regular">
     <Toolbar title="练习结果" />
+    <VStack gap={6} className="page-container__content">
     {regenerating ? <PracticeGenerating title="正在生成答题" description="AI 正在根据错题为你设计相似的新题…" /> : <>
     {generationError && <Banner status="warning" title="新题生成失败" description={generationError} isDismissable onDismiss={() => setGenerationError("")} />}
     <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
@@ -81,6 +82,7 @@ export default function PracticeResult() {
     <VStack gap={3}><Heading level={2}>逐题解析</Heading>{practice.questions.map((question, index) => { const correct = isAnswerCorrect(question, answers[question.id]); return <motion.div key={question.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: index * 0.04 }}><Card><VStack gap={2}><HStack hAlign="between" wrap="wrap"><Badge label={correct ? "回答正确" : "需要复习"} variant={correct ? "success" : "warning"} /><Text type="supporting">{typeLabels[question.type]} · {question.knowledgePoints.join("、")}</Text></HStack><Text>{question.stem}</Text><Text type="supporting">你的答案：{answers[question.id] ? answerLabel(question, answers[question.id]) : "未作答"} · 正确答案：{answerLabel(question)}</Text><Text>{question.explanation}</Text></VStack></Card></motion.div>; })}</VStack>
     <HStack gap={3}><Button label="再来一组" href="/practice/create" variant="primary" /><Button label="返回首页" href="/" variant="secondary" /></HStack>
     </>}
+    </VStack>
   </VStack>;
 }
 

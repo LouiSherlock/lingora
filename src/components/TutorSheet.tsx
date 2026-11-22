@@ -84,7 +84,7 @@ export function TutorSheet({ question, ai }: TutorSheetProps) {
   }
 
   return <>
-    <Button label="AI 助教" icon={<BotMessageSquare size={16} />} variant="secondary" onClick={() => setTutorOpen(true)} />
+    <Button label="AI 助教" icon={<BotMessageSquare size={16} />} variant="ghost" size="sm" onClick={() => setTutorOpen(true)} />
     <BottomSheet isOpen={isOpen} onOpenChange={setTutorOpen} label="AI 助教" height="tall" padding={0} purpose="info">
       <VStack gap={0} className="tutor-sheet">
         <HStack className="tutor-sheet__header" hAlign="between" vAlign="center">

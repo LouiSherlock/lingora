@@ -41,7 +41,7 @@
   }
 
   main {
-    min-height: 100vh;
+    min-height: 100dvh;
     width: 100%;
   }
 
@@ -79,10 +79,11 @@
 
 @layer components {
   .page-container {
+    --_page-pad-inline: 1.25rem;
     box-sizing: border-box;
     margin-inline: auto;
     max-width: 64rem;
-    padding-inline: 1.25rem;
+    padding-inline: var(--_page-pad-inline);
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -104,6 +105,24 @@
     padding-block: 2.5rem;
   }
 
+  /* 应用外壳：标题栏固定，内容区自己滚动，滚动条只出现在内容区右侧。 */
+  .page-container--shell {
+    max-width: none;
+    height: 100dvh;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .page-container__content {
+    flex: 1;
+    min-height: 0;
+    overflow-y: auto;
+    /* 内容保持页面宽度并居中；用内边距而不是 max-width，滚动条才会贴屏幕右边缘。 */
+    padding-inline: max(var(--_page-pad-inline, 1.25rem), calc((100% - var(--layout-page-width)) / 2));
+    padding-block: var(--_page-pad-top, 2rem);
+  }
+
   .centered-content {
     align-items: center;
     justify-content: center;
@@ -112,23 +131,22 @@
 
   /* 安卓风格顶部标题栏：返回 / 居中标题 / 右侧操作。 */
   .app-toolbar {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    /* 抵消 page-container 的顶部内边距，让标题栏贴到最顶部。 */
-    margin-block-start: calc(-1 * var(--_page-pad-top, 0px));
+    flex: none;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     align-items: center;
     column-gap: var(--spacing-2);
     min-height: 3.5rem;
     padding-block: var(--spacing-2);
-    border-bottom: 1px solid var(--color-border);
-    background-color: var(--color-background-body);
+    /* 与内容区同宽同对齐，背景自然贴到屏幕左右两侧。 */
+    padding-inline: max(var(--_page-pad-inline, 1.25rem), calc((100% - var(--layout-page-width)) / 2));
+    /* 与页面背景区分开，靠色块分层而不是分割线。 */
+    background-color: var(--color-background-muted);
   }
 
   .app-toolbar__back {
     justify-self: start;
+    color: var(--color-text-primary);
   }
 
   .app-toolbar__title {
