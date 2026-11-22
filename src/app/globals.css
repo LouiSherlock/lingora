@@ -110,6 +110,8 @@
     max-width: none;
     height: 100dvh;
     min-height: 0;
+    /* 外壳左右留白取页面的一半，标题栏与内容区共用，保持对齐。 */
+    --_page-pad-inline: 0.625rem;
     padding: 0;
     overflow: hidden;
   }
@@ -206,8 +208,9 @@
   }
 
   .astryx-bottom-sheet {
-    width: min(calc(var(--layout-page-width) - var(--spacing-10)), calc(100vw - var(--spacing-10))) !important;
-    max-width: calc(var(--layout-page-width) - var(--spacing-10)) !important;
+    /* 左右留白与页面外壳一致：spacing-5 等于内容区 2 倍内边距。 */
+    width: min(calc(var(--layout-page-width) - var(--spacing-5)), calc(100vw - var(--spacing-5))) !important;
+    max-width: calc(var(--layout-page-width) - var(--spacing-5)) !important;
   }
 
   .practice-generating {
