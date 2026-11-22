@@ -1,5 +1,6 @@
 import { timingSafeEqual } from "node:crypto";
 import { NextResponse } from "next/server";
+import { parseAuthCodes } from "@/lib/auth-codes";
 import { clearLoginFailures, getLoginRateLimit, recordLoginFailure } from "@/lib/auth-rate-limit";
 import { signToken } from "@/lib/jwt";
 
@@ -7,6 +8,15 @@ function safeEqual(a: string, b: string) {
   const left = Buffer.from(a);
   const right = Buffer.from(b);
   return left.length === right.length && timingSafeEqual(left, right);
+}
+
+/** 逐个比较，不提前返回：命中位置不会通过耗时暴露。 */
+function matchesAny(code: string, validCodes: string[]) {
+  let matched = false;
+  for (const validCode of validCodes) {
+    if (safeEqual(code, validCode)) matched = true;
+  }
+  return matched;
 }
 
 function clientKey(request: Request) {
@@ -25,8 +35,8 @@ export async function POST(request: Request) {
     );
   }
 
-  const validCode = process.env.AUTH_CODE;
-  if (!validCode || !/^\d{6}$/.test(validCode)) {
+  const validCodes = parseAuthCodes(process.env.AUTH_CODE);
+  if (!validCodes.length) {
     return NextResponse.json({ message: "登录服务尚未配置。", code: "AUTH_NOT_CONFIGURED" }, { status: 503 });
   }
 
@@ -41,7 +51,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "请输入 6 位数字验证码。", code: "INVALID_CODE_FORMAT" }, { status: 400 });
   }
 
-  if (!safeEqual(code, validCode)) {
+  if (!matchesAny(code, validCodes)) {
     recordLoginFailure(key);
     return NextResponse.json({ message: "验证码错误。", code: "INVALID_CODE" }, { status: 401 });
   }

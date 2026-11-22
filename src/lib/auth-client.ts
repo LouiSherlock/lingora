@@ -2,19 +2,33 @@
 
 import { useEffect, useState } from "react";
 
-const TOKEN_KEY = "access_token";
+const TOKEN_KEY = "lingora_access_token";
+/** 旧版本把 token 存在这个 key 上；读到后迁移过去，避免已登录用户被登出。 */
+const LEGACY_TOKEN_KEY = "access_token";
+
+function readToken() {
+  const token = window.localStorage.getItem(TOKEN_KEY);
+  if (token) return token;
+  const legacy = window.localStorage.getItem(LEGACY_TOKEN_KEY);
+  if (!legacy) return null;
+  window.localStorage.setItem(TOKEN_KEY, legacy);
+  window.localStorage.removeItem(LEGACY_TOKEN_KEY);
+  return legacy;
+}
 
 export function getToken() {
-  return typeof window === "undefined" ? null : window.localStorage.getItem(TOKEN_KEY);
+  return typeof window === "undefined" ? null : readToken();
 }
 
 export function setToken(token: string) {
   window.localStorage.setItem(TOKEN_KEY, token);
+  window.localStorage.removeItem(LEGACY_TOKEN_KEY);
   window.dispatchEvent(new Event("auth:change"));
 }
 
 export function clearToken() {
   window.localStorage.removeItem(TOKEN_KEY);
+  window.localStorage.removeItem(LEGACY_TOKEN_KEY);
   window.dispatchEvent(new Event("auth:change"));
 }
 
